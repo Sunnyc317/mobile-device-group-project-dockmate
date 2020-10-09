@@ -1,52 +1,69 @@
 import 'package:flutter/material.dart';
+import 'listings.dart';
+import 'map.dart';
+import 'my_listing.dart';
+import 'chat.dart';
+import 'settings.dart';
+
+class MenuBar {
+  String name;
+  IconData icon;
+
+  MenuBar({this.name, this.icon});
+}
 
 class BottomBar extends StatelessWidget {
   final Function setBottomIndex;
   final int bottomIndex;
+  List<MenuBar> _menu = [
+    MenuBar(name: 'Listing', icon: Icons.home),
+    MenuBar(name: 'Map', icon: Icons.place),
+    MenuBar(name: 'Chat', icon: Icons.chat),
+    MenuBar(name: 'My Listing', icon: Icons.account_circle),
+    MenuBar(name: 'Settings', icon: Icons.settings),
+  ];
 
-  BottomBar({@required this.bottomIndex, @required this.setBottomIndex});
+  BottomBar({@required this.bottomIndex, this.setBottomIndex});
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      elevation: 0,
       type: BottomNavigationBarType.fixed,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          //might need refactoring
-          icon: Icon(
-            Icons.home,
-          ),
-          title: Text("Listing"),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.place,
-          ),
-          title: Text("Map"),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.account_circle,
-          ),
-          title: Text("My List"),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.chat,
-          ),
-          title: Text("Chat"),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.settings,
-          ),
-          title: Text("Setting"),
-        ),
-      ],
+      elevation: 0,
+      items: _menu.map((MenuBar menu) {
+        return BottomNavigationBarItem(
+          icon: Icon(menu.icon),
+          label: menu.name,
+        );
+      }).toList(),
       currentIndex: bottomIndex,
       selectedItemColor: Colors.blue[400],
-      onTap: setBottomIndex,
+      onTap: (int index) {
+        var _pageIndex = index;
+        var page;
+        switch (_pageIndex) {
+          case 0:
+            page = Listings();
+            break;
+          case 1:
+            page = Map();
+            break;
+          case 2:
+            page = Chat();
+            break;
+          case 3:
+            page = MyListing();
+            break;
+          case 4:
+            page = Settings();
+            break;
+        }
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
     );
   }
 }
