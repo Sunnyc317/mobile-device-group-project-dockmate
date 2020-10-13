@@ -2,8 +2,8 @@
 The starter code for the major group project.
 
 Group members (3-5) (no Student IDs, only names):
-1. Jessica @ (Sunnyc317)][https://github.com/Sunnyc317]
-2. Sunny Cho @ (jwdjj)[https://github.com/jwdjj]
+1. Sunny Cho @ (Sunnyc317)][https://github.com/Sunnyc317]
+2. Jessica @ (jwdjj)[https://github.com/jwdjj]
 3. Naida Tania @ (NaidaTania)[https://github.com/NaidaTania]
 
 ## Overview
