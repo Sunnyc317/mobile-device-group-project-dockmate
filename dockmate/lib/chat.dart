@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+import 'bottombar.dart';
+
+class Chat extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat'),
+      ),
+      body: Center(
+        child: Text("Placeholder for chat"),
+      ),
+      bottomNavigationBar: BottomBar(bottomIndex: 2),
+    );
+  }
+}
