@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import './bottombar.dart';
-import 'login.dart';
-import 'register.dart';
+import './utils/bottombar.dart';
+import './pages/login.dart';
+import './pages/register.dart';
+import './pages/chat.dart';
+import './pages/settings.dart';
+import './pages/listings.dart';
+import './pages/my_listing.dart';
+import './pages/map.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,6 +22,14 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Dock Mate!'),
+      routes: <String, WidgetBuilder>{
+        '/Login': (BuildContext context) => Login(),
+        '/Listing': (BuildContext context) => Listings(),
+        '/Chat': (BuildContext context) => Chat(),
+        '/Map': (BuildContext context) => Map(),
+        '/MyListing': (BuildContext context) => MyListing(),
+        '/Settings': (BuildContext context) => Settings(),
+      },
     );
   }
 }
