@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-import 'bottombar.dart';
+import '../utils/bottombar.dart';
 
-class Settings extends StatelessWidget {
+class Settings extends StatefulWidget {
+  String title;
+  Settings({this.title});
+
+  @override
+  _SettingsState createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

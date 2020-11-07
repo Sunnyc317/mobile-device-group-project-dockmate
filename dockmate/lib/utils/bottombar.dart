@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'listings.dart';
-import 'map.dart';
-import 'my_listing.dart';
-import 'chat.dart';
-import 'settings.dart';
 
 class MenuBar {
   String name;
@@ -33,7 +28,7 @@ class BottomBar extends StatelessWidget {
       items: _menu.map((MenuBar menu) {
         return BottomNavigationBarItem(
           icon: Icon(menu.icon),
-          label: menu.name,
+          title: Text(menu.name),
         );
       }).toList(),
       currentIndex: bottomIndex,
@@ -43,26 +38,23 @@ class BottomBar extends StatelessWidget {
         var page;
         switch (_pageIndex) {
           case 0:
-            page = Listings();
+            page = '/Listings';
             break;
           case 1:
-            page = Map();
+            page = '/Map';
             break;
           case 2:
-            page = Chat();
+            page = '/Chat';
             break;
           case 3:
-            page = MyListing();
+            page = '/MyListings';
             break;
           case 4:
-            page = Settings();
+            page = '/Settings';
             break;
         }
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => page),
-        );
+        Navigator.of(context).pushNamed(page);
       },
     );
   }
