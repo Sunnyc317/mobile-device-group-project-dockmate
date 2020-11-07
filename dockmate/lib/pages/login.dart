@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'listings.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  String title;
+  Login({this.title});
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,10 +67,7 @@ class Login extends StatelessWidget {
                   ),
                   child: const Text('Login', style: TextStyle(fontSize: 18)),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Listings()),
-                    );
+                    Navigator.of(context).pushNamed('/Listings');
                   },
                 )),
           ])

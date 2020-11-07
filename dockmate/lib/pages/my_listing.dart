@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import 'bottombar.dart';
+import '../utils/bottombar.dart';
 
-class MyListing extends StatelessWidget {
+class MyListing extends StatefulWidget {
+  String title;
+  MyListing({this.title});
+  @override
+  _MyListingState createState() => _MyListingState();
+}
+
+class _MyListingState extends State<MyListing> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

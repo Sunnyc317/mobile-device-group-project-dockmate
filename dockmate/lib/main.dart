@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import './utils/bottombar.dart';
 import './pages/login.dart';
-import './pages/register.dart';
 import './pages/chat.dart';
 import './pages/settings.dart';
 import './pages/listings.dart';
@@ -23,12 +21,13 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Dock Mate!'),
       routes: <String, WidgetBuilder>{
-        '/Login': (BuildContext context) => Login(),
-        '/Listing': (BuildContext context) => Listings(),
-        '/Chat': (BuildContext context) => Chat(),
-        '/Map': (BuildContext context) => Map(),
-        '/MyListing': (BuildContext context) => MyListing(),
-        '/Settings': (BuildContext context) => Settings(),
+        '/Login': (BuildContext context) => Login(title: "Login"),
+        '/Listings': (BuildContext context) => Listings(title: "Listings"),
+        '/Chat': (BuildContext context) => Chat(title: "All Messages"),
+        '/Map': (BuildContext context) => Map(title: "Find a House"),
+        '/MyListings': (BuildContext context) =>
+            MyListing(title: "My Listings"),
+        '/Settings': (BuildContext context) => Settings(title: "Settings"),
       },
     );
   }
@@ -75,10 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text('Returning User',
                     style: TextStyle(fontSize: 20)),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Login()),
-                  );
+                  Navigator.of(context).pushNamed('/Login');
                 },
               )),
           const SizedBox(height: 30),
@@ -90,10 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 child: const Text('New User', style: TextStyle(fontSize: 20)),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Login()),
-                  );
+                  Navigator.of(context).pushNamed('/Login');
                 },
               )),
         ]),
