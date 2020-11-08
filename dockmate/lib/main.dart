@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import './bottombar.dart';
 import 'login.dart';
 import 'register.dart';
 
@@ -79,29 +78,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Login()),
+                    MaterialPageRoute(builder: (context) => Register()),
                   );
                 },
               )),
         ]),
       ),
     );
-    /*return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Hi :D',
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar:
-          BottomBar(bottomIndex: _bottomIndex, setBottomIndex: _setBottomIndex),
-    );*/
   }
 }

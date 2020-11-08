@@ -4,6 +4,7 @@ import 'listing.dart';
 import 'message.dart';
 
 class User {
+  int id;
   String first_name;
   String last_name;
   String email;
