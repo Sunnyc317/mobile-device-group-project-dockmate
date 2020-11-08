@@ -1,7 +1,7 @@
 import 'package:dockmate/posting_form.dart';
 import 'package:flutter/material.dart';
-import 'model/listing.dart';
-import 'bottombar.dart';
+import '../model/listing.dart';
+import '../utils/bottombar.dart';
 
 class Listings extends StatefulWidget {
   final String title;

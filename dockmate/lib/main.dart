@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
-import 'register.dart';
+import './pages/login.dart';
+import './pages/chat.dart';
+import './pages/settings.dart';
+import './pages/listings.dart';
+import './pages/my_listing.dart';
+import './pages/map.dart';
+import './pages/register.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,6 +21,16 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Dock Mate!'),
+      routes: <String, WidgetBuilder>{
+        '/Login': (BuildContext context) => Login(title: "Login"),
+        '/Register': (BuildContext context) => Register(title: "Register"),
+        '/Listings': (BuildContext context) => Listings(title: "Listings"),
+        '/Chat': (BuildContext context) => Chat(title: "All Messages"),
+        '/Map': (BuildContext context) => Map(title: "Find a House"),
+        '/MyListings': (BuildContext context) =>
+            MyListing(title: "My Listings"),
+        '/Settings': (BuildContext context) => Settings(title: "Settings"),
+      },
     );
   }
 }
@@ -61,10 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text('Returning User',
                     style: TextStyle(fontSize: 20)),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Login()),
-                  );
+                  Navigator.of(context).pushNamed('/Login');
                 },
               )),
           const SizedBox(height: 30),
@@ -76,10 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 child: const Text('New User', style: TextStyle(fontSize: 20)),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Register()),
-                  );
+                  Navigator.of(context).pushNamed('/Register');
                 },
               )),
         ]),

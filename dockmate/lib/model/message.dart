@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'user.dart';
 
 class Message {
-  int id;
+  String messageID;
   User sender;
   User receiver;
   String messages;

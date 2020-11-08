@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import 'bottombar.dart';
+import '../utils/bottombar.dart';
 
-class Chat extends StatelessWidget {
+class Chat extends StatefulWidget {
+  String title;
+  Chat({this.title});
+  @override
+  _ChatState createState() => _ChatState();
+}
+
+class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
