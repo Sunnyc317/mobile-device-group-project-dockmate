@@ -5,21 +5,21 @@ import 'user.dart';
 class Listing {
   int id;
   User op;
-  Image main_image;
+  Image mainIimage;
   List<Image> images;
   DateTime date;
   String title;
   String address;
   String city;
-  String postal_code;
+  String postalCode;
   String province;
   String country;
   String description;
   String price;
-  int bedroom;
+  String bedroom;
   int bathroom;
-  int parking;
-  bool pet_friendly;
+  bool isParkingAvail;
+  bool isPetFriendly;
   bool isPublic;
 
   Listing();

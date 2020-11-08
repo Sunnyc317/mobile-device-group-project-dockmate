@@ -1,5 +1,4 @@
 import 'package:dockmate/model/listing.dart';
-import 'package:flutter/material.dart';
 import 'listing.dart';
 import 'message.dart';
 

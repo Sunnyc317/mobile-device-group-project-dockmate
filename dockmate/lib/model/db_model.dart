@@ -15,30 +15,30 @@ class DBModel {
     }, version: 1);
   }
 
-  Future<void> insertDB(String table_name, var obj) async {
+  Future<void> insertDB(String tableName, var obj) async {
     if (this.database == null) {
       await init();
     }
-    await database.insert(table_name, obj.toMap(),
+    await database.insert(tableName, obj.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> updateDB(String table_name, var obj) async {
+  Future<void> updateDB(String tableName, var obj) async {
     if (this.database == null) {
       await init();
     }
 
     await database
-        .update(table_name, obj.toMap(), where: 'id = ?', whereArgs: [obj.id]);
+        .update(tableName, obj.toMap(), where: 'id = ?', whereArgs: [obj.id]);
   }
 
-  Future<void> deleteDB(String table_name, int id) async {
+  Future<void> deleteDB(String tableName, int id) async {
     if (this.database == null) {
       await init();
     }
 
     await database.delete(
-      table_name,
+      tableName,
       where: 'id = ?',
       whereArgs: [id],
     );
