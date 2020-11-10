@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../model/listing.dart';
+import 'package:dockmate/model/listing.dart';
 
 class PostingForm extends StatefulWidget {
   final String title;
@@ -11,10 +11,11 @@ class PostingForm extends StatefulWidget {
 }
 
 class _PostingFormState extends State<PostingForm> {
-  var _countryList = ["CA", "US", "Other"];
-  var _bedroomOptions = ["Studio", "1", "1+1", "2", "2+1", "3", "3+1", "4+"];
-  var _bathroomOptions = [1, 2, 3, 4, 5];
-  var _provinceList = [
+  final _countryList = ["CA", "US", "Other"];
+  final _statusOptions = ["Available", "Pending", "No Longer Available"];
+  final _bedroomOptions = ["Studio", "1", "1+1", "2", "2+1", "3", "3+1", "4+"];
+  final _bathroomOptions = ["1", "2", "3", "4", "5+"];
+  final _provinceList = [
     'AB',
     'BC',
     'MB',
@@ -31,7 +32,7 @@ class _PostingFormState extends State<PostingForm> {
 
   int _id;
   String _bed;
-  int _bathroom;
+  String _bathroom;
   bool _isParkingAvail = false;
   bool _isPetFriendly = false;
   String _postalCode;
@@ -40,6 +41,10 @@ class _PostingFormState extends State<PostingForm> {
   String _province;
   String _country;
   String _description;
+  String _duration;
+  String _status;
+  String _title;
+  String _price;
   bool _isPublic = false;
 
   @override
@@ -56,30 +61,53 @@ class _PostingFormState extends State<PostingForm> {
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: <Widget>[
-            buildFirstRow(),
+            buildTextFieldRow("Title", _title),
+            ListTile(title: buildFirstRow()),
+            ListTile(title: buildSecondRow()),
+            buildTextFieldRow("Price", _price),
             buildTextFieldRow("Street", _address),
             buildTextFieldRow("City/Town", _city),
             buildTextFieldRow("PostalCode", _postalCode),
-            //buildDropdownListRow("Province", _province, _provinceList),
-            //buildDropdownListRow("Country", _country, _countryList),
-            buildTextAreaRow("Description", _description),
+            ListTile(
+                title:
+                    buildDropdownListRow("Province", _province, _provinceList)),
+            ListTile(
+                title: buildDropdownListRow("Country", _country, _countryList)),
+            buildTextAreaRow("Duration", _duration),
+            buildTextFieldRow("Description", _description),
+            ListTile(
+                title: buildDropdownListRow("Status", _status, _statusOptions)),
+            ListTile(
+                leading: Text("Public"), title: buildCheckboxColumn(_isPublic)),
             Row(
-              children: [
-                Container(child: Text("Public")),
-                buildCheckboxColumn(_isPublic)
-              ],
-            ),
-            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RaisedButton(
+                  padding: EdgeInsets.all(10.0),
                   color: Colors.grey,
                   onPressed: () {},
                   child: Text("Cancel"),
                 ),
                 RaisedButton(
+                  padding: EdgeInsets.all(10.0),
                   color: Colors.green,
                   onPressed: () {
-                    Listing list = Listing();
+                    Listing list = Listing(
+                        title: _title,
+                        address: _address,
+                        city: _city,
+                        postalCode: _postalCode,
+                        province: _province,
+                        country: _country,
+                        description: _description,
+                        price: _price,
+                        bedroom: _bed,
+                        bathroom: _bathroom,
+                        status: _status,
+                        isParkingAvail: _isParkingAvail,
+                        isPetFriendly: _isPetFriendly,
+                        isPublic: _isPublic);
                     Navigator.pop(context, list);
                   },
                   child: Text("Done"),
@@ -93,19 +121,24 @@ class _PostingFormState extends State<PostingForm> {
   }
 
   Widget buildFirstRow() {
-    return Row(
-      children: [
-        Column(
+    return Row(children: [
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [buildDropdownListRow("Bed", _bed, _bedroomOptions)],
+      ),
+      Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [buildDropdownListRow("Bed", _bed, _bedroomOptions)],
-        ),
-        Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //buildDropdownListRow("Bathroom", _bathroom, _bathroomOptions)
-            ]),
+          children: [
+            buildDropdownListRow("Bathroom", _bathroom, _bathroomOptions)
+          ])
+    ]);
+  }
+
+  Widget buildSecondRow() {
+    return Row(
+      children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,19 +187,23 @@ class _PostingFormState extends State<PostingForm> {
   }
 
   Widget buildDropdownListRow(var lead, var param, var objList) {
-    return ListTile(
-        leading: lead,
-        title: DropdownButton<dynamic>(
-          items: objList.map((dynamic value) {
-            return new DropdownMenuItem<dynamic>(
-              value: value,
-              child: new Text(value),
-            );
-          }).toList(),
-          onChanged: (value) {
+    return Row(children: [
+      Text(lead),
+      DropdownButton<String>(
+        value: param,
+        items: objList.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (String value) {
+          setState(() {
             param = value;
-          },
-        ));
+          });
+        },
+      )
+    ]);
   }
 
   Widget buildCheckboxColumn(var param) {

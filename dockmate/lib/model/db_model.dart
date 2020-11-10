@@ -9,10 +9,10 @@ class DBModel {
     this.database =
         await openDatabase(path.join(await getDatabasesPath(), 'dockmate.db'),
             onCreate: (db, version) {
-      // CREATE MULTIPLE TABLE
-      /*db.execute(
-          'CREATE TABLE listing (id INTEGER PRIMARY KEY, sid TEXT, grade TEXT');*/
+      db.execute(
+          'CREATE TABLE listings (id INTEGER PRIMARY KEY, title TEXT, address TEXT, city TEXT, province TEXT, country TEXT, pet TEXT, parking TEXT, bedroom TEXT, bathroom TEXT, description TEXT, duration TEXT, price TEXT, public TEXT, status TEXT, mainImage TEXT');
     }, version: 1);
+    print("Create table called");
   }
 
   Future<void> insertDB(String tableName, var obj) async {

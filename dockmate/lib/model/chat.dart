@@ -1,4 +1,4 @@
-import './message.dart';
+import 'package:dockmate/model/message.dart';
 
 class Chat {
   //representing a single chat preview

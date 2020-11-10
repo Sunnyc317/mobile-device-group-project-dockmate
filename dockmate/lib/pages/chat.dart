@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/bottombar.dart';
+import 'package:dockmate/utils/bottombar.dart';
 
 class Chat extends StatefulWidget {
   String title;

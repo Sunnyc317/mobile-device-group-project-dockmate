@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import './pages/login.dart';
-import './pages/chat.dart';
-import './pages/settings.dart';
-import './pages/listings.dart';
-import './pages/my_listing.dart';
-import './pages/map.dart';
-import './pages/register.dart';
+//import 'package:firebase_core/firebase_core.dart';
+import 'package:dockmate/pages/login.dart';
+import 'package:dockmate/pages/chat.dart';
+import 'package:dockmate/pages/settings.dart';
+import 'package:dockmate/pages/listings.dart';
+import 'package:dockmate/pages/my_listing.dart';
+import 'package:dockmate/pages/map.dart';
+import 'package:dockmate/pages/register.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  //final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
