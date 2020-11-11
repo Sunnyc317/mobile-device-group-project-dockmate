@@ -42,7 +42,9 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  createNewChatroom() {
+  _createNewChatroom() {
+    //Will ideally check against existing users and all that
+    //but for now will just create a blank chatroom
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => MessageRoom()),
@@ -53,18 +55,35 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Listings'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: createNewChatroom(),
-          )
-        ],
+        title: Text('Chat'),
       ),
       body: Center(
-        child: chatStreamBuilder(), //populate if some chat data already exist
+        child: Text("Placeholder for chat"),
       ),
-      bottomNavigationBar: BottomBar(bottomIndex: 0),
+      bottomNavigationBar: BottomBar(bottomIndex: 2),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _createNewChatroom(),
+      ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text('Listings'),
+  //       actions: <Widget>[
+  //         IconButton(
+  //           icon: Icon(Icons.add),
+  //           onPressed: createNewChatroom(),
+  //         )
+  //       ],
+  //     ),
+  //     body: Center(child: Text("Just checking that it works")),
+  //     // child: chatStreamBuilder(), //populate if some chat data already exist
+  //     // ),
+  //     bottomNavigationBar: BottomBar(bottomIndex: 0),
+  //   );
+  // }
 }

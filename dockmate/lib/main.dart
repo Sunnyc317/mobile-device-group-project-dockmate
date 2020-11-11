@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-
-// import 'package:dockmate/pages/Register/firstScreen_S.dart';
-// import './pages/login_old.dart';
-import 'package:dockmate/pages/register.dart';
-import 'package:dockmate/pages/firstScreen.dart';
-import 'pages/logIn.dart';
+import './pages/login.dart';
 import './pages/chat.dart';
 import './pages/settings.dart';
 import './pages/listings.dart';
 import './pages/my_listing.dart';
 import './pages/map.dart';
+import 'package:dockmate/pages/register.dart';
 
 void main() {
   runApp(MyApp());
@@ -62,7 +58,42 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FirstScreen(title: 'Dock Mate');
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+          Image.asset('assets/images/logo.jpeg', width: 200),
+          const SizedBox(height: 50),
+          ButtonTheme(
+              minWidth: 200,
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                color: Colors.white60,
+                child: const Text('Returning User',
+                    style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/Login');
+                },
+              )),
+          const SizedBox(height: 30),
+          ButtonTheme(
+              minWidth: 200,
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                child: const Text('New User', style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/Login');
+                },
+              )),
+        ]),
+      ),
+    );
     /*return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
