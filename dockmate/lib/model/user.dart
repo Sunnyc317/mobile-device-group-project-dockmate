@@ -24,4 +24,15 @@ class User {
   // Something about preference
   // Type of housing
   // Postal code they're looking for?
+
+  User({this.first_name, this.last_name, this.email});
+
+  
+
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'first name: $first_name';
+  }
 }

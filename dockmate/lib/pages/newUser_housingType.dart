@@ -24,7 +24,7 @@ class _HousingTypeState extends State<HousingType> {
       ),
       body: Center(
         child: Container(
-          // margin: EdgeInsets.only(top: 50, bottom: 50),
+          margin: EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             // mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -107,6 +107,7 @@ class _HousingTypeState extends State<HousingType> {
               ), 
               TextField(decoration: InputDecoration(hintText: "City/Town/Postal Code"),), 
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RaisedButton(
                     child: Text("Skip"),
