@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'user.dart';
+import 'package:dockmate/model/user.dart';
 
 class Message {
   String messageID;

@@ -104,17 +104,23 @@ class _HousingTypeState extends State<HousingType> {
                   ],
                 ),
                 onPressed: () {},
-              ), 
-              TextField(decoration: InputDecoration(hintText: "City/Town/Postal Code"),), 
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: "City/Town/Postal Code"),
+              ),
               Row(
                 children: [
                   RaisedButton(
                     child: Text("Skip"),
-                    onPressed: () {Navigator.of(context).pushNamed('/Listings');},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/Listings');
+                    },
                   ),
                   RaisedButton(
                     child: Text("All Set!"),
-                    onPressed: () {Navigator.of(context).pushNamed('/Listings');},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/Listings');
+                    },
                   ),
                 ],
               ),
