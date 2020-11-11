@@ -24,7 +24,7 @@ class _HousingTypeState extends State<HousingType> {
       ),
       body: Center(
         child: Container(
-          margin: EdgeInsets.only(top: 50, bottom: 50),
+          // margin: EdgeInsets.only(top: 50, bottom: 50),
           child: Column(
             // mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -36,7 +36,7 @@ class _HousingTypeState extends State<HousingType> {
                     onPressed: () {},
                     child: Column(
                       children: [
-                        Image.asset("assets/placeholder_icon.png", scale: 7),
+                        Image.asset("assets/placeholder_icon.png", scale: 10),
                         Text("House"),
                       ],
                     ),
@@ -44,7 +44,7 @@ class _HousingTypeState extends State<HousingType> {
                   RaisedButton(
                     child: Column(
                       children: [
-                        Image.asset("assets/placeholder_icon.png", scale: 7),
+                        Image.asset("assets/placeholder_icon.png", scale: 10),
                         Text("Condo/Apt"),
                       ],
                     ),
@@ -58,7 +58,7 @@ class _HousingTypeState extends State<HousingType> {
                     onPressed: () {},
                     child: Column(
                       children: [
-                        Image.asset("assets/placeholder_icon.png", scale: 7),
+                        Image.asset("assets/placeholder_icon.png", scale: 10),
                         Text("Single Room"),
                       ],
                     ),
@@ -66,7 +66,7 @@ class _HousingTypeState extends State<HousingType> {
                   RaisedButton(
                     child: Column(
                       children: [
-                        Image.asset("assets/placeholder_icon.png", scale: 7),
+                        Image.asset("assets/placeholder_icon.png", scale: 10),
                         Text("Shared Space"),
                       ],
                     ),
@@ -80,7 +80,7 @@ class _HousingTypeState extends State<HousingType> {
                     onPressed: () {},
                     child: Column(
                       children: [
-                        Image.asset("assets/placeholder_icon.png", scale: 7),
+                        Image.asset("assets/placeholder_icon.png", scale: 10),
                         Text("Long-term"),
                       ],
                     ),
@@ -88,7 +88,7 @@ class _HousingTypeState extends State<HousingType> {
                   RaisedButton(
                     child: Column(
                       children: [
-                        Image.asset("assets/placeholder_icon.png", scale: 7),
+                        Image.asset("assets/placeholder_icon.png", scale: 10),
                         Text("Short-term"),
                       ],
                     ),
@@ -99,7 +99,7 @@ class _HousingTypeState extends State<HousingType> {
               RaisedButton(
                 child: Column(
                   children: [
-                    Image.asset("assets/placeholder_icon.png", scale: 7),
+                    Image.asset("assets/placeholder_icon.png", scale: 10),
                     Text("I'm a landlord"),
                   ],
                 ),

@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:dockmate/model/listing.dart';
 import 'package:flutter/material.dart';
 import 'listing.dart';
@@ -14,6 +15,8 @@ class User {
   String postal_code;
   String province;
   String country;
+  bool landlord;
+  List<String> wantHouseTypes;
   // Not sure about the following yet
   List<Listing> my_listings;
   List<Listing> saved_listings;
