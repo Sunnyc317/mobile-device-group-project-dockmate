@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/bottombar.dart';
 import '../model/message.dart';
+import '../utils/sampleData.dart';
 
 //so this may be the preview tiles
 class ChatRoomsTile extends StatefulWidget {
@@ -25,19 +26,6 @@ class _MessageRoomState extends State<MessageRoom> {
   Widget populateExistingMessages() {
     //ideally this calls the DB, get the messages, return streambuilder
     //for now just return sad looking messages
-
-    //so say these are sample messages
-    Message samplemessage1 =
-        Message(content: "Hello!", by: 0, time: DateTime.now());
-    Message samplemessage2 = Message(
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        by: 0,
-        time: DateTime.now());
-    Message samplemessage3 =
-        Message(content: "Good", by: 1, time: DateTime.now());
-    Message samplemessage4 =
-        Message(content: samplemessage2.content, by: 1, time: DateTime.now());
 
     return Container(
         margin: EdgeInsets.symmetric(vertical: 10),

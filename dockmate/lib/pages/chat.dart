@@ -12,16 +12,18 @@ The main entry points:
 
 import 'package:flutter/material.dart';
 import './message.dart';
+import '../model/chat.dart';
+import '../utils/sampleData.dart';
 import '../utils/bottombar.dart';
 
-class Chat extends StatefulWidget {
+class Chatroom extends StatefulWidget {
   String title;
-  Chat({this.title});
+  Chatroom({this.title});
   @override
-  _ChatState createState() => _ChatState();
+  _ChatroomState createState() => _ChatroomState();
 }
 
-class _ChatState extends State<Chat> {
+class _ChatroomState extends State<Chatroom> {
   Stream chatStream;
 
   Widget decideChatInterface(snapshot) {
@@ -51,6 +53,18 @@ class _ChatState extends State<Chat> {
     );
   }
 
+  Widget _fillChatroom() {
+    //sample
+    return Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(left: 15),
+        child: Column(children: <Widget>[
+          ChatroomTile(sampleChatTile),
+          ChatroomTile(sampleChatTile),
+          ChatroomTile(sampleChatTile),
+        ]));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +72,7 @@ class _ChatState extends State<Chat> {
         title: Text('Chat'),
       ),
       body: Center(
-        child: Text("Placeholder for chat"),
+        child: _fillChatroom(),
       ),
       bottomNavigationBar: BottomBar(bottomIndex: 2),
       floatingActionButton: FloatingActionButton(
@@ -86,4 +100,52 @@ class _ChatState extends State<Chat> {
   //     bottomNavigationBar: BottomBar(bottomIndex: 0),
   //   );
   // }
+}
+
+class ChatroomTile extends StatelessWidget {
+  Chat chatroomData;
+
+  ChatroomTile(this.chatroomData);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          padding: EdgeInsets.only(top: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(chatroomData.imageURL,
+                      width: 100, height: 100)),
+              Container(
+                  padding: EdgeInsets.only(top: 12),
+                  margin: EdgeInsets.only(right: 60),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.only(bottom: 25),
+                          child: Text(
+                              chatroomData.users[1].first_name +
+                                  chatroomData.users[1].last_name,
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold))),
+                      Text(chatroomData.lastMessage),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        onTap: () {
+          //open a message for now
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MessageRoom()),
+          );
+          //and then fill up with existing messages
+          //can animate it in future: https://flutter.dev/docs/cookbook/animation/page-route-animation
+        });
+  }
 }

@@ -9,6 +9,6 @@ class Chat {
   List<Message> messages;
   List<User> users;
   String lastMessage; //may not need to store separately
-}
 
-class ChatModel {}
+  Chat({this.imageURL, this.messages, this.users, this.lastMessage});
+}
