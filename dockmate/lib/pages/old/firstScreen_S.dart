@@ -1,5 +1,5 @@
-import 'package:dockmate/Register/logIn.dart';
-import 'package:dockmate/Register/register.dart';
+import 'package:dockmate/pages/logIn.dart';
+import 'package:dockmate/pages/register.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class _FirstScreenState extends State<FirstScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LogInScreen()),
+                    MaterialPageRoute(builder: (context) => Login()),
                   );
                 },
                 child: Text("Returning User"),

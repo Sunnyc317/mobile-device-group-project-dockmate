@@ -1,5 +1,5 @@
-import 'package:dockmate/Register/logIn.dart';
-import 'package:dockmate/Register/register.dart';
+import 'package:dockmate/pages/logIn.dart';
+import 'package:dockmate/pages/register.dart';
 import 'package:flutter/material.dart';
 
 class HousingType extends StatefulWidget {
@@ -109,12 +109,12 @@ class _HousingTypeState extends State<HousingType> {
               Row(
                 children: [
                   RaisedButton(
-                    onPressed: () {},
                     child: Text("Skip"),
+                    onPressed: () {Navigator.of(context).pushNamed('/Listings');},
                   ),
                   RaisedButton(
                     child: Text("All Set!"),
-                    onPressed: () {},
+                    onPressed: () {Navigator.of(context).pushNamed('/Listings');},
                   ),
                 ],
               ),

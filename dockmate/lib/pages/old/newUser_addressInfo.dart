@@ -1,6 +1,6 @@
 // it is unclear whether user should put in their current location or the location they wish to find housingimport 'package:dockmate/Register/firstScreen.dart';
-import 'package:dockmate/Register/forgotPassword.dart';
-import 'package:dockmate/Register/newUser_housingType.dart';
+import 'package:dockmate/pages/forgotPassword.dart';
+import 'package:dockmate/pages/newUser_housingType.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -72,7 +72,7 @@ class _RegisterState extends State<Register> {
                     child: Text("Quebec"),
                   ),
                   DropdownMenuItem(
-                    child: Text("Newfoundland"),onTap: ,
+                    child: Text("Newfoundland"),
                   ),
                 ],
               ),
