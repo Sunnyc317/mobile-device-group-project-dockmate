@@ -3,8 +3,8 @@ import '../model/message.dart';
 import '../model/user.dart';
 
 //sample users
-User mainUser = User(first_name: "Anna", last_name: "Banana");
-User otherUser = User(first_name: "John", last_name: "Smith");
+User mainUser = User.chat(first_name: "Anna", last_name: "Banana");
+User otherUser = User.chat(first_name: "John", last_name: "Smith");
 
 //so say these are sample messages
 Message samplemessage1 =
