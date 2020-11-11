@@ -1,16 +1,31 @@
+import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/logIn.dart';
 import 'package:dockmate/pages/register.dart';
 import 'package:flutter/material.dart';
 
 class HousingType extends StatefulWidget {
-  HousingType({Key key, this.title}) : super(key: key);
+  HousingType({Key key, this.title, this.user}) : super(key: key);
   final String title;
+  User user; 
 
   @override
   _HousingTypeState createState() => _HousingTypeState();
 }
 
 class _HousingTypeState extends State<HousingType> {
+  List<String> preferedList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  _allset(){
+    widget.user.preferedHouseTypes = preferedList;
+    Navigator.of(context).pushNamed('/Settings');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +130,8 @@ class _HousingTypeState extends State<HousingType> {
                   ),
                   RaisedButton(
                     child: Text("All Set!"),
-                    onPressed: () {Navigator.of(context).pushNamed('/Listings');},
+                    onPressed: () {
+                      _allset();}
                   ),
                 ],
               ),

@@ -1,12 +1,16 @@
 import 'dart:core';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:flutter/material.dart';
 import 'listing.dart';
 import 'message.dart';
 
 class User {
+  DocumentReference reference;
+
   String first_name;
   String last_name;
+  String password;
   String email;
   String phone;
   // String password; // need to encrypt
@@ -16,7 +20,7 @@ class User {
   String province;
   String country;
   bool landlord;
-  List<String> wantHouseTypes;
+  List<String> preferedHouseTypes;
   // Not sure about the following yet
   List<Listing> my_listings;
   List<Listing> saved_listings;
@@ -25,10 +29,48 @@ class User {
   // Type of housing
   // Postal code they're looking for?
 
-  User({this.first_name, this.last_name, this.email});
+  User({this.first_name, this.last_name, this.email, this.phone, this.password});
 
-  
+  User.fromMap(Map<String, dynamic> map, {this.reference}) {
 
+    // this.id = map['id'];
+    this.first_name = map['first_name'];
+    this.last_name = map['last_name'];
+    this.email = map['email'];
+    this.phone = map['phone'];
+    this.password = map['password'];
+    this.address = map['address'];
+    this.city = map['city'];
+    this.postal_code = map['postal_code'];
+    this.province = map['province'];
+    this.country = map['country'];
+    this.landlord = map['landlord'];
+    this.preferedHouseTypes = map['preferedHouseTypes'];
+    // this.my_listings = map['my_listings'];
+    // this.saved_listings = map['saved_listings'];
+    // this.messages = map['messages'];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      // 'id' : this.id,
+      'first_name' : this.first_name,
+      'last_name': this.last_name,
+      'email' : this.email,
+      'phone' : this.phone,
+      'password' : this.password,
+      'address' : this.address,
+      'city' : this.city,
+      'postal_code' : this.postal_code,
+      'province' : this.province,
+      'country' : this.country, 
+      'landlord' : this.landlord, 
+      'preferedHouseTypes' : this.preferedHouseTypes, 
+      // 'my_listings' : this.my_listings, 
+      // 'saved_listings' : this.saved_listings, 
+      // 'messages' : this.messages
+    };
+  }
 
   @override
   String toString() {
