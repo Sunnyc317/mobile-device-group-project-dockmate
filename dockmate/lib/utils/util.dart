@@ -26,20 +26,23 @@ Widget buildListRow(Listing listing, bool isGeneral) {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                  child: Image.network(listing.mainImage,
-                      height: 150, width: 300, fit: BoxFit.fill)),
               Row(
                 children: [
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Text(listing.price),
+                    child: Text(
+                      listing.title,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
               Container(
+                  child: Image.network(listing.mainImage,
+                      height: 100, width: 250, fit: BoxFit.fill)),
+              Container(
                 padding: EdgeInsets.all(10.0),
-                child: Text(listing.price),
+                child: Text("\$" + listing.price),
               ),
               Container(
                 padding: EdgeInsets.all(10.0),
@@ -54,32 +57,35 @@ Widget buildListRow(Listing listing, bool isGeneral) {
 }
 
 Widget generalListing() {
-  return Column(
+  return Row(
     children: [
-      IconButton(
-        icon: Icon(Icons.message_outlined),
-        onPressed: () {},
+      Container(
+        child: IconButton(
+          icon: Icon(Icons.message_outlined),
+          onPressed: () {},
+        ),
       ),
-      IconButton(
-        icon: Icon(Icons.bookmark_border_outlined),
-        onPressed: () {},
-      ),
+      Container(
+        child: IconButton(
+          icon: Icon(Icons.bookmark_border_outlined),
+          onPressed: () {},
+        ),
+      )
     ],
   );
 }
 
 Widget myListing() {
-  return Column(
+  return Row(
     children: [
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: IconButton(
           icon: Icon(Icons.create_outlined),
           onPressed: () {},
         ),
       ),
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 5.0),
         child: IconButton(
           icon: Icon(Icons.delete_outline),
           onPressed: () {},

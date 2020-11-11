@@ -48,7 +48,8 @@ class User {
   }
 
   String getUser() {
-    getAllUsers();
-    return result[0].id;
+    //getAllUsers();
+    //return result[0].id;
+    return id;
   }
 }

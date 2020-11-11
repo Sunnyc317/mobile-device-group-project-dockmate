@@ -39,42 +39,45 @@ class _PostingState extends State<Posting> {
       _city = widget.listing.city;
       _country = widget.listing.country;
       _postalCode = widget.listing.postalCode;
+      _status = widget.listing.status;
+      _mainImage = widget.listing.mainImage;
 
       //if (user.getUser() == _userID) _isOwner = true;
     }
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(30.0),
         child: Row(
           children: [
-            Column(children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
               Container(child: Text(_title)),
               if (_isOwner) myListing(),
-            ]),
-            Container(
-                child:
-                    Text(_status, style: TextStyle(color: idStatus(_status)))),
-            // TEMP, WILL SHOW MULTIPLE IMAGES
-            Container(child: Image.network(_mainImage)),
-            Container(child: Text(_address)),
-            Container(
-                child: Text(_city +
-                    ", " +
-                    _province +
-                    ", " +
-                    _country +
-                    " " +
-                    _postalCode)),
-            Container(child: buildIconRow(widget.listing)),
-            Container(child: Text(_price)),
-            Container(child: Text(_duration)),
-            Container(child: Text(_description)),
-            if (!_isOwner)
-              RaisedButton.icon(
-                  onPressed: null,
-                  icon: Icon(Icons.message_outlined),
-                  label: Text("Chat with " + "Post Owner")),
+              Container(
+                  child: Text(_status,
+                      style: TextStyle(color: idStatus(_status)))),
+              Container(
+                  child: Image.network(_mainImage,
+                      height: 100, width: 250, fit: BoxFit.fill)),
+              Container(child: Text(_address)),
+              Container(
+                  child: Text(_city +
+                      ", " +
+                      _province +
+                      ", " +
+                      _country +
+                      " " +
+                      _postalCode)),
+              Container(child: buildIconRow(widget.listing)),
+              Container(child: Text("\$" + _price)),
+              Container(child: Text(_duration)),
+              Container(child: Text(_description)),
+              if (!_isOwner)
+                RaisedButton.icon(
+                    onPressed: null,
+                    icon: Icon(Icons.message_outlined),
+                    label: Text("Chat with " + "Post Owner")),
+            ])
           ],
         ),
       ),

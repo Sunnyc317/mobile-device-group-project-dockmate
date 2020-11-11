@@ -27,9 +27,9 @@ class _ListingState extends State<Listings> {
   }
 
   void reload() {
-    _listing.getAllListings().then((grades) {
+    _listing.getAllListings().then((list) {
       setState(() {
-        _listings = grades;
+        _listings = list;
       });
     });
   }
@@ -90,8 +90,9 @@ class _ListingState extends State<Listings> {
   }
 
   Future<void> _openListing(BuildContext context) async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Posting(title: '')));
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            Posting(title: '', listing: _listings[_selectedIndex])));
     _selectedIndex = -1;
     reload();
   }

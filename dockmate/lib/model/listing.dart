@@ -46,7 +46,8 @@ class Listing {
       this.isParkingAvail,
       this.isPetFriendly,
       this.isPublic,
-      this.userID});
+      this.userID,
+      this.duration});
 
   Listing.fromMap(Map<String, dynamic> map) {
     this.id = map['id'];
@@ -66,6 +67,7 @@ class Listing {
     this.isPetFriendly = map['pet'];
     this.isPublic = map['public'];
     this.userID = map['userID'];
+    this.duration = map['duration'];
   }
 
   Map<String, dynamic> toMap() {
@@ -86,7 +88,8 @@ class Listing {
       'parking': this.isParkingAvail,
       'pet': this.isPetFriendly,
       'public': this.isPublic,
-      'userID': this.userID
+      'userID': this.userID,
+      'duration': this.duration
     };
   }
 
@@ -119,7 +122,8 @@ class Listing {
         isParkingAvail: true,
         isPetFriendly: false,
         isPublic: true,
-        userID: "1");
+        userID: "1",
+        duration: "4 months");
     result.add(list1);
 
     Listing list2 = Listing(
@@ -140,7 +144,8 @@ class Listing {
         isParkingAvail: false,
         isPetFriendly: true,
         isPublic: true,
-        userID: "1");
+        userID: "2",
+        duration: "1 year");
     result.add(list2);
     /*if (maps.length > 0) {
       for (int i = 0; i < maps.length; i++) {

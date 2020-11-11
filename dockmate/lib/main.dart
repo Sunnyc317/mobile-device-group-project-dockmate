@@ -7,6 +7,7 @@ import 'package:dockmate/pages/listings.dart';
 import 'package:dockmate/pages/my_listing.dart';
 import 'package:dockmate/pages/map.dart';
 import 'package:dockmate/pages/register.dart';
+import 'package:dockmate/pages/firstScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -61,41 +62,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FirstScreen(title: 'Dock Mate');
+    /*return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-          Image.asset('assets/images/logo.jpeg', width: 200),
-          const SizedBox(height: 50),
-          ButtonTheme(
-              minWidth: 200,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                color: Colors.white60,
-                child: const Text('Returning User',
-                    style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/Login');
-                },
-              )),
-          const SizedBox(height: 30),
-          ButtonTheme(
-              minWidth: 200,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                child: const Text('New User', style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/Register');
-                },
-              )),
-        ]),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Hi :D',
+            ),
+          ],
+        ),
       ),
-    );
+      bottomNavigationBar:
+          BottomBar(bottomIndex: _bottomIndex, setBottomIndex: _setBottomIndex),
+    );*/
   }
 }
