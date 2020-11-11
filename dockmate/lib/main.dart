@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import './pages/login.dart';
-import './pages/chat.dart';
-import './pages/settings.dart';
-import './pages/listings.dart';
-import './pages/my_listing.dart';
-import './pages/map.dart';
+//import 'package:firebase_core/firebase_core.dart';
+import 'package:dockmate/pages/login.dart';
+import 'package:dockmate/pages/chat.dart';
+import 'package:dockmate/pages/settings.dart';
+import 'package:dockmate/pages/listings.dart';
+import 'package:dockmate/pages/my_listing.dart';
+import 'package:dockmate/pages/map.dart';
 import 'package:dockmate/pages/register.dart';
+import 'package:dockmate/pages/firstScreen.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  //final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,42 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-          Image.asset('assets/images/logo.jpeg', width: 200),
-          const SizedBox(height: 50),
-          ButtonTheme(
-              minWidth: 200,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                color: Colors.white60,
-                child: const Text('Returning User',
-                    style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/Login');
-                },
-              )),
-          const SizedBox(height: 30),
-          ButtonTheme(
-              minWidth: 200,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                child: const Text('New User', style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/Login');
-                },
-              )),
-        ]),
-      ),
-    );
+    return FirstScreen(title: 'Dock Mate');
     /*return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
