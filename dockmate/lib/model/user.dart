@@ -27,6 +27,8 @@ class User {
   // Type of housing
   // Postal code they're looking for?
 
+  //temporary for chat purposes
+  User.chat({this.first_name, this.last_name});
   User({this.id}) {}
 
   User.fromMap(Map<String, dynamic> map) {

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "553235846631",
+    "firebase_url": "https://project-test-6cf4b.firebaseio.com",
+    "project_id": "project-test-6cf4b",
+    "storage_bucket": "project-test-6cf4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553235846631:android:50bff66a6b8c1ee6725942",
+        "android_client_info": {
+          "package_name": "com.example.dockmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "553235846631-f57sim00igkrop7skatiqll27hgq65ru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv97k-lHtWr1NkpnccOIruzHFUyE8wpdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "553235846631-f57sim00igkrop7skatiqll27hgq65ru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
