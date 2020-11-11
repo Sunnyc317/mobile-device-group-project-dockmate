@@ -22,16 +22,13 @@ Widget buildListRow(Listing listing, bool isGeneral) {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-              padding: EdgeInsets.symmetric(horizontal: 5.0),
-              child: CircleAvatar(
-                child: Image.network(listing.mainImage),
-              )),
-          isGeneral ? generalListing() : myListing(),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Container(
+                  child: Image.network(listing.mainImage,
+                      height: 150, width: 300, fit: BoxFit.fill)),
               Row(
                 children: [
                   Container(
@@ -50,7 +47,8 @@ Widget buildListRow(Listing listing, bool isGeneral) {
               ),
               buildIconRow(listing),
             ],
-          )
+          ),
+          isGeneral ? generalListing() : myListing()
         ],
       ));
 }
@@ -58,20 +56,14 @@ Widget buildListRow(Listing listing, bool isGeneral) {
 Widget generalListing() {
   return Column(
     children: [
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
-        child: IconButton(
-          icon: Icon(Icons.message_outlined),
-          onPressed: () {},
-        ),
+      IconButton(
+        icon: Icon(Icons.message_outlined),
+        onPressed: () {},
       ),
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
-        child: IconButton(
-          icon: Icon(Icons.bookmark_border_outlined),
-          onPressed: () {},
-        ),
-      )
+      IconButton(
+        icon: Icon(Icons.bookmark_border_outlined),
+        onPressed: () {},
+      ),
     ],
   );
 }
