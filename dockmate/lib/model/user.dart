@@ -1,4 +1,5 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:core';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/message.dart';
 import 'package:dockmate/model/db_model.dart';
@@ -16,6 +17,8 @@ class User {
   String postal_code;
   String province;
   String country;
+  bool landlord;
+  List<String> wantHouseTypes;
   // Not sure about the following yet
   List<Listing> my_listings;
   List<Listing> saved_listings;
