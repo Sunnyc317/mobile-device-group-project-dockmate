@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:dockmate/pages/login.dart';
 import 'package:dockmate/pages/chat.dart';
 import 'package:dockmate/pages/settings.dart';
@@ -8,8 +7,11 @@ import 'package:dockmate/pages/my_listing.dart';
 import 'package:dockmate/pages/map.dart';
 import 'package:dockmate/pages/register.dart';
 import 'package:dockmate/pages/firstScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -49,36 +51,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _bottomIndex = 0;
-
-  void _setBottomIndex(int i) {
-    setState(() {
-      _bottomIndex = i;
-    });
-    if (i > 0) {
-      print("Page not created yet");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FirstScreen(title: 'Dock Mate');
-    /*return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Hi :D',
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar:
-          BottomBar(bottomIndex: _bottomIndex, setBottomIndex: _setBottomIndex),
-    );*/
   }
 }

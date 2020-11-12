@@ -28,10 +28,11 @@ dependencies:
   sqflite:
   path: 
   provider:
-  cloud_firestore:
+  cloud_firestore: ^0.14.3
   firebase_core: "^0.5.2"
-  google_maps_flutter: 
+  google_maps_flutter: #^1.0.6
   timeago:
+  flutter_local_notifications:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -58,7 +59,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-      - assets/logo.jpeg
+      - assets/dock.png
       - assets/placeholder_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -30,19 +30,21 @@ class _MapState extends State<Map> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: GoogleMap(
+        body:
+            /*GoogleMap(
           mapType: MapType.hybrid,
           initialCameraPosition: _kGooglePlex,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
-        ),
+        ),*/
+            Container(),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: _goToTheLake,
           label: Text('To the lake!'),
           icon: Icon(Icons.directions_boat),
         ),
-        bottomNavigationBar: BottomBar(bottomIndex: 0));
+        bottomNavigationBar: BottomBar(bottomIndex: 1));
   }
 
   Future<void> _goToTheLake() async {

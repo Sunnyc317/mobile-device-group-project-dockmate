@@ -54,7 +54,7 @@ class BottomBar extends StatelessWidget {
             break;
         }
 
-        Navigator.of(context).pushNamed(page);
+        Navigator.of(context).pushReplacementNamed(page);
       },
     );
   }

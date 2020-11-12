@@ -1,6 +1,5 @@
-import 'package:dockmate/pages/logIn.dart';
-import 'package:dockmate/pages/register.dart';
 import 'package:flutter/material.dart';
+import 'package:dockmate/utils/notifications.dart';
 
 class HousingType extends StatefulWidget {
   HousingType({Key key, this.title}) : super(key: key);
@@ -13,6 +12,9 @@ class HousingType extends StatefulWidget {
 class _HousingTypeState extends State<HousingType> {
   @override
   Widget build(BuildContext context) {
+    final _notifications = Notifications();
+    _notifications.init();
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -112,14 +114,22 @@ class _HousingTypeState extends State<HousingType> {
                 children: [
                   RaisedButton(
                     child: Text("Skip"),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/Listings');
+                    onPressed: () async {
+                      await _notifications.sendNotificationNow(
+                          "Welcome to Dockmate!",
+                          "You have successfully joined Dockmate, check the app now",
+                          "something");
+                      Navigator.of(context).pushReplacementNamed('/Listings');
                     },
                   ),
                   RaisedButton(
                     child: Text("All Set!"),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/Listings');
+                    onPressed: () async {
+                      await _notifications.sendNotificationNow(
+                          "Welcome to Dockmate!",
+                          "You have successfully joined Dockmate, check the app now",
+                          "something");
+                      Navigator.of(context).pushReplacementNamed('/Listings');
                     },
                   ),
                 ],

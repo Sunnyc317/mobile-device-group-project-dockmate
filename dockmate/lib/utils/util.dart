@@ -4,98 +4,38 @@ import 'package:rxdart/subjects.dart';
 import 'package:search_app_bar/searcher.dart';
 import 'package:dockmate/model/listing.dart';
 
-Icon sad_replacement_icon = Icon(Icons.satellite);
+//Icon sad_replacement_icon = Icon(Icons.satellite);
 
-Widget snackBarCustom(String message) {
-  return SnackBar(
-    content: Text(message),
-    action: SnackBarAction(
-        /*label: 'Undo',
-      onPressed: () {
-        // Some code to undo the change.
-      },*/
-        ),
-  );
-}
-
-Widget buildListRow(Listing listing, bool isGeneral) {
-  return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+Widget buildListRow(Listing listing) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Row(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Text(
-                      listing.title,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                  child: Image.network(listing.mainImage,
-                      height: 100, width: 250, fit: BoxFit.fill)),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: Text("\$" + listing.price),
-              ),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: Text(listing.address),
-              ),
-              buildIconRow(listing),
-            ],
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Container(
+                width: 200,
+                child: Text(
+                  listing.title,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
           ),
-          isGeneral ? generalListing() : myListing()
         ],
-      ));
-}
-
-Widget generalListing() {
-  return Row(
-    children: [
-      Container(
-        child: IconButton(
-          icon: sad_replacement_icon,
-          //icon: Icon(Icons.message_outlined),
-          onPressed: () {},
-        ),
       ),
       Container(
-        child: IconButton(
-          icon: sad_replacement_icon,
-          //icon: Icon(Icons.bookmark_border_outlined),
-          onPressed: () {},
-        ),
-      )
-    ],
-  );
-}
-
-Widget myListing() {
-  return Row(
-    children: [
+          child: Image.network(listing.mainImage,
+              height: 100, width: 250, fit: BoxFit.fill)),
       Container(
-        child: IconButton(
-          icon: sad_replacement_icon,
-          //icon: Icon(Icons.create_outlined),
-          onPressed: () {},
-        ),
+        padding: EdgeInsets.all(10.0),
+        child: Text("\$" + listing.price),
       ),
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 5.0),
-        child: IconButton(
-          icon: Icon(Icons.delete_outline),
-          onPressed: () {},
-        ),
-      )
+        padding: EdgeInsets.all(10.0),
+        child: Text(listing.address),
+      ),
+      buildIconRow(listing),
     ],
   );
 }
@@ -104,20 +44,20 @@ Widget buildIconRow(Listing listing) {
   return Row(
     children: [
       buildIconPair(
-          sad_replacement_icon,
-          //Icon(Icons.king_bed_outlined),
+          //sad_replacement_icon,
+          icon: Icon(Icons.king_bed_outlined),
           listing.bedroom),
       buildIconPair(
-          sad_replacement_icon,
-          //Icon(Icons.bathtub_outlined),
+          //sad_replacement_icon,
+          icon: Icon(Icons.bathtub_outlined),
           listing.bathroom),
       buildIconPair(
-          sad_replacement_icon,
-          //Icon(Icons.pets),
+          //sad_replacement_icon,
+          icon:Icon(Icons.pets),
           listing.isPetFriendly ? "Yes" : "No"),
       buildIconPair(
-          sad_replacement_icon,
-          //Icon(Icons.directions_car_sharp),
+          //sad_replacement_icon,
+          icon:Icon(Icons.directions_car_sharp),
           listing.isParkingAvail ? "Yes" : "No")
     ],
   );
@@ -129,7 +69,7 @@ Widget buildIconPair(Icon icon, String text) {
       padding: EdgeInsets.symmetric(horizontal: 5.0),
       child: icon,
     ),
-    Container(padding: EdgeInsets.symmetric(horizontal: 5.0), child: Text(text))
+    Container(padding: EdgeInsets.symmetric(horizontal: 3.0), child: Text(text))
   ]);
 }
 
