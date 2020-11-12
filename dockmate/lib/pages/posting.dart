@@ -81,8 +81,7 @@ class _PostingState extends State<Posting> {
                                   Container(
                                     child: _isOwner
                                         ? IconButton(
-                                            icon: ,
-                                            //Icon(Icons.create_outlined),
+                                            icon: Icon(Icons.create_outlined),
                                             onPressed: () {
                                               _updateListing(
                                                   context, widget.listing);
@@ -90,7 +89,8 @@ class _PostingState extends State<Posting> {
                                           )
                                         : IconButton(
                                             //icon: sad_replacement_icon,
-                                            icon:Icon(Icons.bookmark_border_outlined),
+                                            icon: Icon(
+                                                Icons.bookmark_border_outlined),
                                             onPressed: () {
                                               Scaffold.of(context)
                                                   .showSnackBar(SnackBar(
@@ -162,7 +162,7 @@ class _PostingState extends State<Posting> {
                                         );
                                       },
                                       icon:
-                                          //sad_replacement_icon, 
+                                          //sad_replacement_icon,
                                           Icon(Icons.message_outlined),
                                       label: Text("Chat with " + "Post Owner"))
                                   : Container(),
