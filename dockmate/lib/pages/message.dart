@@ -87,6 +87,8 @@ class MessageRoom extends StatefulWidget {
 class _MessageRoomState extends State<MessageRoom> {
   final ChatFirebase firebaseDB = ChatFirebase();
   QuerySnapshot snapshots;
+  String messageSent;
+  Timestamp curTime;
 
   Widget populateExistingMessages() {
     //ideally this calls the DB, get the messages, return streambuilder
@@ -260,8 +262,14 @@ class _MessageRoomState extends State<MessageRoom> {
                                       // maxLines: 3,
                                       // minLines: 1,
                                       cursorRadius: Radius.circular(300),
-                                      onChanged: (String value) {},
+                                      onChanged: (String value) {
+                                        messageSent = value;
+                                        curTime = Timestamp.now();
+                                      },
                                       validator: (String value) {
+                                        if (value.isEmpty) {
+                                          return "Enter some text!";
+                                        }
                                         return null;
                                       },
                                     ),
@@ -272,7 +280,18 @@ class _MessageRoomState extends State<MessageRoom> {
                                   color: Colors.blue[600],
                                   size: 28,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Map<String, dynamic> toSend =
+                                      Message.timestamp(
+                                              content: messageSent,
+                                              timestamp: curTime,
+                                              by: 0)
+                                          .toMap();
+                                  print("adding the message: $toSend");
+                                  firebaseDB.addMessage(
+                                      widget.roomInfo.chatroomIDString, toSend);
+                                  setState(() {});
+                                },
                               ),
                             ],
                           )
