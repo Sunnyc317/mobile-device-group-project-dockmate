@@ -1,11 +1,9 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:core';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/message.dart';
 import 'package:dockmate/model/db_model.dart';
 
 class User {
-  // DocumentReference id;
   String id;
   String first_name;
   String last_name;

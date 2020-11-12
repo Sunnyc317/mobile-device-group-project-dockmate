@@ -1,9 +1,8 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dockmate/model/db_model.dart';
 import 'package:dockmate/model/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Listing {
-  //DocumentReference id;
+  DocumentReference reference;
   String id;
   User owner;
   // String because we might use the firestore link
@@ -28,7 +27,8 @@ class Listing {
   String userID;
   DateTime timestamp;
 
-  // TEMPORARILY USING LOCAL STORAGE FOR WIDGET TESTING
+  FirebaseFirestore _db = FirebaseFirestore.instance;
+
   Listing(
       {this.id,
       this.mainImage,
@@ -49,25 +49,27 @@ class Listing {
       this.userID,
       this.duration});
 
-  Listing.fromMap(Map<String, dynamic> map) {
-    this.id = map['id'];
-    this.mainImage = map['mainImage'];
-    this.title = map['title'];
-    this.address = map['address'];
-    this.city = map['city'];
-    this.postalCode = map['postalCode'];
-    this.province = map['province'];
-    this.country = map['country'];
-    this.description = map['description'];
-    this.price = map['price'];
-    this.bedroom = map['bedroom'];
-    this.bathroom = map['bathroom'];
-    this.status = map['status'];
-    this.isParkingAvail = map['parking'];
-    this.isPetFriendly = map['pet'];
-    this.isPublic = map['public'];
-    this.userID = map['userID'];
-    this.duration = map['duration'];
+  factory Listing.fromMap(
+      Map<String, dynamic> map, DocumentReference reference) {
+    return Listing(
+        id: map['id'],
+        mainImage: map['mainImage'],
+        title: map['title'],
+        address: map['address'],
+        city: map['city'],
+        postalCode: map['postalCode'],
+        province: map['province'],
+        country: map['country'],
+        description: map['description'],
+        price: map['price'],
+        bedroom: map['bedroom'],
+        bathroom: map['bathroom'],
+        status: map['status'],
+        isParkingAvail: map['parking'],
+        isPetFriendly: map['petFriendly'],
+        isPublic: map['public'],
+        userID: map['userID'],
+        duration: map['duration']);
   }
 
   Map<String, dynamic> toMap() {
@@ -83,75 +85,29 @@ class Listing {
       'description': this.description,
       'price': this.price,
       'bedroom': this.bedroom,
-      'bahroom': this.bathroom,
+      'bathroom': this.bathroom,
       'status': this.status,
       'parking': this.isParkingAvail,
-      'pet': this.isPetFriendly,
+      'petFriendly': this.isPetFriendly,
       'public': this.isPublic,
       'userID': this.userID,
       'duration': this.duration
     };
   }
 
-  String toString() {}
-
   Future<void> insert(Listing list) async {
-    DBModel().insertDB("listings", list);
+    var merge = SetOptions(merge: true);
+    return _db.collection('listings').doc(list.id).set(list.toMap(), merge);
   }
 
-  Future<List<Listing>> getAllListings() async {
-    //final database = await DBModel().init();
+  Future<void> delete(String id) async {
+    return _db.collection('listings').doc(id).delete();
+  }
 
-    //final List<Map<String, dynamic>> maps = await database.query('listings');
-    List<Listing> result = [];
-    Listing list1 = Listing(
-        id: "1",
-        mainImage:
-            "https://d2kcmk0r62r1qk.cloudfront.net/imageSponsors/xlarge/2015_09_14_01_36_04_stanleycondos_rendering5.jpg",
-        title: "1 bedroom",
-        address: "1800 Simcoe St. North",
-        city: "Oshawa",
-        postalCode: "L1G 3Z2",
-        province: "ON",
-        country: "CA",
-        description: "hello!!",
-        price: "500",
-        bedroom: "2",
-        bathroom: "1",
-        status: "Available",
-        isParkingAvail: true,
-        isPetFriendly: false,
-        isPublic: true,
-        userID: "1",
-        duration: "4 months");
-    result.add(list1);
-
-    Listing list2 = Listing(
-        id: "2",
-        mainImage:
-            "https://www.royalhomepainterstoronto.ca/wp-content/uploads/2018/12/condo-renovation-service-vaughan-toronto.jpg",
-        title: "2 bedroom 1 den",
-        address: "1900 Simcoe St. North",
-        city: "Oshawa",
-        postalCode: "L1G 3Z2",
-        province: "ON",
-        country: "CA",
-        description: "hey!!",
-        price: "450",
-        bedroom: "2+1",
-        bathroom: "2",
-        status: "Available",
-        isParkingAvail: false,
-        isPetFriendly: true,
-        isPublic: true,
-        userID: "2",
-        duration: "1 year");
-    result.add(list2);
-    /*if (maps.length > 0) {
-      for (int i = 0; i < maps.length; i++) {
-        result.add(Listing.fromMap(maps[i]));
-      }
-    }*/
-    return result;
+  Stream<List<Listing>> getAllListings() {
+    return _db.collection('listings').snapshots().map((snapshot) => snapshot
+        .docs
+        .map((doc) => Listing.fromMap(doc.data(), doc.reference))
+        .toList());
   }
 }

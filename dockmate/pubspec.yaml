@@ -28,7 +28,10 @@ dependencies:
   sqflite:
   path: 
   provider:
+  flutter_local_notifications:
+  timezone:
   firebase_core: "0.5.2"
+  cloud_firestore: ^0.14.3
   google_maps_flutter: ^1.0.6
 
 
@@ -56,7 +59,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-      - assets/logo.jpeg
+      - assets/dock.png
       - assets/placeholder_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
