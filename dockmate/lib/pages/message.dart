@@ -90,6 +90,27 @@ class _MessageRoomState extends State<MessageRoom> {
   String messageSent;
   Timestamp curTime;
 
+  _showWarning(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('This feature is not ready yet!'),
+          content: Text("Stay tuned!"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Okay :)'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget populateExistingMessages() {
     //ideally this calls the DB, get the messages, return streambuilder
     //for now just return sad looking messages
@@ -169,6 +190,15 @@ class _MessageRoomState extends State<MessageRoom> {
         print("set up chatroomID be ${widget.roomInfo.chatroomIDString}");
         fillSnapshot("create");
       });
+    } else if (widget.roomInfo == null) {
+      //create a brand new chatroom
+      firebaseDB.createEmptyRoom();
+      //still hardcoded sample
+      widget.roomInfo = Chat.startChatRoom(
+          imageURL: "https://www.fillmurray.com/640/360",
+          stringUsers: ["Self", "Bill Murray"]);
+      widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
+      fillSnapshot("create");
     }
 
     return FutureBuilder(
@@ -200,8 +230,9 @@ class _MessageRoomState extends State<MessageRoom> {
                         color: Colors.white,
                         size: 25,
                       ),
-                      onPressed: () async {
+                      onPressed: () {
                         // to be impelemented
+                        _showWarning(context);
                       },
                     )),
                 Padding(
@@ -214,6 +245,7 @@ class _MessageRoomState extends State<MessageRoom> {
                       ),
                       onPressed: () {
                         //to be implemented
+                        _showWarning(context);
                       },
                     ))
               ],
@@ -243,7 +275,10 @@ class _MessageRoomState extends State<MessageRoom> {
                               color: Colors.blue[800],
                               size: 30,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              //to be implemented
+                              _showWarning(context);
+                            },
                           ),
                           Row(
                             children: <Widget>[
