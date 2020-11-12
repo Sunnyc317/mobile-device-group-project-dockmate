@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/util.dart';
+import 'package:dockmate/model/chat.dart';
+import 'package:dockmate/pages/message.dart';
 import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/posting_form.dart';
+
+//Icon sad_replacement_icon = Icon(Icons.satellite);
 
 class Posting extends StatefulWidget {
   final String title;
@@ -84,6 +88,7 @@ class _PostingState extends State<Posting> {
                                             },
                                           )
                                         : IconButton(
+                                            //icon: sad_replacement_icon,
                                             icon: Icon(
                                                 Icons.bookmark_border_outlined),
                                             onPressed: () {
@@ -140,8 +145,25 @@ class _PostingState extends State<Posting> {
                                       Text("Description: \n\n" + _description)),
                               !_isOwner
                                   ? RaisedButton.icon(
-                                      onPressed: null,
-                                      icon: Icon(Icons.message_outlined),
+                                      onPressed: () {
+                                        //temporarily hardcoding other user identity
+                                        _owner = "Rogue Smith";
+                                        Chat chatRoomInfo = Chat.startChatRoom(
+                                            imageURL: _mainImage,
+                                            stringUsers: ["self", _owner]);
+                                        Navigator.of(context)
+                                            .pushNamed('/Chat');
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MessageRoom.create(
+                                                      roomInfo: chatRoomInfo)),
+                                        );
+                                      },
+                                      icon:
+                                          //sad_replacement_icon,
+                                          Icon(Icons.message_outlined),
                                       label: Text("Chat with " + "Post Owner"))
                                   : Container(),
                             ])
