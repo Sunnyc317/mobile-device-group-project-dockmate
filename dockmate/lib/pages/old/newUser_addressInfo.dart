@@ -3,15 +3,15 @@ import 'package:dockmate/pages/forgotPassword.dart';
 import 'package:dockmate/pages/newUser_housingType.dart';
 import 'package:flutter/material.dart';
 
-class Register extends StatefulWidget {
-  Register({Key key, this.title}) : super(key: key);
+class Register_address extends StatefulWidget {
+  Register_address({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _RegisterState createState() => _RegisterState();
+  _Register_addressState createState() => _Register_addressState();
 }
 
-class _RegisterState extends State<Register> {
+class _Register_addressState extends State<Register_address> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

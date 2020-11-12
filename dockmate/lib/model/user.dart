@@ -8,6 +8,7 @@ import 'message.dart';
 class User {
   DocumentReference reference;
 
+  String uid;
   String first_name;
   String last_name;
   String password;
@@ -29,7 +30,8 @@ class User {
   // Type of housing
   // Postal code they're looking for?
 
-  User({this.first_name, this.last_name, this.email, this.phone, this.password});
+  // User({this.uid, this.first_name, this.last_name, this.email, this.phone, this.password});
+  User({this.uid});
 
   User.fromMap(Map<String, dynamic> map, {this.reference}) {
 

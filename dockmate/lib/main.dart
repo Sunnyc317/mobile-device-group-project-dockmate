@@ -1,9 +1,16 @@
+import 'package:dockmate/model/user.dart';
+import 'package:dockmate/pages/old/newUser_addressInfo.dart';
+import 'package:dockmate/pages/warpper.dart';
+import 'package:dockmate/utils/auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 // import 'package:dockmate/pages/Register/firstScreen_S.dart';
 // import './pages/login_old.dart';
-import 'package:dockmate/pages/register.dart';
+// import 'package:dockmate/pages/register.dart';
+import 'package:dockmate/pages/register_form.dart';
 import 'package:dockmate/pages/firstScreen.dart';
+import 'package:provider/provider.dart';
 import 'pages/logIn.dart';
 import './pages/chat.dart';
 import './pages/settings.dart';
@@ -49,6 +56,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _initialized = false; 
+  bool _error = false;
   int _bottomIndex = 0;
 
   void _setBottomIndex(int i) {
@@ -60,9 +69,38 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void initializeFlutterFire() async {
+    try {
+      await Firebase.initializeApp();
+      setState(() {
+        _initialized = true;
+      });
+    } catch(e) {
+      print(e.toString());
+      setState(() {
+        _error = true;
+        
+      });
+    }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    initializeFlutterFire();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FirstScreen(title: 'Dock Mate');
+    // return FirstScreen(title: 'Dock Mate');
+      
+    // streamProvider for listening to the stream of user status in auth.dart
+    // specifying the type streaming is User as in user.dart
+    return StreamProvider<User>.value(
+      value: AuthService().user,
+      child: Wrapper(),
+    );
+
     /*return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

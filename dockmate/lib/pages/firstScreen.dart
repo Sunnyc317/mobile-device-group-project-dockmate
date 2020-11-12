@@ -1,4 +1,6 @@
 import 'package:dockmate/pages/old/firstScreen_S.dart';
+import 'package:dockmate/utils/auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -11,8 +13,11 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  
+
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -47,6 +52,30 @@ class _FirstScreenState extends State<FirstScreen> {
                 onPressed: () {
                   Navigator.of(context).pushNamed('/Register');
                 },
+              ),
+            ),
+            Builder(
+              builder: (context) => ButtonTheme(
+                minWidth: 200,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  child: const Text('Sign in Anon',
+                      style: TextStyle(fontSize: 20)),
+                  onPressed: () async {
+                    dynamic result = await _auth.signInAnon();
+                    if (result == null) {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('sign in anon failed')));
+                    }
+                    else {
+                      // print(result);
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('Anon user ${result.uid} signed in')));
+                    }
+                  },
+                ),
               ),
             ),
           ],

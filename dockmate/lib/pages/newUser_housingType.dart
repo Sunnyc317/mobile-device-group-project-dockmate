@@ -1,12 +1,13 @@
 import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/logIn.dart';
-import 'package:dockmate/pages/register.dart';
+// import 'package:dockmate/pages/register.dart';
 import 'package:flutter/material.dart';
 
 class HousingType extends StatefulWidget {
-  HousingType({Key key, this.title, this.user}) : super(key: key);
   final String title;
   User user; 
+
+  HousingType({Key key, this.title, this.user}) : super(key: key);
 
   @override
   _HousingTypeState createState() => _HousingTypeState();

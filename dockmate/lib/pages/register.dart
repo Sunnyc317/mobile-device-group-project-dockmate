@@ -1,5 +1,6 @@
 import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/newUser_housingType.dart';
+import 'package:dockmate/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -20,17 +21,25 @@ class _RegisterState extends State<Register> {
   String repassword;
 
   _register() {
-    if (repassword==password) {
+    if (repassword == password) {
       User newuser = User(
-          first_name: fname,
-          last_name: lname,
-          email: email,
-          phone: phone,
-          password: password);
+          // first_name: fname,
+          // last_name: lname,
+          // email: email,
+          // phone: phone,
+          // password: password
+          );
+
+
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => HousingType(title: "Select your prefered housing type", user: newuser)),
+      // );
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HousingType(title: "Select your prefered housing type", user: newuser)),
+        MaterialPageRoute(
+            builder: (context) => Settings(title: "Settings", user: newuser)),
       );
     }
   }
@@ -61,27 +70,39 @@ class _RegisterState extends State<Register> {
               Text("Register"),
               TextField(
                 decoration: InputDecoration(hintText: "First Name"),
-                onChanged: (value) {fname = value;},
+                onChanged: (value) {
+                  fname = value;
+                },
               ),
               TextField(
                 decoration: InputDecoration(hintText: "Last Name"),
-                onChanged: (value) {lname = value;},
+                onChanged: (value) {
+                  lname = value;
+                },
               ),
               TextField(
                 decoration: InputDecoration(hintText: "Email"),
-                onChanged: (value) {email = value;},
+                onChanged: (value) {
+                  email = value;
+                },
               ),
               TextField(
                 decoration: InputDecoration(hintText: "Phone Number"),
-                onChanged: (value) {phone = value;},
+                onChanged: (value) {
+                  phone = value;
+                },
               ),
               TextField(
                 decoration: InputDecoration(hintText: "Password"),
-                onChanged: (value) {password = value;},
+                onChanged: (value) {
+                  password = value;
+                },
               ),
               TextField(
                 decoration: InputDecoration(hintText: "Re-enter Password"),
-                onChanged: (value) {repassword = value;},
+                onChanged: (value) {
+                  repassword = value;
+                },
               ),
               Row(
                 children: [
