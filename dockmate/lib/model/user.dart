@@ -1,9 +1,11 @@
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:core';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/message.dart';
 import 'package:dockmate/model/db_model.dart';
 
 class User {
+  // DocumentReference id;
   String id;
   String first_name;
   String last_name;
@@ -25,6 +27,8 @@ class User {
   // Type of housing
   // Postal code they're looking for?
 
+  //temporary for chat purposes
+  User.chat({this.first_name, this.last_name});
   User({this.id}) {}
 
   User.fromMap(Map<String, dynamic> map) {

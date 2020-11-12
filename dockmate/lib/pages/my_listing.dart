@@ -95,7 +95,7 @@ class _MyListingState extends State<MyListing> {
           );
         },
       ),
-      bottomNavigationBar: BottomBar(bottomIndex: 3),
+      bottomNavigationBar: BottomBar(bottomIndex: 0),
     );
   }
 

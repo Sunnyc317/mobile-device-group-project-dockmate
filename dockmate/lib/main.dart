@@ -16,6 +16,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  //final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
         '/Login': (BuildContext context) => Login(title: "Login"),
         '/Register': (BuildContext context) => Register(title: "Register"),
         '/Listings': (BuildContext context) => Listings(title: "Listings"),
-        '/Chat': (BuildContext context) => Chat(title: "All Messages"),
+        '/Chat': (BuildContext context) => Chatroom(title: "All Messages"),
         '/Map': (BuildContext context) => Map(title: "Find a House"),
         '/MyListings': (BuildContext context) =>
             MyListing(title: "My Listings"),

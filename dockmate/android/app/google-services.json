@@ -1,78 +1,35 @@
 {
   "project_info": {
-    "project_number": "658952846627",
-    "firebase_url": "https://dockmate-58236.firebaseio.com",
-    "project_id": "dockmate-58236",
-    "storage_bucket": "dockmate-58236.appspot.com"
+    "project_number": "553235846631",
+    "firebase_url": "https://project-test-6cf4b.firebaseio.com",
+    "project_id": "project-test-6cf4b",
+    "storage_bucket": "project-test-6cf4b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:658952846627:android:655b18b87adaabf0e86096",
+        "mobilesdk_app_id": "1:553235846631:android:50bff66a6b8c1ee6725942",
         "android_client_info": {
           "package_name": "com.example.dockmate"
         }
       },
       "oauth_client": [
         {
-          "client_id": "658952846627-5ckvrh8hhjg5eltims60pjjufkntqcdh.apps.googleusercontent.com",
+          "client_id": "553235846631-f57sim00igkrop7skatiqll27hgq65ru.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBU_CnyJl9YJgZOCC2G2XLiNnDOuYqWyVA"
+          "current_key": "AIzaSyBv97k-lHtWr1NkpnccOIruzHFUyE8wpdY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "658952846627-5ckvrh8hhjg5eltims60pjjufkntqcdh.apps.googleusercontent.com",
+              "client_id": "553235846631-f57sim00igkrop7skatiqll27hgq65ru.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "658952846627-humk47cjrav39ratggsisoordsaqh2us.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.ontariotechu.dockmate"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:658952846627:android:1b2ece5449025cebe86096",
-        "android_client_info": {
-          "package_name": "com.ontariotechu.dockmate"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "658952846627-5ckvrh8hhjg5eltims60pjjufkntqcdh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBU_CnyJl9YJgZOCC2G2XLiNnDOuYqWyVA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "658952846627-5ckvrh8hhjg5eltims60pjjufkntqcdh.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "658952846627-humk47cjrav39ratggsisoordsaqh2us.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.ontariotechu.dockmate"
-              }
             }
           ]
         }
