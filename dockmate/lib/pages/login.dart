@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         title: Row(
           children: [
-            Image.asset("assets/placeholder_icon.png", scale: 20),
+            Image.asset("assets/dock.png", scale: 20, color: Colors.white),
             Text("Dock Mate"),
           ],
         ),
@@ -56,11 +56,15 @@ class _LoginState extends State<Login> {
                 ),
               ),
               RaisedButton(
-                onPressed: () {Navigator.of(context).pushNamed('/Listings');},
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed('/Listings');
+                },
                 child: Text("Login"),
               ),
               FlatButton(
-                onPressed: () {Navigator.of(context).pushNamed('/Register');},
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed('/Register');
+                },
                 child: Text("New User? Register Here!"),
               ),
             ],

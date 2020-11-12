@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 //import 'package:search_app_bar/search_app_bar.dart';
-import 'package:dockmate/pages/posting.dart';
-import 'package:dockmate/pages/posting_form.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
+import 'package:dockmate/pages/posting.dart';
+import 'package:dockmate/pages/posting_form.dart';
 
 class Listings extends StatefulWidget {
   final String title;
@@ -27,7 +27,7 @@ class _ListingState extends State<Listings> {
   }
 
   void reload() {
-    _listing.getAllListings().then((list) {
+    _listing.getAllListings().first.then((list) {
       setState(() {
         _listings = list;
       });
@@ -36,29 +36,20 @@ class _ListingState extends State<Listings> {
 
   @override
   Widget build(BuildContext context) {
-    //inal Filter filter;
+    //final Filter filter;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Listings'),
         actions: <Widget>[
+          IconButton(icon: Icon(Icons.search), onPressed: () {}),
           IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
                 _addListing(context);
               })
         ],
-      ) /*SearchAppBar<String>(
-        title: Text('Listings'),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                _addListing(context);
-              })
-        ],
-        searcher: Filter([]),
-      )*/
-      ,
+      ),
       body: ListView.builder(
         itemCount: _listings != null ? _listings.length : 0,
         itemBuilder: (BuildContext context, int index) {
@@ -73,7 +64,37 @@ class _ListingState extends State<Listings> {
                 decoration: BoxDecoration(
                   color: index == _selectedIndex ? Colors.blue : Colors.white,
                 ),
-                child: ListTile(title: buildListRow(_listings[index], true))),
+                child: ListTile(
+                    title: Container(
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              buildListRow(_listings[index]),
+                              Row(
+                                children: [
+                                  Container(
+                                    child: IconButton(
+                                      icon: Icon(Icons.message_outlined),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                  Container(
+                                    child: IconButton(
+                                      icon:
+                                          Icon(Icons.bookmark_border_outlined),
+                                      onPressed: () {
+                                        Scaffold.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text("Post saved"),
+                                        ));
+                                        _saveListing(context);
+                                      },
+                                    ),
+                                  )
+                                ],
+                              )
+                            ])))),
           );
         },
       ),
@@ -81,11 +102,15 @@ class _ListingState extends State<Listings> {
     );
   }
 
+  Future<void> _saveListing(BuildContext context) async {
+    reload();
+  }
+
   Future<void> _addListing(BuildContext context) async {
     var list = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PostingForm(title: 'Add Listing')));
 
-    await _listing.insert(list);
+    if (list != null) await _listing.insert(list);
     reload();
   }
 

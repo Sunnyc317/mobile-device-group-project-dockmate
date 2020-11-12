@@ -18,7 +18,8 @@ class _RegisterState extends State<Register> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              child: Image.asset("assets/placeholder_icon.png", scale: 20),
+              child: Image.asset("assets/dock.png",
+                  scale: 20, color: Colors.white),
               margin: EdgeInsets.only(right: 10),
             ),
             Text("Dock Mate"),
@@ -57,7 +58,9 @@ class _RegisterState extends State<Register> {
                   Container(
                     margin: EdgeInsets.all(10),
                     child: RaisedButton(
-                      onPressed: () {Navigator.of(context).pushNamed('/Login');},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacementNamed('/Login');
+                      },
                       child: Text("Cancel"),
                     ),
                   ),

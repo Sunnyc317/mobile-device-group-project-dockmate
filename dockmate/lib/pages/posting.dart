@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/util.dart';
+import 'package:dockmate/model/user.dart';
+import 'package:dockmate/pages/posting_form.dart';
 
 class Posting extends StatefulWidget {
   final String title;
@@ -24,6 +26,7 @@ class _PostingState extends State<Posting> {
   String _title;
   String _mainImage;
   String _price;
+  String _userID;
   String _owner;
   bool _isOwner = false;
 
@@ -41,46 +44,149 @@ class _PostingState extends State<Posting> {
       _postalCode = widget.listing.postalCode;
       _status = widget.listing.status;
       _mainImage = widget.listing.mainImage;
+      _userID = widget.listing.userID;
 
-      //if (user.getUser() == _userID) _isOwner = true;
+      User user = User(id: "2FXgu90z0tTy0MO5gI3Bti");
+      if (user.getUser() == _userID) _isOwner = true;
     }
+
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: Container(
-        padding: EdgeInsets.all(30.0),
-        child: Row(
-          children: [
-            Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Container(child: Text(_title)),
-              if (_isOwner) myListing(),
-              Container(
-                  child: Text(_status,
-                      style: TextStyle(color: idStatus(_status)))),
-              Container(
-                  child: Image.network(_mainImage,
-                      height: 100, width: 250, fit: BoxFit.fill)),
-              Container(child: Text(_address)),
-              Container(
-                  child: Text(_city +
-                      ", " +
-                      _province +
-                      ", " +
-                      _country +
-                      " " +
-                      _postalCode)),
-              Container(child: buildIconRow(widget.listing)),
-              Container(child: Text("\$" + _price)),
-              Container(child: Text(_duration)),
-              Container(child: Text(_description)),
-              if (!_isOwner)
-                RaisedButton.icon(
-                    onPressed: null,
-                    icon: Icon(Icons.message_outlined),
-                    label: Text("Chat with " + "Post Owner")),
-            ])
-          ],
-        ),
-      ),
-    );
+        appBar: AppBar(title: Text(widget.title)),
+        body: Builder(
+            builder: (context) => SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.all(30.0),
+                    child: Row(
+                      children: [
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 230,
+                                      padding: EdgeInsets.only(right: 50),
+                                      child: Text(
+                                        _title,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                  Container(
+                                    child: _isOwner
+                                        ? IconButton(
+                                            icon: Icon(Icons.create_outlined),
+                                            onPressed: () {
+                                              _updateListing(
+                                                  context, widget.listing);
+                                            },
+                                          )
+                                        : IconButton(
+                                            icon: Icon(
+                                                Icons.bookmark_border_outlined),
+                                            onPressed: () {
+                                              Scaffold.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                content: Text("Post saved"),
+                                              ));
+                                            },
+                                          ),
+                                  ),
+                                  Container(
+                                    child: _isOwner
+                                        ? IconButton(
+                                            icon: Icon(Icons.delete_outline),
+                                            onPressed: () {},
+                                          )
+                                        : Container(),
+                                  )
+                                ],
+                              )),
+                              Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(_status,
+                                      style:
+                                          TextStyle(color: idStatus(_status)))),
+                              Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Image.network(_mainImage,
+                                      height: 100,
+                                      width: 250,
+                                      fit: BoxFit.fill)),
+                              Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(_duration + " - \$" + _price)),
+                              Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(_address)),
+                              Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(_city +
+                                      ", " +
+                                      _province +
+                                      ", " +
+                                      _country +
+                                      " ")),
+                              Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: buildIconRow(widget.listing)),
+                              Container(
+                                  padding:
+                                      EdgeInsets.only(top: 10.0, bottom: 20.0),
+                                  width: 300,
+                                  child:
+                                      Text("Description: \n\n" + _description)),
+                              !_isOwner
+                                  ? RaisedButton.icon(
+                                      onPressed: null,
+                                      icon: Icon(Icons.message_outlined),
+                                      label: Text("Chat with " + "Post Owner"))
+                                  : Container(),
+                            ])
+                      ],
+                    ),
+                  ),
+                )));
+  }
+
+  Future<void> _updateListing(BuildContext context, Listing listing) async {
+    var list = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            PostingForm(title: 'Edit Listing', listing: listing)));
+
+    Listing _listing = new Listing();
+    await _listing.insert(list);
+  }
+
+  Future<void> _deleteConfirmation(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Are you sure you want to delete this post?'),
+            content: Text('This change cannot be recovered'),
+            actions: [
+              FlatButton(
+                textColor: Color(0xFF6200EE),
+                onPressed: () {
+                  Listing _listing = new Listing();
+                  print("ID: " + widget.listing.id);
+                  _listing.delete(widget.listing.id);
+                  Navigator.pop(context);
+                },
+                child: Text('YES'),
+              ),
+              FlatButton(
+                textColor: Color(0xFF6200EE),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('CANCEL'),
+              ),
+            ],
+          );
+        });
   }
 }

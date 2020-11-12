@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>658952846627-cdmacebkgbd9af27u25kg3hnbspu7rg5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.658952846627-cdmacebkgbd9af27u25kg3hnbspu7rg5</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBBpxJqMM-prUBJPZbZp58ADFsb7B1ygzw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>658952846627</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.dockmate</string>
+	<key>PROJECT_ID</key>
+	<string>dockmate-58236</string>
+	<key>STORAGE_BUCKET</key>
+	<string>dockmate-58236.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:658952846627:ios:78c771ca4a2b4141e86096</string>
+	<key>DATABASE_URL</key>
+	<string>https://dockmate-58236.firebaseio.com</string>
+</dict>
+</plist>
