@@ -4,25 +4,27 @@ import 'package:dockmate/pages/warpper.dart';
 import 'package:dockmate/utils/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:dockmate/pages/Register/firstScreen_S.dart';
-// import './pages/login_old.dart';
-// import 'package:dockmate/pages/register.dart';
 import 'package:dockmate/pages/register_form.dart';
-import 'package:dockmate/pages/firstScreen.dart';
 import 'package:provider/provider.dart';
-import 'pages/logIn.dart';
-import './pages/chat.dart';
-import './pages/settings.dart';
-import './pages/listings.dart';
-import './pages/my_listing.dart';
-import './pages/map.dart';
+import 'package:dockmate/pages/login.dart';
+import 'package:dockmate/pages/chat.dart';
+import 'package:dockmate/pages/settings.dart';
+import 'package:dockmate/pages/listings.dart';
+import 'package:dockmate/pages/my_listing.dart';
+import 'package:dockmate/pages/map.dart';
+import 'package:dockmate/pages/firstScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  //final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
         '/Login': (BuildContext context) => Login(title: "Login"),
         '/Register': (BuildContext context) => Register(title: "Register"),
         '/Listings': (BuildContext context) => Listings(title: "Listings"),
-        '/Chat': (BuildContext context) => Chat(title: "All Messages"),
+        '/Chat': (BuildContext context) => Chatroom(title: "All Messages"),
         '/Map': (BuildContext context) => Map(title: "Find a House"),
         '/MyListings': (BuildContext context) =>
             MyListing(title: "My Listings"),
@@ -118,5 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar:
           BottomBar(bottomIndex: _bottomIndex, setBottomIndex: _setBottomIndex),
     );*/
+
   }
 }

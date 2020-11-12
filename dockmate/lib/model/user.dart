@@ -1,14 +1,14 @@
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dockmate/model/listing.dart';
-import 'package:flutter/material.dart';
-import 'listing.dart';
-import 'message.dart';
+import 'package:dockmate/model/message.dart';
+import 'package:dockmate/model/db_model.dart';
 
 class User {
   DocumentReference reference;
 
-  String uid;
+  String id;
   String first_name;
   String last_name;
   String password;
@@ -31,11 +31,11 @@ class User {
   // Postal code they're looking for?
 
   // User({this.uid, this.first_name, this.last_name, this.email, this.phone, this.password});
-  User({this.uid});
+  User({this.id});
 
   User.fromMap(Map<String, dynamic> map, {this.reference}) {
 
-    // this.id = map['id'];
+    this.id = map['id'];
     this.first_name = map['first_name'];
     this.last_name = map['last_name'];
     this.email = map['email'];
@@ -55,7 +55,7 @@ class User {
 
   Map<String, dynamic> toMap() {
     return {
-      // 'id' : this.id,
+      'id' : this.id,
       'first_name' : this.first_name,
       'last_name': this.last_name,
       'email' : this.email,
@@ -77,6 +77,28 @@ class User {
   @override
   String toString() {
     // TODO: implement toString
-    return 'first name: $first_name';
+    return 'first name: $first_name';}
+
+  //temporary for chat purposes
+  User.chat({this.first_name, this.last_name});
+
+
+  List<User> result = [];
+  Future<List<User>> getAllUsers() async {
+    final database = await DBModel().init();
+
+    final List<Map<String, dynamic>> maps = await database.query('users');
+    if (maps.length > 0) {
+      for (int i = 0; i < maps.length; i++) {
+        result.add(User.fromMap(maps[i]));
+      }
+    }
+    return result;
+  }
+
+  String getUser() {
+    //getAllUsers();
+    //return result[0].id;
+    return id;
   }
 }

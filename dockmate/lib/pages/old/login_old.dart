@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
                   ),
                   child: const Text('Login', style: TextStyle(fontSize: 18)),
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/Listings');
+                    Navigator.of(context).pushReplacementNamed('/Listings');
                   },
                 )),
           ])

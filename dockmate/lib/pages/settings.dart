@@ -5,7 +5,7 @@ import 'package:dockmate/model/user.dart';
 import 'package:dockmate/utils/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import '../utils/bottombar.dart';
+import 'package:dockmate/utils/bottombar.dart';
 
 class Settings extends StatefulWidget {
   String title;
