@@ -2,11 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatFirebase {
-  Future<DocumentReference> createChatRoom(Map<String, dynamic> chat) {
-    FirebaseFirestore.instance.collection("chatroom").add(chat).then((value) {
-      return value.id;
-    });
+  // Future<DocumentReference> createChatRoom(Map<String, dynamic> chat) {
+  //   FirebaseFirestore.instance.collection("chatroom").add(chat).then((value) {
+  //     return value.id;
+  //   });
+  String _chatRoomID;
 
+  getChatRoomID() => _chatRoomID;
+
+  Future<void> createChatRoom(Map<String, dynamic> chat) async {
+    Map<String, String> submap = {"submap sanity check": "yay"};
+    await FirebaseFirestore.instance
+        .collection("chatroom")
+        .add(chat)
+        .then((value) {
+      print("Was the value ID correct to begin with? ${value.id}");
+      _chatRoomID = value.id;
+      var chatroomRef = FirebaseFirestore.instance
+          .collection("chatroom")
+          .doc(_chatRoomID)
+          .collection('messages')
+          .doc();
+      chatroomRef.set(submap);
+    });
     /*
 
     .collection("chatroom")

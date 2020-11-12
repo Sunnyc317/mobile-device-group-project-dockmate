@@ -1,23 +1,15 @@
 import 'package:flutter/material.dart';
-import '../utils/bottombar.dart';
-import '../model/message.dart';
-import '../utils/sampleData.dart';
-
-//so this may be the preview tiles
-class ChatRoomsTile extends StatefulWidget {
-  @override
-  _ChatRoomsTileState createState() => _ChatRoomsTileState();
-}
-
-class _ChatRoomsTileState extends State<ChatRoomsTile> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
+import 'package:dockmate/utils/bottombar.dart';
+import 'package:dockmate/model/message.dart';
+import 'package:dockmate/utils/sampleData.dart';
+import 'package:dockmate/model/chat.dart';
+import '../model/firebaseChat.dart';
 
 //while this is the internal page of chatting
 class MessageRoom extends StatefulWidget {
+  Chat roomInfo;
+  MessageRoom();
+  MessageRoom.create({this.roomInfo});
   @override
   _MessageRoomState createState() => _MessageRoomState();
 }
@@ -42,6 +34,13 @@ class _MessageRoomState extends State<MessageRoom> {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
+    final ChatFirebase firebaseDB = ChatFirebase();
+
+    if (widget.roomInfo != null) {
+      print("Wicked");
+      firebaseDB.createChatRoom(widget.roomInfo.toMap());
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Center(

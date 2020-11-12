@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/util.dart';
+import 'package:dockmate/model/chat.dart';
+import 'package:dockmate/pages/message.dart';
 
 Icon sad_replacement_icon = Icon(Icons.satellite);
 
@@ -76,7 +78,19 @@ class _PostingState extends State<Posting> {
               Container(child: Text(_description)),
               if (!_isOwner)
                 RaisedButton.icon(
-                    onPressed: null,
+                    onPressed: () {
+                      //temporarily hardcoding other user identity
+                      _owner = "Rogue Smith";
+                      Chat chatRoomInfo = Chat.startChatRoom(
+                          imageURL: _mainImage, stringUsers: ["self", _owner]);
+                      Navigator.of(context).pushNamed('/Chat');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                MessageRoom.create(roomInfo: chatRoomInfo)),
+                      );
+                    },
                     icon: sad_replacement_icon, //Icon(Icons.message_outlined),
                     label: Text("Chat with " + "Post Owner")),
             ])
