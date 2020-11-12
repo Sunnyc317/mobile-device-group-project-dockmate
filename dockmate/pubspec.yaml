@@ -29,7 +29,7 @@ dependencies:
   path: 
   provider:
   cloud_firestore:
-  firebase_core: "0.5.2"
+  firebase_core: "^0.5.2"
   google_maps_flutter: 
 
 

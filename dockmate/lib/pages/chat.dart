@@ -15,6 +15,8 @@ import './message.dart';
 import '../model/chat.dart';
 import '../utils/sampleData.dart';
 import '../utils/bottombar.dart';
+import '../model/firebaseChat.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Chatroom extends StatefulWidget {
   String title;
@@ -67,18 +69,58 @@ class _ChatroomState extends State<Chatroom> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat'),
-      ),
-      body: Center(
-        child: _fillChatroom(),
-      ),
-      bottomNavigationBar: BottomBar(bottomIndex: 2),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _createNewChatroom(),
-      ),
+    ChatFirebase firebaseDB = ChatFirebase();
+
+    Map<String, dynamic> sampleChat = {
+      "imageURL": "https://via.placeholder.com/150",
+      "messages": [
+        samplemessage1,
+        samplemessage2,
+        samplemessage3,
+        samplemessage4
+      ],
+      "users": [mainUser, otherUser],
+      "lastMessage": "testing chatroom creation",
+    };
+
+    return FutureBuilder(
+      // Initialize FlutterFire
+      future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          print("SNAPSHOT HAS ERROR ${snapshot.error}");
+        }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          print("WE GOT IN");
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Chat'),
+              actions: [
+                IconButton(
+                    icon: Icon(Icons.access_alarm),
+                    onPressed: () {
+                      var id = firebaseDB.createChatRoom(sampleChat);
+                      print("Is the id right? $id");
+                    })
+              ],
+            ),
+            body: Center(
+              child: _fillChatroom(),
+            ),
+            bottomNavigationBar: BottomBar(bottomIndex: 2),
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => _createNewChatroom(),
+            ),
+          );
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        return Scaffold(body: Center(child: CircularProgressIndicator()));
+      },
     );
   }
 
