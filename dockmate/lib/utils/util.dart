@@ -4,6 +4,8 @@ import 'package:rxdart/subjects.dart';
 import 'package:search_app_bar/searcher.dart';
 import 'package:dockmate/model/listing.dart';
 
+Icon sad_replacement_icon = Icon(Icons.satellite);
+
 Widget snackBarCustom(String message) {
   return SnackBar(
     content: Text(message),
@@ -61,13 +63,15 @@ Widget generalListing() {
     children: [
       Container(
         child: IconButton(
-          icon: Icon(Icons.message_outlined),
+          icon: sad_replacement_icon,
+          //icon: Icon(Icons.message_outlined),
           onPressed: () {},
         ),
       ),
       Container(
         child: IconButton(
-          icon: Icon(Icons.bookmark_border_outlined),
+          icon: sad_replacement_icon,
+          //icon: Icon(Icons.bookmark_border_outlined),
           onPressed: () {},
         ),
       )
@@ -80,7 +84,8 @@ Widget myListing() {
     children: [
       Container(
         child: IconButton(
-          icon: Icon(Icons.create_outlined),
+          icon: sad_replacement_icon,
+          //icon: Icon(Icons.create_outlined),
           onPressed: () {},
         ),
       ),
@@ -98,10 +103,21 @@ Widget myListing() {
 Widget buildIconRow(Listing listing) {
   return Row(
     children: [
-      buildIconPair(Icon(Icons.king_bed_outlined), listing.bedroom),
-      buildIconPair(Icon(Icons.bathtub_outlined), listing.bathroom),
-      buildIconPair(Icon(Icons.pets), listing.isPetFriendly ? "Yes" : "No"),
-      buildIconPair(Icon(Icons.directions_car_sharp),
+      buildIconPair(
+          sad_replacement_icon,
+          //Icon(Icons.king_bed_outlined),
+          listing.bedroom),
+      buildIconPair(
+          sad_replacement_icon,
+          //Icon(Icons.bathtub_outlined),
+          listing.bathroom),
+      buildIconPair(
+          sad_replacement_icon,
+          //Icon(Icons.pets),
+          listing.isPetFriendly ? "Yes" : "No"),
+      buildIconPair(
+          sad_replacement_icon,
+          //Icon(Icons.directions_car_sharp),
           listing.isParkingAvail ? "Yes" : "No")
     ],
   );

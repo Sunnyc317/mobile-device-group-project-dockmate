@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/util.dart';
 
+Icon sad_replacement_icon = Icon(Icons.satellite);
+
 class Posting extends StatefulWidget {
   final String title;
   final Listing listing;
@@ -75,7 +77,7 @@ class _PostingState extends State<Posting> {
               if (!_isOwner)
                 RaisedButton.icon(
                     onPressed: null,
-                    icon: Icon(Icons.message_outlined),
+                    icon: sad_replacement_icon, //Icon(Icons.message_outlined),
                     label: Text("Chat with " + "Post Owner")),
             ])
           ],
