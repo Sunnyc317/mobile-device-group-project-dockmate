@@ -21,7 +21,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 class ChatroomTile extends StatelessWidget {
   Chat chatroomData;
-  ChatroomTile(this.chatroomData);
+  String chatroomID;
+  ChatroomTile({this.chatroomData, this.chatroomID});
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +45,17 @@ class ChatroomTile extends StatelessWidget {
                     children: <Widget>[
                       Container(
                           margin: EdgeInsets.only(bottom: 25),
-                          child: Text(
-                              chatroomData.users[1].first_name +
-                                  chatroomData.users[1].last_name,
-                              style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold))),
+                          child: chatroomData.users != null
+                              ? Text(
+                                  chatroomData.users[1].first_name +
+                                      chatroomData.users[1].last_name,
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold))
+                              : Text(chatroomData.stringUsers[1],
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold))),
                       Text(chatroomData.lastMessage),
                     ],
                   ))
@@ -59,7 +66,9 @@ class ChatroomTile extends StatelessWidget {
           //open a message for now
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MessageRoom()),
+            MaterialPageRoute(
+                builder: (context) =>
+                    MessageRoom.create(roomInfo: chatroomData)),
           );
           //and then fill up with existing messages
           //can animate it in future: https://flutter.dev/docs/cookbook/animation/page-route-animation
@@ -77,25 +86,7 @@ class Chatroom extends StatefulWidget {
 }
 
 class _ChatroomState extends State<Chatroom> {
-  Stream chatStream;
-
-  // Widget decideChatInterface(snapshot) {
-  //   if (snapshot.data == null) {
-  //     return Container(child: Text("There is no chat here yet"));
-  //   }
-  //   return ListView.builder(
-  //       itemCount: snapshot.data.documents.length,
-  //       itemBuilder: (context, index) {
-  //         return ChatRoomsTile();
-  //       });
-  // }
-
-  // Widget chatStreamBuilder() {
-  //   return StreamBuilder(
-  //     stream: chatStream,
-  //     builder: (context, snapshot) => decideChatInterface(snapshot),
-  //   );
-  // }
+  final ChatFirebase firebaseDB = ChatFirebase();
 
   _createNewChatroom() {
     //Will ideally check against existing users and all that
@@ -108,21 +99,43 @@ class _ChatroomState extends State<Chatroom> {
 
   Widget _fillChatroom() {
     //sample
-    return Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.only(left: 15),
-        child: Column(children: <Widget>[
-          ChatroomTile(sampleChatTile),
-          ChatroomTile(sampleChatTile),
-          ChatroomTile(sampleChatTile),
-        ]));
+    return StreamBuilder(
+        stream: firebaseDB.getChatStream(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  return ChatroomTile(
+                      chatroomData: Chat.startChatRoom(
+                        imageURL: snapshot.data.documents[index]['imageURL'],
+                        stringUsers:
+                            snapshot.data.documents[index]['users'].map((item) {
+                          return item.toString();
+                        }).toList(),
+                        lastMessage: "hardcoded last message for now",
+                      ),
+                      chatroomID: snapshot.data.documents[index].id);
+                });
+          } else {
+            print("No chat snapshot has no data");
+            return Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(left: 15),
+                child: Column(children: <Widget>[
+                  ChatroomTile(chatroomData: sampleChatTile),
+                  ChatroomTile(chatroomData: sampleChatTile),
+                  ChatroomTile(chatroomData: sampleChatTile),
+                ]));
+          }
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     _buildMessageRoom() {
       if (widget.roomInfo != null) {
-        print("Wicked");
+        print("Wicked Chat");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MessageRoom()),
@@ -131,8 +144,6 @@ class _ChatroomState extends State<Chatroom> {
       }
       return Center(child: _fillChatroom());
     }
-
-    ChatFirebase firebaseDB = ChatFirebase();
 
     Map<String, dynamic> sampleChat = {
       "imageURL": "https://via.placeholder.com/150",
@@ -164,18 +175,10 @@ class _ChatroomState extends State<Chatroom> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print("WE GOT IN");
+          print("WE GOT IN CHAT");
           return Scaffold(
             appBar: AppBar(
               title: Text('Chat'),
-              actions: [
-                IconButton(
-                    icon: Icon(Icons.access_alarm),
-                    onPressed: () async {
-                      await firebaseDB.createChatRoom(samplecoll);
-                      print("What id I get id:" + firebaseDB.getChatRoomID());
-                    })
-              ],
             ),
             body: _buildMessageRoom(),
             bottomNavigationBar: BottomBar(bottomIndex: 2),
