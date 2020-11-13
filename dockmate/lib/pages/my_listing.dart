@@ -6,6 +6,8 @@ import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/posting_form.dart';
 import 'package:dockmate/pages/posting.dart';
 
+Icon sad_replacement_icon = Icon(Icons.satellite);
+
 class MyListing extends StatefulWidget {
   final String title;
 
@@ -110,7 +112,8 @@ class _MyListingState extends State<MyListing> {
               FlatButton(
                 textColor: Color(0xFF6200EE),
                 onPressed: () {
-                  _listing.delete(_listings[_selectedIndex].id);
+                  // NOT WORKING, ARGUMENT ERROR WILL BE FIXED ON THE NEXT ITERATION
+                  //_listing.delete(_listings[_selectedIndex].id);
                   Navigator.pop(context);
                 },
                 child: Text('YES'),
@@ -131,7 +134,7 @@ class _MyListingState extends State<MyListing> {
     var list = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PostingForm(title: 'Add Listing')));
 
-    await _listing.insert(list);
+    if (list != null) await _listing.insert(list);
     reload();
   }
 
@@ -140,7 +143,7 @@ class _MyListingState extends State<MyListing> {
         builder: (context) => PostingForm(
             title: 'Edit Listing', listing: _listings[_selectedIndex])));
 
-    await _listing.insert(list);
+    if (list != null) await _listing.update(list);
     _selectedIndex = -1;
     reload();
   }

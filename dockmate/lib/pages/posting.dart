@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/util.dart';
+import 'package:dockmate/model/chat.dart';
+import 'package:dockmate/pages/message.dart';
 import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/posting_form.dart';
 
@@ -98,7 +100,9 @@ class _PostingState extends State<Posting> {
                                     child: _isOwner
                                         ? IconButton(
                                             icon: Icon(Icons.delete_outline),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _deleteConfirmation(context);
+                                            },
                                           )
                                         : Container(),
                                   )
@@ -140,8 +144,25 @@ class _PostingState extends State<Posting> {
                                       Text("Description: \n\n" + _description)),
                               !_isOwner
                                   ? RaisedButton.icon(
-                                      onPressed: null,
-                                      icon: Icon(Icons.message_outlined),
+                                      onPressed: () {
+                                        //temporarily hardcoding other user identity
+                                        _owner = "Rogue Smith";
+                                        Chat chatRoomInfo = Chat.startChatRoom(
+                                            imageURL: _mainImage,
+                                            stringUsers: ["self", _owner]);
+                                        Navigator.of(context)
+                                            .pushNamed('/Chat');
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MessageRoom.create(
+                                                      roomInfo: chatRoomInfo)),
+                                        );
+                                      },
+                                      icon:
+                                          //sad_replacement_icon,
+                                          Icon(Icons.message_outlined),
                                       label: Text("Chat with " + "Post Owner"))
                                   : Container(),
                             ])
@@ -157,7 +178,7 @@ class _PostingState extends State<Posting> {
             PostingForm(title: 'Edit Listing', listing: listing)));
 
     Listing _listing = new Listing();
-    await _listing.insert(list);
+    if (list != null) _listing.update(list);
   }
 
   Future<void> _deleteConfirmation(BuildContext context) async {
@@ -171,8 +192,8 @@ class _PostingState extends State<Posting> {
               FlatButton(
                 textColor: Color(0xFF6200EE),
                 onPressed: () {
+                  // NOT YET REDIRECTING BACK TO PREVIOUS PAGE, FIX FOR NEXT ITERATION
                   Listing _listing = new Listing();
-                  print("ID: " + widget.listing.id);
                   _listing.delete(widget.listing.id);
                   Navigator.pop(context);
                 },

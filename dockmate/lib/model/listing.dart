@@ -2,7 +2,6 @@ import 'package:dockmate/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Listing {
-  DocumentReference reference;
   String id;
   User owner;
   // String because we might use the firestore link
@@ -52,7 +51,7 @@ class Listing {
   factory Listing.fromMap(
       Map<String, dynamic> map, DocumentReference reference) {
     return Listing(
-        id: map['id'],
+        id: reference.id,
         mainImage: map['mainImage'],
         title: map['title'],
         address: map['address'],
@@ -98,6 +97,10 @@ class Listing {
   Future<void> insert(Listing list) async {
     var merge = SetOptions(merge: true);
     return _db.collection('listings').doc(list.id).set(list.toMap(), merge);
+  }
+
+  Future<void> update(Listing list) async {
+    return _db.collection('listings').doc(list.id).update(list.toMap());
   }
 
   Future<void> delete(String id) async {
