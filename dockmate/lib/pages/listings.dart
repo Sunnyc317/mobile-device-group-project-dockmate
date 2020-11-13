@@ -6,6 +6,8 @@ import 'package:dockmate/utils/util.dart';
 import 'package:dockmate/pages/posting.dart';
 import 'package:dockmate/pages/posting_form.dart';
 
+// Icon sad_replacement_icon = Icon(Icons.satellite);
+
 class Listings extends StatefulWidget {
   final String title;
 
@@ -75,12 +77,14 @@ class _ListingState extends State<Listings> {
                                 children: [
                                   Container(
                                     child: IconButton(
+                                      //icon: sad_replacement_icon,
                                       icon: Icon(Icons.message_outlined),
                                       onPressed: () {},
                                     ),
                                   ),
                                   Container(
                                     child: IconButton(
+                                      //icon: sad_replacement_icon,
                                       icon:
                                           Icon(Icons.bookmark_border_outlined),
                                       onPressed: () {

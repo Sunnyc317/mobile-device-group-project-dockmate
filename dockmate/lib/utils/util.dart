@@ -4,6 +4,8 @@ import 'package:rxdart/subjects.dart';
 import 'package:search_app_bar/searcher.dart';
 import 'package:dockmate/model/listing.dart';
 
+//Icon sad_replacement_icon = Icon(Icons.satellite);
+
 Widget buildListRow(Listing listing) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
