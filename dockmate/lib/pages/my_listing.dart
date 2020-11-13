@@ -76,8 +76,8 @@ class _MyListingState extends State<MyListing> {
                                 children: [
                                   Container(
                                     child: IconButton(
-                                      icon: sad_replacement_icon,
-                                      //Icon(Icons.create_outlined),
+                                      //icon: sad_replacement_icon,
+                                      icon: Icon(Icons.create_outlined),
                                       onPressed: () {
                                         _selectedIndex = index;
                                         _updateListing(context);

@@ -43,11 +43,11 @@ Widget buildListRow(Listing listing) {
 Widget buildIconRow(Listing listing) {
   return Row(
     children: [
-      buildIconPair(Icon(Icons.king_bed_outlined), listing.bedroom),
-      buildIconPair(Icon(Icons.bathtub_outlined), listing.bathroom),
-      buildIconPair(Icon(Icons.pets), listing.isPetFriendly ? "Yes" : "No"),
-      buildIconPair(Icon(Icons.directions_car_sharp),
-          listing.isParkingAvail ? "Yes" : "No")
+      // buildIconPair(Icon(Icons.king_bed_outlined), listing.bedroom),
+      // buildIconPair(Icon(Icons.bathtub_outlined), listing.bathroom),
+      // buildIconPair(Icon(Icons.pets), listing.isPetFriendly ? "Yes" : "No"),
+      // buildIconPair(Icon(Icons.directions_car_sharp),
+      // listing.isParkingAvail ? "Yes" : "No")
     ],
   );
 }
