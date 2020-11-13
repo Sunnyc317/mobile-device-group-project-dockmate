@@ -82,24 +82,24 @@ class _ChatroomState extends State<Chatroom> {
     );
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('Listings'),
-  //       actions: <Widget>[
-  //         IconButton(
-  //           icon: Icon(Icons.add),
-  //           onPressed: createNewChatroom(),
-  //         )
-  //       ],
-  //     ),
-  //     body: Center(child: Text("Just checking that it works")),
-  //     // child: chatStreamBuilder(), //populate if some chat data already exist
-  //     // ),
-  //     bottomNavigationBar: BottomBar(bottomIndex: 0),
-  //   );
-  // }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Listings'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: createNewChatroom(),
+          )
+        ],
+      ),
+      body: Center(child: Text("Just checking that it works")),
+      // child: chatStreamBuilder(), //populate if some chat data already exist
+      // ),
+      bottomNavigationBar: BottomBar(bottomIndex: 0),
+    );
+  }
 }
 
 class ChatroomTile extends StatelessWidget {

@@ -30,7 +30,7 @@ dependencies:
   provider:
   flutter_local_notifications:
   cloud_firestore: ^0.14.3
-  google_maps_flutter: ^1.0.6
+  google_maps_flutter: #^1.0.6
   firebase_core: "0.5.2"
 
 
