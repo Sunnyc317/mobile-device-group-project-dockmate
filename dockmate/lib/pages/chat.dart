@@ -203,7 +203,7 @@ class _ChatroomState extends State<Chatroom> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: createNewChatroom(),
+            onPressed: _createNewChatroom(),
           )
         ],
       ),
