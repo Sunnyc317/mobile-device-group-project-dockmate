@@ -6,8 +6,6 @@ import 'package:dockmate/pages/message.dart';
 import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/posting_form.dart';
 
-//Icon sad_replacement_icon = Icon(Icons.satellite);
-
 class Posting extends StatefulWidget {
   final String title;
   final Listing listing;
@@ -88,7 +86,6 @@ class _PostingState extends State<Posting> {
                                             },
                                           )
                                         : IconButton(
-                                            //icon: sad_replacement_icon,
                                             icon: Icon(
                                                 Icons.bookmark_border_outlined),
                                             onPressed: () {
@@ -103,7 +100,9 @@ class _PostingState extends State<Posting> {
                                     child: _isOwner
                                         ? IconButton(
                                             icon: Icon(Icons.delete_outline),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _deleteConfirmation(context);
+                                            },
                                           )
                                         : Container(),
                                   )
@@ -179,7 +178,7 @@ class _PostingState extends State<Posting> {
             PostingForm(title: 'Edit Listing', listing: listing)));
 
     Listing _listing = new Listing();
-    await _listing.insert(list);
+    if (list != null) _listing.update(list);
   }
 
   Future<void> _deleteConfirmation(BuildContext context) async {
@@ -193,8 +192,8 @@ class _PostingState extends State<Posting> {
               FlatButton(
                 textColor: Color(0xFF6200EE),
                 onPressed: () {
+                  // NOT YET REDIRECTING BACK TO PREVIOUS PAGE, FIX FOR NEXT ITERATION
                   Listing _listing = new Listing();
-                  print("ID: " + widget.listing.id);
                   _listing.delete(widget.listing.id);
                   Navigator.pop(context);
                 },
