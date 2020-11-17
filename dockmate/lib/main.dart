@@ -1,3 +1,6 @@
+import 'package:dockmate/model/user.dart';
+import 'package:dockmate/utils/auth.dart';
+import 'package:dockmate/utils/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/pages/login.dart';
 import 'package:dockmate/pages/chat.dart';
@@ -8,6 +11,7 @@ import 'package:dockmate/pages/map.dart';
 import 'package:dockmate/pages/register.dart';
 import 'package:dockmate/pages/firstScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +38,8 @@ class MyApp extends StatelessWidget {
         '/MyListings': (BuildContext context) =>
             MyListing(title: "My Listings"),
         '/Settings': (BuildContext context) => Settings(title: "Settings"),
+        '/FirstScreen': (BuildContext context) =>
+            FirstScreen(title: "Dockmate"),
       },
     );
   }
@@ -49,8 +55,59 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _initialized = false;
+  bool _error = false;
+
+  void initializeFlutterFire() async {
+    try {
+      await Firebase.initializeApp();
+      setState(() {
+        _initialized = true;
+      });
+    } catch (e) {
+      setState(() {
+        _error = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    initializeFlutterFire();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FirstScreen(title: 'Dock Mate');
+    if (_error) {
+      return _InitializingPage(text: 'error initializing firebase');
+    }
+
+    if (!_initialized) {
+      return _InitializingPage(text: 'Loading...');
+    }
+
+    return StreamProvider<User>.value(
+      value: AuthService().user,
+      child: Wrapper(),
+    );
+  }
+}
+
+class _InitializingPage extends StatelessWidget {
+  // var title;
+  var text;
+  _InitializingPage({this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Dockmate'),
+      ),
+      body: Center(
+        child: Text(text),
+      ),
+    );
   }
 }

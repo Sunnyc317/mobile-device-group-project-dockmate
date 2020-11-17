@@ -1,11 +1,12 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:core';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/message.dart';
 import 'package:dockmate/model/db_model.dart';
 
 class User {
-  // DocumentReference id;
+  DocumentReference reference;
   String id;
   String first_name;
   String last_name;
@@ -29,7 +30,7 @@ class User {
 
   //temporary for chat purposes
   User.chat({this.first_name, this.last_name});
-  User({this.id}) {}
+  User({this.id});
 
   User.fromMap(Map<String, dynamic> map) {
     this.id = map['id'];

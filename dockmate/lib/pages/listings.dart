@@ -1,3 +1,5 @@
+import 'package:dockmate/model/user.dart';
+import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:search_app_bar/search_app_bar.dart';
 import 'package:dockmate/model/listing.dart';
@@ -8,8 +10,9 @@ import 'package:dockmate/pages/posting_form.dart';
 
 class Listings extends StatefulWidget {
   final String title;
+  User user;
 
-  Listings({Key key, this.title}) : super(key: key);
+  Listings({Key key, this.title, this.user}) : super(key: key);
 
   @override
   _ListingState createState() => _ListingState();
@@ -36,18 +39,26 @@ class _ListingState extends State<Listings> {
 
   @override
   Widget build(BuildContext context) {
+    AuthService _auth = AuthService();
     //final Filter filter;
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Listings'),
         actions: <Widget>[
+          FlatButton(
+            child: Text('Sign Out'),
+            onPressed: () {
+              _auth.signOut();
+            },
+          ),
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
           IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
                 _addListing(context);
-              })
+              }),
+          
         ],
       ),
       body: ListView.builder(
