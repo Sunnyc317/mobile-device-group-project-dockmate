@@ -1,6 +1,7 @@
-import 'package:dockmate/model/user.dart';
+import 'package:dockmate/model/user.dart' as usermodel;
 import 'package:dockmate/utils/auth.dart';
 import 'package:dockmate/utils/wrapper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/pages/login.dart';
 import 'package:dockmate/pages/chat.dart';
@@ -22,25 +23,30 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dock Mate',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        StreamProvider<usermodel.User>.value(value: AuthService().user,),
+      ],
+      child: MaterialApp(
+        title: 'Dock Mate',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: MyHomePage(title: 'Dock Mate!'),
+        routes: <String, WidgetBuilder>{
+          '/Login': (BuildContext context) => Login(title: "Login"),
+          '/Register': (BuildContext context) => Register(title: "Register"),
+          '/Listings': (BuildContext context) => Listings(title: "Listings"),
+          '/Chat': (BuildContext context) => Chatroom(title: "All Messages"),
+          '/Map': (BuildContext context) => Map(title: "Find a House"),
+          '/MyListings': (BuildContext context) =>
+              MyListing(title: "My Listings"),
+          '/Settings': (BuildContext context) => Settings(title: "Settings"),
+          '/FirstScreen': (BuildContext context) =>
+              FirstScreen(title: "Dockmate"),
+        },
       ),
-      home: MyHomePage(title: 'Dock Mate!'),
-      routes: <String, WidgetBuilder>{
-        '/Login': (BuildContext context) => Login(title: "Login"),
-        '/Register': (BuildContext context) => Register(title: "Register"),
-        '/Listings': (BuildContext context) => Listings(title: "Listings"),
-        '/Chat': (BuildContext context) => Chatroom(title: "All Messages"),
-        '/Map': (BuildContext context) => Map(title: "Find a House"),
-        '/MyListings': (BuildContext context) =>
-            MyListing(title: "My Listings"),
-        '/Settings': (BuildContext context) => Settings(title: "Settings"),
-        '/FirstScreen': (BuildContext context) =>
-            FirstScreen(title: "Dockmate"),
-      },
     );
   }
 }
@@ -87,10 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return _InitializingPage(text: 'Loading...');
     }
 
-    return StreamProvider<User>.value(
-      value: AuthService().user,
-      child: Wrapper(),
-    );
+    return Wrapper();
   }
 }
 

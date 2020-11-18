@@ -11,15 +11,14 @@ class User {
   String first_name;
   String last_name;
   String email;
-  String phone;
-  // String password; // need to encrypt
-  String address;
-  String city;
-  String postal_code;
-  String province;
-  String country;
-  bool landlord;
   List<String> wantHouseTypes;
+  // String phone;
+  // String address;
+  // String city;
+  // String postal_code;
+  // String province;
+  // String country;
+  // bool landlord;
   // Not sure about the following yet
   List<Listing> my_listings;
   List<Listing> saved_listings;

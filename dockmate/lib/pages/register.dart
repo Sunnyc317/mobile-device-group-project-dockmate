@@ -1,6 +1,7 @@
 import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/newUser_housingType.dart';
 import 'package:dockmate/pages/settings.dart';
+import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -14,12 +15,12 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   User user;
-  String fname;
-  String lname;
-  String email;
+  String fname = '';
+  String lname = '';
+  String email = '';
   String phone;
-  String password;
-  String repassword;
+  String password = '';
+  String repassword = '';
 
   // TO-DOs
   // - write a function to retrieve all user emails and validate if the email already exists.
@@ -27,6 +28,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    AuthService _auth = AuthService();
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -39,6 +41,13 @@ class _RegisterState extends State<Register> {
             Text(widget.title),
           ],
         ),
+        actions: <Widget>[
+          FlatButton.icon(
+              onPressed: () =>
+                  Navigator.of(context).pushReplacementNamed('/Login'),
+              icon: Icon(Icons.person),
+              label: Text('Log in'))
+        ],
       ),
       body: Container(
         margin: EdgeInsets.all(10),
@@ -59,6 +68,7 @@ class _RegisterState extends State<Register> {
                 },
                 onChanged: (value) {
                   fname = value;
+                  return null;
                 },
                 onSaved: (value) {
                   fname = value;
@@ -77,6 +87,7 @@ class _RegisterState extends State<Register> {
                 },
                 onChanged: (value) {
                   lname = value;
+                  return null;
                 },
                 onSaved: (value) {
                   lname = value;
@@ -92,6 +103,10 @@ class _RegisterState extends State<Register> {
                     return 'This field is required';
                   }
                   // validate user email from database
+                  return null;
+                },
+                onChanged: (value) {
+                  email = value;
                   return null;
                 },
                 onSaved: (value) {
@@ -138,6 +153,7 @@ class _RegisterState extends State<Register> {
                     return 'password needs to be at least 4 char long';
                   } else {
                     password = value;
+                    return null;
                   }
                 },
                 onSaved: (value) {
@@ -159,6 +175,8 @@ class _RegisterState extends State<Register> {
                 onChanged: (value) {
                   if (value != password) {
                     return 'this doesn\'t match your password';
+                  } else {
+                    return null;
                   }
                 },
                 onSaved: (value) {
@@ -181,22 +199,32 @@ class _RegisterState extends State<Register> {
                     padding: EdgeInsets.all(20),
                     child: Builder(
                       builder: (context) => RaisedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           // Validate returns true if the form is valid, otherwise false.
                           // case 1: register success, proceed to Hoursing type preference
                           // case 2: register fail (email already exist), request re-register with different email
                           // case 3: input field invalie, re-enter fields
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
+                            dynamic result = await _auth
+                                .registerWithEmailAndPassword(email, password);
 
-                            var registration_status = _register();
+                            if (result == null) {
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text('Please provide a valid email')));
+                              
+                            } else {
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text('Registration success')));
+                            }
 
-                            if (registration_status['registered']) {
-                              // update user status and log the user in
-                            }
-                            else {
-                              // email already in use snackbar and input field hint
-                            }
+                            // var registration_status = _register();
+
+                            // if (registration_status['registered']) {
+                            //   // update user status and log the user in
+                            // } else {
+                            //   // email already in use snackbar and input field hint
+                            // }
 
                             // Navigator.push(
                             //   context,
@@ -239,14 +267,14 @@ class _RegisterState extends State<Register> {
   }
 
   _register() {
+    // dynamic result = await _auth.regist
     // register new user in firebase
 
-
     // User newuser = new User(
-        // email: email,
-        // phone: phone,
-        // password: password
-        // );
+    // email: email,
+    // phone: phone,
+    // password: password
+    // );
 
     // return {
     //   'msg': 'User ${user.first_name} registered',
