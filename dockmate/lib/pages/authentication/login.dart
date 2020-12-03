@@ -1,6 +1,6 @@
-import 'package:dockmate/pages/old/firstScreen_S.dart';
-import 'package:dockmate/pages/forgotPassword.dart';
-import 'package:dockmate/pages/register.dart';
+import 'package:dockmate/pages/authentication/firstScreen.dart';
+import 'package:dockmate/pages/authentication/forgotPassword.dart';
+import 'package:dockmate/pages/authentication/register.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {

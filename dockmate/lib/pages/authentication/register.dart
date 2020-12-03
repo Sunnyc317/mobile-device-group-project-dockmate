@@ -1,6 +1,6 @@
 import 'package:dockmate/model/user.dart';
-import 'package:dockmate/pages/newUser_housingType.dart';
-import 'package:dockmate/pages/settings.dart';
+import 'package:dockmate/pages/authentication/newUser_housingType.dart';
+import 'package:dockmate/pages/app_screens/settings.dart';
 import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 

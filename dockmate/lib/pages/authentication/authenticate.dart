@@ -1,5 +1,5 @@
-import 'package:dockmate/pages/login.dart';
-import 'package:dockmate/pages/register.dart';
+import 'package:dockmate/pages/authentication/login.dart';
+import 'package:dockmate/pages/authentication/register.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {

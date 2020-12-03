@@ -27,18 +27,6 @@ class AuthService {
     // returns null when user sign out
   }
 
-
-  // this would pass the FirebaseUser object to check status
-
-  // Stream<User> get user {
-  //   // _auth.authStateChanges().listen((User user) {
-  //   //   return _userFromFirebaseUser;
-  //   // });
-  //   return _auth.onAuthStateChanged;
-  //   // get the user auth status and return the system User object (instead of the firebase user)
-  //   // returns null when user sign out
-  // }
-
   // sign in anon
   Future signInAnon() async {
     try {

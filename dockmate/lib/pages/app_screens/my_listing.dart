@@ -1,24 +1,23 @@
-import 'package:dockmate/model/user.dart';
-import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:search_app_bar/search_app_bar.dart';
-import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
-import 'package:dockmate/pages/posting.dart';
-import 'package:dockmate/pages/posting_form.dart';
+import 'package:dockmate/model/listing.dart';
+import 'package:dockmate/model/user.dart';
+import 'package:dockmate/pages/app_screens/posting_form.dart';
+import 'package:dockmate/pages/app_screens/posting.dart';
 
-class Listings extends StatefulWidget {
+Icon sad_replacement_icon = Icon(Icons.satellite);
+
+class MyListing extends StatefulWidget {
   final String title;
-  User user;
 
-  Listings({Key key, this.title, this.user}) : super(key: key);
+  MyListing({this.title});
 
   @override
-  _ListingState createState() => _ListingState();
+  _MyListingState createState() => _MyListingState();
 }
 
-class _ListingState extends State<Listings> {
+class _MyListingState extends State<MyListing> {
   int _selectedIndex;
   List<Listing> _listings;
   Listing _listing = new Listing();
@@ -30,35 +29,26 @@ class _ListingState extends State<Listings> {
   }
 
   void reload() {
+    User user = User(id: "2FXgu90z0tTy0MO5gI3Bti");
     _listing.getAllListings().first.then((list) {
       setState(() {
-        _listings = list;
+        _listings = list.where((i) => i.userID == user.getUser()).toList();
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    AuthService _auth = AuthService();
-    //final Filter filter;
-
+    //inal Filter filter;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Listings'),
+        title: Text('My Listings'),
         actions: <Widget>[
-          FlatButton(
-            child: Text('Sign Out'),
-            onPressed: () {
-              _auth.signOut();
-            },
-          ),
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
           IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
                 _addListing(context);
-              }),
-          
+              })
         ],
       ),
       body: ListView.builder(
@@ -86,20 +76,18 @@ class _ListingState extends State<Listings> {
                                 children: [
                                   Container(
                                     child: IconButton(
-                                      icon: Icon(Icons.message_outlined),
-                                      onPressed: () {},
+                                      icon: Icon(Icons.create_outlined),
+                                      onPressed: () {
+                                        _selectedIndex = index;
+                                        _updateListing(context);
+                                      },
                                     ),
                                   ),
                                   Container(
                                     child: IconButton(
-                                      icon:
-                                          Icon(Icons.bookmark_border_outlined),
+                                      icon: Icon(Icons.delete_outline),
                                       onPressed: () {
-                                        Scaffold.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text("Post saved"),
-                                        ));
-                                        _saveListing(context);
+                                        _deleteConfirmation(context);
                                       },
                                     ),
                                   )
@@ -113,9 +101,33 @@ class _ListingState extends State<Listings> {
     );
   }
 
-  Future<void> _saveListing(BuildContext context) async {
-    // TO BE IMPLEMENTED
-    reload();
+  Future<void> _deleteConfirmation(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Are you sure you want to delete this post?'),
+            content: Text('This change cannot be recovered'),
+            actions: [
+              FlatButton(
+                textColor: Color(0xFF6200EE),
+                onPressed: () {
+                  // NOT WORKING, ARGUMENT ERROR WILL BE FIXED ON THE NEXT ITERATION
+                  //_listing.delete(_listings[_selectedIndex].id);
+                  Navigator.pop(context);
+                },
+                child: Text('YES'),
+              ),
+              FlatButton(
+                textColor: Color(0xFF6200EE),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('CANCEL'),
+              ),
+            ],
+          );
+        });
   }
 
   Future<void> _addListing(BuildContext context) async {
@@ -123,6 +135,16 @@ class _ListingState extends State<Listings> {
         builder: (context) => PostingForm(title: 'Add Listing')));
 
     if (list != null) await _listing.insert(list);
+    reload();
+  }
+
+  Future<void> _updateListing(BuildContext context) async {
+    var list = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PostingForm(
+            title: 'Edit Listing', listing: _listings[_selectedIndex])));
+
+    if (list != null) await _listing.update(list);
+    _selectedIndex = -1;
     reload();
   }
 

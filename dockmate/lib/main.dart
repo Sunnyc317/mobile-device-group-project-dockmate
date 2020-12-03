@@ -3,14 +3,14 @@ import 'package:dockmate/utils/auth.dart';
 import 'package:dockmate/utils/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:dockmate/pages/login.dart';
-import 'package:dockmate/pages/chat.dart';
-import 'package:dockmate/pages/settings.dart';
-import 'package:dockmate/pages/listings.dart';
-import 'package:dockmate/pages/my_listing.dart';
-import 'package:dockmate/pages/map.dart';
-import 'package:dockmate/pages/register.dart';
-import 'package:dockmate/pages/firstScreen.dart';
+import 'package:dockmate/pages/authentication/login.dart';
+import 'package:dockmate/pages/app_screens/chat.dart';
+import 'package:dockmate/pages/app_screens/settings.dart';
+import 'package:dockmate/pages/app_screens/listings.dart';
+import 'package:dockmate/pages/app_screens/my_listing.dart';
+import 'package:dockmate/pages/app_screens/map.dart';
+import 'package:dockmate/pages/authentication/register.dart';
+import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
@@ -93,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return _InitializingPage(text: 'Loading...');
     }
 
+    // Wrapper listen to authentication status change and send user to AUTH pages or Postings
     return Wrapper();
   }
 }
