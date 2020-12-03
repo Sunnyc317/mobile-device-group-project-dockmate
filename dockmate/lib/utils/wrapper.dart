@@ -1,5 +1,6 @@
 import 'package:dockmate/model/user.dart' as usermodel;
 import 'package:dockmate/pages/authentication/firstScreen.dart';
+import 'package:dockmate/pages/authentication/toggleAuthScreens.dart';
 import 'package:dockmate/pages/app_screens/listings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ class _WrapperState extends State<Wrapper> {
       return Listings(title: 'My listing', user: user);
     } else {
       print('user = $user, not signed in');
-      return FirstScreen();
+      return ToggleAuthScreens();
     }
 
     print(user);

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:dockmate/utils/auth.dart';
 
 class Login extends StatefulWidget {
-  Login({Key key, this.title}) : super(key: key);
-  final String title;
+  final Function toggleView;
+  Login({Key key, this.toggleView}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -115,7 +115,8 @@ class _LoginState extends State<Login> {
                 FlatButton(
                   child: Text("New User? Register Here!"),
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/Register');
+                    widget.toggleView('register');
+                    // Navigator.of(context).pushReplacementNamed('/Register');
                   },
                 ),
               ],

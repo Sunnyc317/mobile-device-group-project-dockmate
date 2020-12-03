@@ -44,15 +44,15 @@ class MyApp extends StatelessWidget {
         ),
         home: MyHomePage(title: 'Dock Mate!'),
         routes: <String, WidgetBuilder>{
-          '/Login': (BuildContext context) => Login(title: "Login"),
-          '/Register': (BuildContext context) => Register(title: "Register"),
+          // '/Login': (BuildContext context) => Login(),
+          // '/Register': (BuildContext context) => Register(),
           '/Listings': (BuildContext context) => Listings(title: "Listings"),
           '/Chat': (BuildContext context) => Chatroom(title: "All Messages"),
           '/Map': (BuildContext context) => Map(title: "Find a House"),
           '/MyListings': (BuildContext context) =>
               MyListing(title: "My Listings"),
           '/Settings': (BuildContext context) => Settings(title: "Settings"),
-          '/FirstScreen': (BuildContext context) => FirstScreen(),
+          // '/FirstScreen': (BuildContext context) => FirstScreen(),
         },
       ),
     );

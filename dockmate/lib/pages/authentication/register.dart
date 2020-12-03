@@ -5,8 +5,8 @@ import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
-  Register({Key key, this.title}) : super(key: key);
-  final String title;
+  final Function toggleView;
+  Register({Key key, this.toggleView}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -38,13 +38,13 @@ class _RegisterState extends State<Register> {
               child: Image.asset("assets/placeholder_icon.png", scale: 20),
               margin: EdgeInsets.only(right: 10),
             ),
-            Text(widget.title),
+            Text('Registration'),
           ],
         ),
         actions: <Widget>[
           FlatButton.icon(
-              onPressed: () =>
-                  Navigator.of(context).pushReplacementNamed('/Login'),
+              onPressed: () => widget.toggleView('login'),
+                  // Navigator.of(context).pushReplacementNamed('/Login'),
               icon: Icon(Icons.person),
               label: Text('Log in'))
         ],
@@ -191,8 +191,9 @@ class _RegisterState extends State<Register> {
                     child: RaisedButton(
                       child: Text('Cancel'),
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed('/FirstScreen');
+                        widget.toggleView('firstScreen');
+                        // Navigator.of(context)
+                        //     .pushReplacementNamed('/FirstScreen');
                       },
                     ),
                   ),
