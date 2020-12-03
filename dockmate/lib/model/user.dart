@@ -28,8 +28,8 @@ class User {
   // Postal code they're looking for?
 
   //temporary for chat purposes
-  User.chat({this.first_name, this.last_name});
   User({this.id});
+  User.chat({this.first_name, this.last_name});
 
   User.fromMap(Map<String, dynamic> map) {
     this.id = map['id'];
@@ -56,5 +56,10 @@ class User {
     //getAllUsers();
     //return result[0].id;
     return id;
+  }
+  @override
+  String toString() {
+    // TODO: implement toString
+    return super.toString();
   }
 }

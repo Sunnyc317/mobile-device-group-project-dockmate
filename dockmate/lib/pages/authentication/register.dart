@@ -138,19 +138,20 @@ class _RegisterState extends State<Register> {
               TextFormField(
                 decoration: const InputDecoration(
                   hintText:
-                      'User at lease 4 characters with special symbols .?!_*',
+                      'User at lease 8 characters with special symbols .?!_*',
                   labelText: 'password',
                 ),
                 obscureText: true,
                 validator: (value) {
-                  if (value.length < 4) {
-                    return 'password needs to be at least 4 char long';
+                  if (value.length < 8) {
+                    return 'password needs to be at least 8 char long';
                   }
                   return null;
                 },
                 onChanged: (value) {
-                  if (value.length < 4) {
-                    return 'password needs to be at least 4 char long';
+                  if (value.length < 8) {
+                    return 'password needs to be at least 8 char long';
+                    setState(() {});
                   } else {
                     password = value;
                     return null;
@@ -200,54 +201,19 @@ class _RegisterState extends State<Register> {
                     child: Builder(
                       builder: (context) => RaisedButton(
                         onPressed: () async {
-                          // Validate returns true if the form is valid, otherwise false.
                           // case 1: register success, proceed to Hoursing type preference
-                          // case 2: register fail (email already exist), request re-register with different email
-                          // case 3: input field invalie, re-enter fields
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             dynamic result = await _auth
-                                .registerWithEmailAndPassword(email, password);
+                                .registerWithEmailAndPassword(email, password, fname, lname);
 
-                            if (result == null) {
+                            if (result['user'] == null) {
                               Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text('Please provide a valid email')));
-                              
+                                  content: Text(result['msg'])));
                             } else {
                               Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text('Registration success')));
+                                  content: Text(result['msg'])));
                             }
-
-                            // var registration_status = _register();
-
-                            // if (registration_status['registered']) {
-                            //   // update user status and log the user in
-                            // } else {
-                            //   // email already in use snackbar and input field hint
-                            // }
-
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           Settings(title: "Settings")),
-                            // );
-
-                            // Scaffold.of(context).showSnackBar(SnackBar(
-                            //     content: Text(registration_status['msg'])));
-                            // if (registration_status['registered']) {
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Settings(
-                            //             title: "Settings")),
-                            //   );
-                            // } else {
-                            //   Scaffold.of(context).showSnackBar(SnackBar(
-                            //       content: Text(registration_status['msg'])));
-                            // }
-                            // end: check if the user is registered in firebase
-
                           } else {
                             Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text('Input fields invalid')));

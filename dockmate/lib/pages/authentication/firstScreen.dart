@@ -2,9 +2,9 @@ import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatefulWidget {
-  String title;
+  // String title;
 
-  FirstScreen({this.title});
+  // FirstScreen({this.title});
 
   @override
   _FirstScreenState createState() => _FirstScreenState();
@@ -18,7 +18,7 @@ class _FirstScreenState extends State<FirstScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
-        title: Text(widget.title),
+        title: Text('Dockmate! (Authentication)'),
       ),
       body: Center(
         child: Column(

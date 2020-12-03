@@ -2,12 +2,13 @@ import 'package:dockmate/pages/authentication/login.dart';
 import 'package:dockmate/pages/authentication/register.dart';
 import 'package:flutter/material.dart';
 
-class Authenticate extends StatefulWidget {
+// Authenticate is for toggling between login and register
+class ToggleAuthScreens extends StatefulWidget {
   @override
-  _AuthenticateState createState() => _AuthenticateState();
+  _ToggleAuthScreensState createState() => _ToggleAuthScreensState();
 }
 
-class _AuthenticateState extends State<Authenticate> {
+class _ToggleAuthScreensState extends State<ToggleAuthScreens> {
   bool showSignIn = true;
   void toggleView() {
     setState(() => showSignIn = !showSignIn);
