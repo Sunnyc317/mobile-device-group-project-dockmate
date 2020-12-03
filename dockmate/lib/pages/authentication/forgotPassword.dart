@@ -1,4 +1,4 @@
-import 'package:dockmate/pages/old/firstScreen_S.dart';
+import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatefulWidget {

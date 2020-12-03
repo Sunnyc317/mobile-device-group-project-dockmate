@@ -1,3 +1,4 @@
+import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -12,6 +13,8 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
+    
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
@@ -46,6 +49,24 @@ class _FirstScreenState extends State<FirstScreen> {
                 child: const Text('New User', style: TextStyle(fontSize: 20)),
                 onPressed: () {
                   Navigator.of(context).pushReplacementNamed('/Register');
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
+            ButtonTheme(
+              minWidth: 200,
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                color: Colors.white60,
+                child: const Text('Guest sign-in',
+                    style: TextStyle(fontSize: 20)),
+                onPressed: () async{
+                  // call anon sign in function
+                  var reselt = await _auth.signInAnon();
+
+                  // Navigator.of(context).pushReplacementNamed('/Login');
                 },
               ),
             ),

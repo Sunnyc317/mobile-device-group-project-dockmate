@@ -1,10 +1,13 @@
+import 'package:dockmate/model/user.dart' as usermodel;
+import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/username.dart';
 
 class Settings extends StatefulWidget {
   String title;
-  Settings({this.title});
+  usermodel.User user;
+  Settings({this.title,this.user});
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -17,6 +20,8 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    AuthService _auth = AuthService();
+
     Future<String> initSampleName() async {
       print("creating new username");
       usernameModel.setUsername(newUsername);
@@ -30,6 +35,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
+        actions: [FlatButton(child: Text('Sign Out'), onPressed: () {_auth.signOut();},)]
       ),
       body: Center(
           child: Form(
