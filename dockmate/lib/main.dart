@@ -23,10 +23,19 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<usermodel.User>.value(value: AuthService().user,),
-      ],
+    // return MultiProvider(
+    //   providers: [
+    //     StreamProvider<usermodel.User>.value(
+    //       value: AuthService().user,
+    //     ),
+    //   ],
+    return StreamProvider.value(
+      // providers: [
+      //   StreamProvider<usermodel.User>.value(
+      //     value: AuthService().user,
+      //   ),
+      // ],
+      value: AuthService().user,
       child: MaterialApp(
         title: 'Dock Mate',
         theme: ThemeData(
@@ -35,16 +44,15 @@ class MyApp extends StatelessWidget {
         ),
         home: MyHomePage(title: 'Dock Mate!'),
         routes: <String, WidgetBuilder>{
-          '/Login': (BuildContext context) => Login(title: "Login"),
-          '/Register': (BuildContext context) => Register(title: "Register"),
+          // '/Login': (BuildContext context) => Login(),
+          // '/Register': (BuildContext context) => Register(),
           '/Listings': (BuildContext context) => Listings(title: "Listings"),
           '/Chat': (BuildContext context) => Chatroom(title: "All Messages"),
           '/Map': (BuildContext context) => Map(title: "Find a House"),
           '/MyListings': (BuildContext context) =>
               MyListing(title: "My Listings"),
           '/Settings': (BuildContext context) => Settings(title: "Settings"),
-          '/FirstScreen': (BuildContext context) =>
-              FirstScreen(title: "Dockmate"),
+          // '/FirstScreen': (BuildContext context) => FirstScreen(),
         },
       ),
     );

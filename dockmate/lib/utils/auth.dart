@@ -50,16 +50,28 @@ class AuthService {
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email, String password, String fname, String lname) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      User user = result.user;
-      return _userFromFirebaseUser(user);
+      result.user.updateProfile(displayName: '$fname $lname', photoURL: null);
+      usermodel.User user = _userFromFirebaseUser(result.user); // convert firebase User to local User model
+      return {'user': user, 'msg': '${result.user.displayName} registered successfully'};
     } catch(e) {
       print(e.toString());
-      return null;
+      return {'user': null, 'msg': e.toString()};
     }
   }
 
   // sign in with email and password
+  Future signinwithEmail(String email, String password) async{
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password); 
+      usermodel.User user = _userFromFirebaseUser(result.user); // convert firebase User to local User model
+      return {'user': user, 'msg': '${result.user.displayName} signed in successfully'};
+    } catch (e) {
+      print(e.toString());
+      return {'user': null, 'msg': e.toString()};
+    }
+  }
+
 }

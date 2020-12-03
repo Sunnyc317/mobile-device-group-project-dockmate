@@ -2,9 +2,8 @@ import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatefulWidget {
-  String title;
-
-  FirstScreen({this.title});
+  final Function toggleView;
+  FirstScreen({Key key, this.toggleView}) : super(key: key);
 
   @override
   _FirstScreenState createState() => _FirstScreenState();
@@ -18,7 +17,7 @@ class _FirstScreenState extends State<FirstScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
-        title: Text(widget.title),
+        title: Text('Dockmate! (Authentication)'),
       ),
       body: Center(
         child: Column(
@@ -36,7 +35,8 @@ class _FirstScreenState extends State<FirstScreen> {
                   child: const Text('Returning User',
                       style: TextStyle(fontSize: 20)),
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/Login');
+                    widget.toggleView('login');
+                    // Navigator.of(context).pushReplacementNamed('/Login');
                   },
                 )),
             const SizedBox(height: 30),
@@ -48,7 +48,8 @@ class _FirstScreenState extends State<FirstScreen> {
                 ),
                 child: const Text('New User', style: TextStyle(fontSize: 20)),
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed('/Register');
+                  widget.toggleView('register');
+                  // Navigator.of(context).pushReplacementNamed('/Register');
                 },
               ),
             ),
