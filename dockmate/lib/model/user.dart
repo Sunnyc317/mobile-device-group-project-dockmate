@@ -1,24 +1,24 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:core';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/message.dart';
 import 'package:dockmate/model/db_model.dart';
 
 class User {
-  // DocumentReference id;
+  DocumentReference reference;
   String id;
   String first_name;
   String last_name;
   String email;
-  String phone;
-  // String password; // need to encrypt
-  String address;
-  String city;
-  String postal_code;
-  String province;
-  String country;
-  bool landlord;
   List<String> wantHouseTypes;
+  // String phone;
+  // String address;
+  // String city;
+  // String postal_code;
+  // String province;
+  // String country;
+  // bool landlord;
   // Not sure about the following yet
   List<Listing> my_listings;
   List<Listing> saved_listings;
@@ -28,8 +28,8 @@ class User {
   // Postal code they're looking for?
 
   //temporary for chat purposes
+  User({this.id});
   User.chat({this.first_name, this.last_name});
-  User({this.id}) {}
 
   User.fromMap(Map<String, dynamic> map) {
     this.id = map['id'];
@@ -56,5 +56,10 @@ class User {
     //getAllUsers();
     //return result[0].id;
     return id;
+  }
+  @override
+  String toString() {
+    // TODO: implement toString
+    return super.toString();
   }
 }

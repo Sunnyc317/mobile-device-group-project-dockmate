@@ -12,11 +12,11 @@ The main entry points:
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import './message.dart';
-import '../model/chat.dart';
-import '../utils/sampleData.dart';
-import '../utils/bottombar.dart';
-import '../model/firebaseChat.dart';
+import 'package:dockmate/pages/app_screens/message.dart';
+import 'package:dockmate/model/chat.dart';
+import 'package:dockmate/utils/sampleData.dart';
+import 'package:dockmate/utils/bottombar.dart';
+import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class ChatroomTile extends StatelessWidget {
