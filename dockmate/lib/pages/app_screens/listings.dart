@@ -58,7 +58,6 @@ class _ListingState extends State<Listings> {
               onPressed: () {
                 _addListing(context);
               }),
-          
         ],
       ),
       body: ListView.builder(

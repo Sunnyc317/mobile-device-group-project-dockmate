@@ -1,10 +1,12 @@
-import 'dart:async';
+import 'package:latlong/latlong.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/bottombar.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:dockmate/model/listing.dart';
 
-// Temporary, testing map
-// Example from: https://pub.dev/packages/google_maps_flutter
+final centre = LatLng(43.6532, -79.3832);
+final path = [];
 
 class Map extends StatefulWidget {
   String title;
@@ -14,41 +16,62 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
-  Completer<GoogleMapController> _controller = Completer();
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  var _geolocator = Geolocator();
+  var _zoom = 12.0;
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body:
-            /*GoogleMap(
-          mapType: MapType.hybrid,
-          initialCameraPosition: _kGooglePlex,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ),*/
-            Container(),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: _goToTheLake,
-          label: Text('To the lake!'),
-          icon: Icon(Icons.directions_boat),
+        appBar: AppBar(title: Text(widget.title), actions: <Widget>[]),
+        body: FlutterMap(
+          options: MapOptions(
+            minZoom: _zoom,
+            center: centre,
+          ),
+          layers: [
+            TileLayerOptions(
+              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              subdomains: ['a', 'b', 'c'],
+            ),
+            MarkerLayerOptions(markers: _markers()),
+          ],
         ),
         bottomNavigationBar: BottomBar(bottomIndex: 1));
   }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  List<Marker> _markers() {
+    List<Marker> marks = [];
+    Listing _listing = new Listing();
+
+    _listing.getAllListings().first.then((list) {
+      setState(() {
+        LatLng loc;
+        list.forEach((element) {
+          _geolocator
+              .placemarkFromAddress(element.address)
+              .then((List<Placemark> places) {
+            for (Placemark place in places) {
+              loc = LatLng(place.position.latitude, place.position.longitude);
+              path.add(loc);
+            }
+          });
+        });
+      });
+    });
+
+    path.forEach((point) {
+      marks.add(Marker(
+          height: 45.0,
+          width: 45.0,
+          point: point,
+          builder: (context) => Container(
+                  child: Icon(
+                Icons.house,
+                size: 25.0,
+                color: Colors.blue,
+              ))));
+    });
+
+    return marks;
   }
 }

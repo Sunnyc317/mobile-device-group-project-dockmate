@@ -34,6 +34,9 @@ dependencies:
   firebase_auth: "^0.18.3"
   timeago:
   flutter_local_notifications:
+  latlong:
+  geolocator: 5.1.1
+  flutter_map:
 
 
   # The following adds the Cupertino Icons font to your application.
