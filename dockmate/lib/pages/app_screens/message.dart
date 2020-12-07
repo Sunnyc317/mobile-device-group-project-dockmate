@@ -215,6 +215,8 @@ class _MessageRoomState extends State<MessageRoom> {
           print("WE GOT IN MESSAGES");
           return Scaffold(
             appBar: AppBar(
+              leading: Image.asset("assets/dock.png",
+                  scale: 20, color: Colors.white),
               title: Center(
                   child: Padding(
                       padding: EdgeInsets.only(left: 58),

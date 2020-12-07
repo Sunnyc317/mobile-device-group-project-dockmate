@@ -22,7 +22,11 @@ class _MapState extends State<Map> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: AppBar(title: Text(widget.title), actions: <Widget>[]),
+        appBar: AppBar(
+            leading:
+                Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+            title: Text(widget.title),
+            actions: <Widget>[]),
         body: FlutterMap(
           options: MapOptions(
             minZoom: _zoom,

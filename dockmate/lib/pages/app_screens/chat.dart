@@ -178,6 +178,8 @@ class _ChatroomState extends State<Chatroom> {
           print("WE GOT IN CHAT");
           return Scaffold(
             appBar: AppBar(
+              leading: Image.asset("assets/dock.png",
+                  scale: 20, color: Colors.white),
               title: Text('Chat'),
             ),
             body: _buildMessageRoom(),
