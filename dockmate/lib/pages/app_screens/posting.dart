@@ -60,7 +60,7 @@ class _PostingState extends State<Posting> {
         body: Builder(
             builder: (context) => SingleChildScrollView(
                   child: Container(
-                    padding: EdgeInsets.all(30.0),
+                    padding: EdgeInsets.symmetric(vertical: 30.0),
                     child: Row(
                       children: [
                         Column(

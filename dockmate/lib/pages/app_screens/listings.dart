@@ -42,6 +42,28 @@ class _ListingState extends State<Listings> {
     AuthService _auth = AuthService();
     //final Filter filter;
 
+    Row symbols() {
+      return Row(children: <Widget>[
+        Container(
+          child: IconButton(
+            icon: Icon(Icons.message_outlined),
+            onPressed: () {},
+          ),
+        ),
+        Container(
+          child: IconButton(
+            icon: Icon(Icons.bookmark_border_outlined),
+            onPressed: () {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text("Post saved"),
+              ));
+              _saveListing(context);
+            },
+          ),
+        )
+      ]);
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
@@ -79,32 +101,12 @@ class _ListingState extends State<Listings> {
                     title: Container(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
                         child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              buildListRow(_listings[index]),
-                              Row(
-                                children: [
-                                  Container(
-                                    child: IconButton(
-                                      icon: Icon(Icons.message_outlined),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                  Container(
-                                    child: IconButton(
-                                      icon:
-                                          Icon(Icons.bookmark_border_outlined),
-                                      onPressed: () {
-                                        Scaffold.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text("Post saved"),
-                                        ));
-                                        _saveListing(context);
-                                      },
-                                    ),
-                                  )
-                                ],
-                              )
+                              Row(children: <Widget>[
+                                buildListRow(_listings[index], symbols()),
+                              ]),
                             ])))),
           );
         },

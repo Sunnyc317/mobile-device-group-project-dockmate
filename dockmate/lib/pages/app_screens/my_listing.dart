@@ -40,6 +40,31 @@ class _MyListingState extends State<MyListing> {
   @override
   Widget build(BuildContext context) {
     //inal Filter filter;
+
+    Row symbols(index) {
+      return Row(
+        children: [
+          Container(
+            child: IconButton(
+              icon: Icon(Icons.create_outlined),
+              onPressed: () {
+                _selectedIndex = index;
+                _updateListing(context);
+              },
+            ),
+          ),
+          Container(
+            child: IconButton(
+              icon: Icon(Icons.delete_outline),
+              onPressed: () {
+                _deleteConfirmation(context);
+              },
+            ),
+          )
+        ],
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
@@ -72,33 +97,12 @@ class _MyListingState extends State<MyListing> {
                         child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              buildListRow(_listings[index]),
-                              Row(
-                                children: [
-                                  Container(
-                                    child: IconButton(
-                                      icon: Icon(Icons.create_outlined),
-                                      onPressed: () {
-                                        _selectedIndex = index;
-                                        _updateListing(context);
-                                      },
-                                    ),
-                                  ),
-                                  Container(
-                                    child: IconButton(
-                                      icon: Icon(Icons.delete_outline),
-                                      onPressed: () {
-                                        _deleteConfirmation(context);
-                                      },
-                                    ),
-                                  )
-                                ],
-                              )
+                              buildListRow(_listings[index], symbols(index)),
                             ])))),
           );
         },
       ),
-      bottomNavigationBar: BottomBar(bottomIndex: 0),
+      bottomNavigationBar: BottomBar(bottomIndex: 3),
     );
   }
 

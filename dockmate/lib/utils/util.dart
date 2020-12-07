@@ -4,35 +4,51 @@ import 'package:rxdart/subjects.dart';
 import 'package:search_app_bar/searcher.dart';
 import 'package:dockmate/model/listing.dart';
 
-Widget buildListRow(Listing listing) {
+Widget buildListRow(Listing listing, Row rows) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-      Row(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: Container(
-                width: 200,
-                child: Text(
-                  listing.title,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-          ),
-        ],
-      ),
+      Row(children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          child: Container(
+              width: 250,
+              child: Text(
+                listing.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              )),
+        ),
+        rows,
+      ]),
       Container(
-          child: Image.network(listing.mainImage,
-              height: 100, width: 250, fit: BoxFit.fill)),
-      Container(
-        padding: EdgeInsets.all(10.0),
-        child: Text("\$" + listing.price),
-      ),
-      Container(
-        padding: EdgeInsets.all(10.0),
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        padding: EdgeInsets.all(5.0),
         child: Text(listing.address),
       ),
+      Container(
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          child: Image.network(listing.mainImage,
+              height: 200, width: 350, fit: BoxFit.fill)),
+      Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+          child: Row(
+            children: <Widget>[
+              Text("\$" + listing.price,
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)),
+              Text("/mth",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 10,
+                  )),
+            ],
+          )),
       buildIconRow(listing),
     ],
   );
@@ -41,6 +57,14 @@ Widget buildListRow(Listing listing) {
 Widget buildIconRow(Listing listing) {
   return Row(
     children: [
+      Padding(
+        padding: EdgeInsets.only(left: 146.0, right: 146.0, top: 10.0),
+        child: Container(
+          height: 1.0,
+          width: 80.0,
+          color: Colors.grey,
+        ),
+      ),
       // buildIconPair(Icon(Icons.king_bed_outlined), listing.bedroom),
       // buildIconPair(Icon(Icons.bathtub_outlined), listing.bathroom),
       // buildIconPair(Icon(Icons.pets), listing.isPetFriendly ? "Yes" : "No"),

@@ -28,7 +28,7 @@ class BottomBar extends StatelessWidget {
       items: _menu.map((MenuBar menu) {
         return BottomNavigationBarItem(
           icon: Icon(menu.icon),
-          title: Text(menu.name),
+          label: menu.name,
         );
       }).toList(),
       currentIndex: bottomIndex,
