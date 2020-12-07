@@ -11,7 +11,7 @@ Widget buildListRow(Listing listing, Row rows) {
     children: <Widget>[
       Row(children: <Widget>[
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          margin: EdgeInsets.only(left: 10.0, right: 15.0),
           child: Container(
               width: 250,
               child: Text(

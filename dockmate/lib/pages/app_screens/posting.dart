@@ -66,9 +66,9 @@ class _PostingState extends State<Posting> {
                           child: Row(
                         children: [
                           Container(
-                              width: 200,
+                              width: 285,
                               // padding: EdgeInsets.only(right: 20),
-                              margin: EdgeInsets.only(left: 31, right: 65),
+                              margin: EdgeInsets.only(left: 22),
                               child: Text(
                                 _title,
                                 style: TextStyle(
@@ -117,16 +117,17 @@ class _PostingState extends State<Posting> {
                       Container(
                           padding: EdgeInsets.all(10.0),
                           child: Image.network(_mainImage,
-                              height: 200, width: 350, fit: BoxFit.fill)),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Container(
-                                padding: EdgeInsets.all(10.0),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
+                              height: 200, width: 370, fit: BoxFit.fill)),
+                      Container(
+                          width: 370,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
                                       Container(
                                           margin: EdgeInsets.only(bottom: 6),
                                           child: Text("Location",
@@ -147,49 +148,56 @@ class _PostingState extends State<Posting> {
                                               _country +
                                               " ")),
                                     ])),
-                            Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Container(
-                                          padding: EdgeInsets.only(top: 2),
-                                          margin: EdgeInsets.only(bottom: 3),
-                                          child: Row(children: <Widget>[
-                                            Text("\$ $_price/",
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20)),
-                                            Container(
-                                              margin: EdgeInsets.only(top: 5.3),
-                                              child: Text("mth",
-                                                  style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14,
-                                                  )),
-                                            )
-                                          ])),
-                                      Text(_duration,
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                          )),
-                                      Container(
-                                          margin: EdgeInsets.only(
-                                            bottom: 12.0,
-                                          ),
-                                          child: Text(_status,
+                                Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          Container(
+                                              padding: EdgeInsets.only(top: 2),
+                                              margin:
+                                                  EdgeInsets.only(bottom: 3),
+                                              child: Row(children: <Widget>[
+                                                Text("\$ $_price/",
+                                                    style: TextStyle(
+                                                        color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20)),
+                                                Container(
+                                                  margin:
+                                                      EdgeInsets.only(top: 5.3),
+                                                  child: Text("mth",
+                                                      style: TextStyle(
+                                                        color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 14,
+                                                      )),
+                                                )
+                                              ])),
+                                          Text(_duration,
                                               style: TextStyle(
-                                                  color: idStatus(_status)))),
-                                    ])),
-                          ]),
+                                                color: Colors.blue,
+                                              )),
+                                          Container(
+                                              margin: EdgeInsets.only(
+                                                bottom: 12.0,
+                                              ),
+                                              child: Text(_status,
+                                                  style: TextStyle(
+                                                      color:
+                                                          idStatus(_status)))),
+                                        ])),
+                              ])),
                       // Container(
                       //     padding: EdgeInsets.all(10.0),
                       //     child: buildIconRow(widget.listing)),
                       Container(
                           padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
-                          width: 325,
+                          width: 370,
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[

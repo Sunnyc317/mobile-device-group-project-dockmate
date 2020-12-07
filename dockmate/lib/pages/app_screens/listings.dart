@@ -1,5 +1,5 @@
 import 'package:dockmate/model/user.dart';
-import 'package:dockmate/utils/auth.dart';
+// import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:search_app_bar/search_app_bar.dart';
 import 'package:dockmate/model/listing.dart';
@@ -39,7 +39,7 @@ class _ListingState extends State<Listings> {
 
   @override
   Widget build(BuildContext context) {
-    AuthService _auth = AuthService();
+    // AuthService _auth = AuthService();
     //final Filter filter;
 
     Row symbols() {
@@ -69,12 +69,12 @@ class _ListingState extends State<Listings> {
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
         title: Text('Listings'),
         actions: <Widget>[
-          FlatButton(
-            child: Text('Sign Out'),
-            onPressed: () {
-              _auth.signOut();
-            },
-          ),
+          // FlatButton(
+          //   child: Text('Sign Out'),
+          //   onPressed: () {
+          //     _auth.signOut();
+          //   },
+          // ),
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
           IconButton(
               icon: Icon(Icons.add),
