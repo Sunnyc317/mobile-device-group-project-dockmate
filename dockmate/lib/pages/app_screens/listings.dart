@@ -1,5 +1,5 @@
 import 'package:dockmate/model/user.dart';
-import 'package:dockmate/utils/auth.dart';
+// import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:search_app_bar/search_app_bar.dart';
 import 'package:dockmate/model/listing.dart';
@@ -39,19 +39,42 @@ class _ListingState extends State<Listings> {
 
   @override
   Widget build(BuildContext context) {
-    AuthService _auth = AuthService();
+    // AuthService _auth = AuthService();
     //final Filter filter;
+
+    Row symbols() {
+      return Row(children: <Widget>[
+        Container(
+          child: IconButton(
+            icon: Icon(Icons.message_outlined),
+            onPressed: () {},
+          ),
+        ),
+        Container(
+          child: IconButton(
+            icon: Icon(Icons.bookmark_border_outlined),
+            onPressed: () {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text("Post saved"),
+              ));
+              _saveListing(context);
+            },
+          ),
+        )
+      ]);
+    }
 
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
         title: Text('Listings'),
         actions: <Widget>[
-          FlatButton(
-            child: Text('Sign Out'),
-            onPressed: () {
-              _auth.signOut();
-            },
-          ),
+          // FlatButton(
+          //   child: Text('Sign Out'),
+          //   onPressed: () {
+          //     _auth.signOut();
+          //   },
+          // ),
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
           IconButton(
               icon: Icon(Icons.add),
@@ -78,32 +101,12 @@ class _ListingState extends State<Listings> {
                     title: Container(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
                         child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              buildListRow(_listings[index]),
-                              Row(
-                                children: [
-                                  Container(
-                                    child: IconButton(
-                                      icon: Icon(Icons.message_outlined),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                  Container(
-                                    child: IconButton(
-                                      icon:
-                                          Icon(Icons.bookmark_border_outlined),
-                                      onPressed: () {
-                                        Scaffold.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text("Post saved"),
-                                        ));
-                                        _saveListing(context);
-                                      },
-                                    ),
-                                  )
-                                ],
-                              )
+                              Row(children: <Widget>[
+                                buildListRow(_listings[index], symbols()),
+                              ]),
                             ])))),
           );
         },

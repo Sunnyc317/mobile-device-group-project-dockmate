@@ -23,52 +23,42 @@ class _LoginState extends State<Login> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset("assets/dock.png", scale: 20, color: Colors.white),
-            Text("Dock Mate"),
-          ],
-        ),
+        leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+        title: Text("Dock Mate"),
       ),
       body: Center(
         child: Container(
+          margin: EdgeInsets.symmetric(vertical: 120),
           // margin: EdgeInsets.only(top: 200, bottom: 200),
           child: Form(
             key: _formKey,
             child: ListView(
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                SizedBox(
-                  height: 40,
-                ),
-                Text("Welcome Back"),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
+                ListTile(
+                    title: Text("Welcome back!",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 23))),
+                ListTile(
+                    title: TextFormField(
                   onChanged: (val) {
                     email = val;
                   },
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    hintText: 'Email',
                     border: OutlineInputBorder(),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
+                )),
+                ListTile(
+                    title: TextFormField(
                   onChanged: (val) {
                     password = val;
                   },
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    hintText: 'Password',
                     border: OutlineInputBorder(),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                )),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: FlatButton(
@@ -78,42 +68,42 @@ class _LoginState extends State<Login> {
                           MaterialPageRoute(
                               builder: (context) => ForgotPassword()));
                     },
-                    child: Text("Forgot Password?"),
+                    child: Container(
+                        margin: EdgeInsets.only(left: 5.5),
+                        child: Text("Forgot Password?",
+                            style: TextStyle(color: Colors.blue))),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
                 ),
                 Builder(
-                  builder: (context) => RaisedButton(
-                    child: Text("Login"),
-                    onPressed: () async {
-                      _formKey.currentState.save();
-                      _auth.signinwithEmail(email, password);
-                      setState(() {
-                        
-                      });
-                      // dynamic result =
-                      //     await _auth.signinwithEmail(email, password);
+                    builder: (context) => Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 160, vertical: 5),
+                          child: RaisedButton(
+                            color: Colors.blue,
+                            child: Text("Login",
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () async {
+                              _formKey.currentState.save();
+                              _auth.signinwithEmail(email, password);
+                              setState(() {});
+                              // dynamic result =
+                              //     await _auth.signinwithEmail(email, password);
 
-                      // if (result['user'] == null) {
-                      //   Scaffold.of(context).showSnackBar(
-                      //       SnackBar(content: Text(result['msg'])));
-                      // } else {
-                      //   Scaffold.of(context).showSnackBar(
-                      //       SnackBar(content: Text(result['msg'])));
-                      // }
+                              // if (result['user'] == null) {
+                              //   Scaffold.of(context).showSnackBar(
+                              //       SnackBar(content: Text(result['msg'])));
+                              // } else {
+                              //   Scaffold.of(context).showSnackBar(
+                              //       SnackBar(content: Text(result['msg'])));
+                              // }
 
-
-                      // Navigator.of(context).pushReplacementNamed('/Listings');
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                              // Navigator.of(context).pushReplacementNamed('/Listings');
+                            },
+                          ),
+                        )),
                 FlatButton(
-                  child: Text("New User? Register Here!"),
+                  child: Text("New User? Register Here!",
+                      style: TextStyle(color: Colors.blue)),
                   onPressed: () {
                     widget.toggleView('register');
                     // Navigator.of(context).pushReplacementNamed('/Register');

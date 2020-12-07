@@ -1,5 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart' ;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dockmate/model/user.dart' as usermodel;
+import 'package:dockmate/model/username.dart';
+import 'package:flutter/material.dart';
 
 /*
 TO-DOs
@@ -7,8 +9,8 @@ TO-DOs
 */
 
 class AuthService {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final UsernameModel usernameModel = UsernameModel();
 
   // Create user obj based on firebaseUser
 
@@ -32,46 +34,60 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User user = result.user;
+      //adding random guest username
+      final tempName = "Guest " + UniqueKey().toString();
+      print("Guest $tempName is in");
+      usernameModel.setUsername(tempName);
       return _userFromFirebaseUser(user);
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
   // sign out
-  Future signOut() async{
+  Future signOut() async {
     try {
       return await _auth.signOut();
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password, String fname, String lname) async {
+  Future registerWithEmailAndPassword(
+      String email, String password, String fname, String lname) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       result.user.updateProfile(displayName: '$fname $lname', photoURL: null);
-      usermodel.User user = _userFromFirebaseUser(result.user); // convert firebase User to local User model
-      return {'user': user, 'msg': '${result.user.displayName} registered successfully'};
-    } catch(e) {
-      print(e.toString());
-      return {'user': null, 'msg': e.toString()};
-    }
-  }
-
-  // sign in with email and password
-  Future signinwithEmail(String email, String password) async{
-    try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password); 
-      usermodel.User user = _userFromFirebaseUser(result.user); // convert firebase User to local User model
-      return {'user': user, 'msg': '${result.user.displayName} signed in successfully'};
+      usermodel.User user = _userFromFirebaseUser(
+          result.user); // convert firebase User to local User model
+      return {
+        'user': user,
+        'msg': '${result.user.displayName} registered successfully'
+      };
     } catch (e) {
       print(e.toString());
       return {'user': null, 'msg': e.toString()};
     }
   }
 
+  // sign in with email and password
+  Future signinwithEmail(String email, String password) async {
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      usermodel.User user = _userFromFirebaseUser(
+          result.user); // convert firebase User to local User model
+      return {
+        'user': user,
+        'msg': '${result.user.displayName} signed in successfully'
+      };
+    } catch (e) {
+      print(e.toString());
+      return {'user': null, 'msg': e.toString()};
+    }
+  }
 }
