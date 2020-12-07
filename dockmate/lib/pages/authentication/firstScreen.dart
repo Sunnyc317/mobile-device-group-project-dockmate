@@ -17,60 +17,64 @@ class _FirstScreenState extends State<FirstScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
-        title: Text('Dockmate! (Authentication)'),
+        title: Text('Dock Mate (Authentication)'),
       ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Image.asset('assets/dock.png', width: 200),
-            const SizedBox(height: 50),
-            ButtonTheme(
-                minWidth: 200,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
+            Container(
+                margin: EdgeInsets.only(top: 50, bottom: 5),
+                child: ButtonTheme(
+                    minWidth: 200,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      color: Colors.white60,
+                      child: const Text('Returning User',
+                          style: TextStyle(fontSize: 20)),
+                      onPressed: () {
+                        widget.toggleView('login');
+                        // Navigator.of(context).pushReplacementNamed('/Login');
+                      },
+                    ))),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 15),
+                child: ButtonTheme(
+                  minWidth: 200,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                    child: const Text('New User',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onPressed: () {
+                      widget.toggleView('register');
+                      // Navigator.of(context).pushReplacementNamed('/Register');
+                    },
                   ),
-                  color: Colors.white60,
-                  child: const Text('Returning User',
-                      style: TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    widget.toggleView('login');
-                    // Navigator.of(context).pushReplacementNamed('/Login');
-                  },
                 )),
-            const SizedBox(height: 30),
-            ButtonTheme(
-              minWidth: 200,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                child: const Text('New User', style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  widget.toggleView('register');
-                  // Navigator.of(context).pushReplacementNamed('/Register');
-                },
-              ),
-            ),
-            const SizedBox(height: 20),
-            ButtonTheme(
-              minWidth: 200,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                color: Colors.white60,
-                child:
-                    const Text('Guest sign-in', style: TextStyle(fontSize: 20)),
-                onPressed: () async {
-                  // call anon sign in function
-                  var reselt = await _auth.signInAnon();
+            Container(
+                margin: EdgeInsets.only(top: 5),
+                child: ButtonTheme(
+                  minWidth: 200,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                    color: Colors.white60,
+                    child: const Text('Guest Login',
+                        style: TextStyle(fontSize: 20)),
+                    onPressed: () async {
+                      // call anon sign in function
+                      var reselt = await _auth.signInAnon();
 
-                  // Navigator.of(context).pushReplacementNamed('/Login');
-                },
-              ),
-            ),
+                      // Navigator.of(context).pushReplacementNamed('/Login');
+                    },
+                  ),
+                )),
           ],
         ),
       ),

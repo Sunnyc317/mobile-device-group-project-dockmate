@@ -19,19 +19,29 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       ),
       body: Center(
         child: Container(
-          margin: EdgeInsets.only(top: 200, bottom: 300),
-          child: Column(
+          margin: EdgeInsets.symmetric(vertical: 120),
+          child: ListView(
             // mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text("Reset your password"),
-              TextField(
-                decoration: InputDecoration(labelText: "email"),
-              ),
-              RaisedButton(
+              ListTile(
+                  title: Text("Forgot your password?",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 23))),
+              ListTile(
+                  title: Text(
+                      "No worries! Enter your account's email and we'll send you a password reset link.")),
+              ListTile(
+                  title: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: "Email"),
+              )),
+              ListTile(
+                  title: RaisedButton(
+                color: Colors.blue,
                 onPressed: () {},
-                child: Text("Submit"),
-              ),
+                child: Text("Send your password reset email",
+                    style: TextStyle(color: Colors.white)),
+              )),
             ],
           ),
         ),

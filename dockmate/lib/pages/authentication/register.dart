@@ -56,11 +56,16 @@ class _RegisterState extends State<Register> {
       //   ],
       // ),
       body: Container(
-        margin: EdgeInsets.all(10),
+        // margin: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(vertical: 18),
         child: Form(
           key: _formKey,
           child: ListView(
             children: <Widget>[
+              ListTile(
+                  title: Text("Register with Dock Mate!",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 23))),
               ListTile(
                   title: TextFormField(
                 decoration: const InputDecoration(

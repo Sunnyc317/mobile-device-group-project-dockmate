@@ -24,19 +24,21 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
-        title: Text("Welcome Back!"),
+        title: Text("Dock Mate"),
       ),
       body: Center(
         child: Container(
+          margin: EdgeInsets.symmetric(vertical: 120),
           // margin: EdgeInsets.only(top: 200, bottom: 200),
           child: Form(
             key: _formKey,
             child: ListView(
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                SizedBox(
-                  height: 20,
-                ),
+                ListTile(
+                    title: Text("Welcome back!",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 23))),
                 ListTile(
                     title: TextFormField(
                   onChanged: (val) {

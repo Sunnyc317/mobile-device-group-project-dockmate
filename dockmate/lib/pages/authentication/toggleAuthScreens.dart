@@ -21,21 +21,19 @@ class _ToggleAuthScreensState extends State<ToggleAuthScreens> {
   @override
   Widget build(BuildContext context) {
     if (screen == 'firstScreen') {
-      return FirstScreen(toggleView: toggleView,);
-    }
-    else if (screen == 'login') {
+      return FirstScreen(
+        toggleView: toggleView,
+      );
+    } else if (screen == 'login') {
       return Login(toggleView: toggleView);
-    }
-    else if (screen == 'register') {
+    } else if (screen == 'register') {
       return Register(toggleView: toggleView);
     }
-
 
     // if (showSignIn) {
     //   return Login();
     // } else {
     //   return Register();
     // }
-
   }
 }
