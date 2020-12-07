@@ -187,14 +187,14 @@ class _PostingFormState extends State<PostingForm> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    padding: EdgeInsets.only(right: 5.0),
+                    padding: EdgeInsets.only(right: 8.0),
                     child: RaisedButton(
-                      color: Colors.grey,
+                      // color: Colors.grey,
                       onPressed: () {},
                       child: Text("Cancel"),
                     )),
                 RaisedButton(
-                  color: Colors.green,
+                  color: Colors.blue,
                   onPressed: () {
                     Listing list = Listing(
                         title: _title,
@@ -217,7 +217,7 @@ class _PostingFormState extends State<PostingForm> {
                             "https://torontostoreys.com/wp-content/uploads/2020/03/101-St-Clair-Ave.jpeg");
                     Navigator.pop(context, list);
                   },
-                  child: Text("Done"),
+                  child: Text("Done", style: TextStyle(color: Colors.white)),
                 ),
               ],
             )

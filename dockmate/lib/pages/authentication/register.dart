@@ -61,8 +61,10 @@ class _RegisterState extends State<Register> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              TextFormField(
+              ListTile(
+                  title: TextFormField(
                 decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
                   hintText: 'Enter your first name',
                   labelText: 'First Name',
                 ),
@@ -79,9 +81,11 @@ class _RegisterState extends State<Register> {
                 onSaved: (value) {
                   fname = value;
                 },
-              ),
-              TextFormField(
+              )),
+              ListTile(
+                  title: TextFormField(
                 decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
                   hintText: 'Enter your last name',
                   labelText: 'Last Name',
                 ),
@@ -98,11 +102,13 @@ class _RegisterState extends State<Register> {
                 onSaved: (value) {
                   lname = value;
                 },
-              ),
-              TextFormField(
+              )),
+              ListTile(
+                  title: TextFormField(
                 decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
                   hintText: 'xxxxxx@email.com',
-                  labelText: 'Email address',
+                  labelText: 'Email Address',
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
@@ -118,7 +124,7 @@ class _RegisterState extends State<Register> {
                 onSaved: (value) {
                   email = value;
                 },
-              ),
+              )),
               // TextFormField(
               //   decoration: const InputDecoration(
               //     hintText: '(xxx) xxx-xxxx',
@@ -141,22 +147,24 @@ class _RegisterState extends State<Register> {
               //     phone = value;
               //   },
               // ),
-              TextFormField(
+              ListTile(
+                  title: TextFormField(
                 decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
                   hintText:
-                      'User at lease 8 characters with special symbols .?!_*',
-                  labelText: 'password',
+                      'Use at least 8 characters with special symbols .?!_*',
+                  labelText: 'Password',
                 ),
                 obscureText: true,
                 validator: (value) {
                   if (value.length < 8) {
-                    return 'password needs to be at least 8 char long';
+                    return 'Password needs to be at least 8 characters long';
                   }
                   return null;
                 },
                 onChanged: (value) {
                   if (value.length < 8) {
-                    return 'password needs to be at least 8 char long';
+                    return 'Password needs to be at least 8 characters long';
                     setState(() {});
                   } else {
                     password = value;
@@ -166,22 +174,24 @@ class _RegisterState extends State<Register> {
                 onSaved: (value) {
                   password = value;
                 },
-              ),
-              TextFormField(
+              )),
+              ListTile(
+                  title: TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Re-enter password',
+                  border: OutlineInputBorder(),
+                  labelText: 'Re-enter Password',
                 ),
                 obscureText: true,
                 validator: (value) {
                   if (value != password) {
-                    return 'this doesn\'t match your password';
+                    return 'Password does not match';
                   } else {
                     password = value;
                   }
                 },
                 onChanged: (value) {
                   if (value != password) {
-                    return 'this doesn\'t match your password';
+                    return 'Password does not match';
                   } else {
                     return null;
                   }
@@ -189,11 +199,13 @@ class _RegisterState extends State<Register> {
                 onSaved: (value) {
                   password = value;
                 },
-              ),
+              )),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(20),
+                  Container(
+                    padding: EdgeInsets.only(right: 8.0),
                     child: RaisedButton(
                       child: Text('Cancel'),
                       onPressed: () {
@@ -203,10 +215,10 @@ class _RegisterState extends State<Register> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(20),
+                  Container(
                     child: Builder(
                       builder: (context) => RaisedButton(
+                        color: Colors.blue,
                         onPressed: () async {
                           // case 1: register success, proceed to Hoursing type preference
                           if (_formKey.currentState.validate()) {
@@ -230,7 +242,8 @@ class _RegisterState extends State<Register> {
                                 content: Text('Input fields invalid')));
                           }
                         },
-                        child: Text('Submit'),
+                        child: Text('Submit',
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
                   ),
