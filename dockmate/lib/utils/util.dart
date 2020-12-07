@@ -37,18 +37,27 @@ Widget buildListRow(Listing listing, Row rows) {
           padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
           child: Row(
             children: <Widget>[
-              Text("\$" + listing.price,
+              Text("\$" + listing.price + "/",
                   style: TextStyle(
                       color: Colors.blue,
                       fontSize: 20,
                       fontWeight: FontWeight.bold)),
-              Text("/mth",
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 10,
-                  )),
+              Container(
+                  margin: EdgeInsets.only(top: 5.3),
+                  child: Text("mth",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ))),
             ],
           )),
+      Container(
+        margin: EdgeInsets.only(left: 146.0, right: 146.0, top: 10.0),
+        height: 1.0,
+        width: 80.0,
+        color: Colors.grey,
+      ),
       buildIconRow(listing),
     ],
   );
@@ -57,14 +66,6 @@ Widget buildListRow(Listing listing, Row rows) {
 Widget buildIconRow(Listing listing) {
   return Row(
     children: [
-      Padding(
-        padding: EdgeInsets.only(left: 146.0, right: 146.0, top: 10.0),
-        child: Container(
-          height: 1.0,
-          width: 80.0,
-          color: Colors.grey,
-        ),
-      ),
       // buildIconPair(Icon(Icons.king_bed_outlined), listing.bedroom),
       // buildIconPair(Icon(Icons.bathtub_outlined), listing.bathroom),
       // buildIconPair(Icon(Icons.pets), listing.isPetFriendly ? "Yes" : "No"),
