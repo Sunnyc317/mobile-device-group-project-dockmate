@@ -3,6 +3,7 @@ import 'package:dockmate/pages/authentication/newUser_housingType.dart';
 import 'package:dockmate/pages/app_screens/settings.dart';
 import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:dockmate/model/username.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -28,6 +29,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    UsernameModel usernameModel = UsernameModel();
     AuthService _auth = AuthService();
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +46,7 @@ class _RegisterState extends State<Register> {
         actions: <Widget>[
           FlatButton.icon(
               onPressed: () => widget.toggleView('login'),
-                  // Navigator.of(context).pushReplacementNamed('/Login'),
+              // Navigator.of(context).pushReplacementNamed('/Login'),
               icon: Icon(Icons.person),
               label: Text('Log in'))
         ],
@@ -204,16 +206,20 @@ class _RegisterState extends State<Register> {
                         onPressed: () async {
                           // case 1: register success, proceed to Hoursing type preference
                           if (_formKey.currentState.validate()) {
+                            print("First name: $fname is registered");
+                            usernameModel.setUsername(
+                                fname); //save username to sqflite to be used by other parts
                             _formKey.currentState.save();
-                            dynamic result = await _auth
-                                .registerWithEmailAndPassword(email, password, fname, lname);
+                            dynamic result =
+                                await _auth.registerWithEmailAndPassword(
+                                    email, password, fname, lname);
 
                             if (result['user'] == null) {
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text(result['msg'])));
+                              Scaffold.of(context).showSnackBar(
+                                  SnackBar(content: Text(result['msg'])));
                             } else {
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text(result['msg'])));
+                              Scaffold.of(context).showSnackBar(
+                                  SnackBar(content: Text(result['msg'])));
                             }
                           } else {
                             Scaffold.of(context).showSnackBar(SnackBar(
