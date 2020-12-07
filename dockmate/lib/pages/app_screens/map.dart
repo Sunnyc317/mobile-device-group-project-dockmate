@@ -65,10 +65,12 @@ class _MapState extends State<Map> {
           width: 45.0,
           point: point,
           builder: (context) => Container(
-                  child: Icon(
-                Icons.house,
-                size: 25.0,
-                color: Colors.blue,
+                  child: IconButton(
+                icon: Icon(
+                  Icons.house,
+                  size: 25.0,
+                  color: Colors.blue,
+                ),
               ))));
     });
 
