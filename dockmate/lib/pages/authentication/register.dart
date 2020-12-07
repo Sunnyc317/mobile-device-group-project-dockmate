@@ -33,24 +33,28 @@ class _RegisterState extends State<Register> {
     AuthService _auth = AuthService();
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              child: Image.asset("assets/placeholder_icon.png", scale: 20),
-              margin: EdgeInsets.only(right: 10),
-            ),
-            Text('Registration'),
-          ],
-        ),
-        actions: <Widget>[
-          FlatButton.icon(
-              onPressed: () => widget.toggleView('login'),
-              // Navigator.of(context).pushReplacementNamed('/Login'),
-              icon: Icon(Icons.person),
-              label: Text('Log in'))
-        ],
+        leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+        title: Text("Registration"),
       ),
+      // appBar: AppBar(
+      //   title: Row(
+      //     mainAxisAlignment: MainAxisAlignment.start,
+      //     children: [
+      //       Container(
+      //         child: Image.asset("assets/placeholder_icon.png", scale: 20),
+      //         margin: EdgeInsets.only(right: 10),
+      //       ),
+      //       Text('Registration'),
+      //     ],
+      //   ),
+      //   actions: <Widget>[
+      //     FlatButton.icon(
+      //         onPressed: () => widget.toggleView('login'),
+      //         // Navigator.of(context).pushReplacementNamed('/Login'),
+      //         icon: Icon(Icons.person),
+      //         label: Text('Log in'))
+      //   ],
+      // ),
       body: Container(
         margin: EdgeInsets.all(10),
         child: Form(

@@ -47,14 +47,18 @@ class _SettingsState extends State<Settings> {
     // }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Settings'), actions: [
-        FlatButton(
-          child: Text('Sign Out'),
-          onPressed: () {
-            _auth.signOut();
-          },
-        )
-      ]),
+      appBar: AppBar(
+          leading:
+              Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+          title: Text('Settings'),
+          actions: [
+            FlatButton(
+              child: Text('Sign Out'),
+              onPressed: () {
+                _auth.signOut();
+              },
+            )
+          ]),
       body: Center(
           child: Form(
         key: _formKey,

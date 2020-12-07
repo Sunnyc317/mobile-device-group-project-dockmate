@@ -13,7 +13,7 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    
+
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
@@ -61,9 +61,9 @@ class _FirstScreenState extends State<FirstScreen> {
                   borderRadius: BorderRadius.circular(18.0),
                 ),
                 color: Colors.white60,
-                child: const Text('Guest sign-in',
-                    style: TextStyle(fontSize: 20)),
-                onPressed: () async{
+                child:
+                    const Text('Guest sign-in', style: TextStyle(fontSize: 20)),
+                onPressed: () async {
                   // call anon sign in function
                   var reselt = await _auth.signInAnon();
 

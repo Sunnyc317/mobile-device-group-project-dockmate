@@ -71,7 +71,10 @@ class _PostingFormState extends State<PostingForm> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+          leading:
+              Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+          title: Text(widget.title)),
       body: Container(
         padding: EdgeInsets.all(16.0),
         child: ListView(

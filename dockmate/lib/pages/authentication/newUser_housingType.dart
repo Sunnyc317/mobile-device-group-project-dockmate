@@ -17,12 +17,8 @@ class _HousingTypeState extends State<HousingType> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset("assets/placeholder_icon.png", scale: 20),
-            Text("Dock Mate"),
-          ],
-        ),
+        leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+        title: Text("Dock Mate"),
       ),
       body: Center(
         child: Container(

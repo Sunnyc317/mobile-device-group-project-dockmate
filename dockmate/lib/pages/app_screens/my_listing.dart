@@ -42,6 +42,7 @@ class _MyListingState extends State<MyListing> {
     //inal Filter filter;
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
         title: Text('My Listings'),
         actions: <Widget>[
           IconButton(

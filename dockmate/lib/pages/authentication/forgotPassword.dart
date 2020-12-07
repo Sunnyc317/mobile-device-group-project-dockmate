@@ -14,12 +14,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset("assets/placeholder_icon.png", scale: 20),
-            Text("Dock Mate"),
-          ],
-        ),
+        leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+        title: Text("Dock Mate"),
       ),
       body: Center(
         child: Container(
@@ -28,8 +24,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             // mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text("Reset your password"), 
-              TextField(decoration: InputDecoration(labelText: "email"), ),
+              Text("Reset your password"),
+              TextField(
+                decoration: InputDecoration(labelText: "email"),
+              ),
               RaisedButton(
                 onPressed: () {},
                 child: Text("Submit"),

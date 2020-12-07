@@ -53,7 +53,10 @@ class _PostingState extends State<Posting> {
     }
 
     return Scaffold(
-        appBar: AppBar(title: Text(widget.title)),
+        appBar: AppBar(
+            leading:
+                Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+            title: Text(widget.title)),
         body: Builder(
             builder: (context) => SingleChildScrollView(
                   child: Container(

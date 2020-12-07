@@ -44,6 +44,7 @@ class _ListingState extends State<Listings> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
         title: Text('Listings'),
         actions: <Widget>[
           FlatButton(
