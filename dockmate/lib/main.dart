@@ -23,19 +23,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // return MultiProvider(
-    //   providers: [
-    //     StreamProvider<usermodel.User>.value(
-    //       value: AuthService().user,
-    //     ),
-    //   ],
-    return StreamProvider.value(
-      // providers: [
-      //   StreamProvider<usermodel.User>.value(
-      //     value: AuthService().user,
-      //   ),
-      // ],
-      value: AuthService().user,
+    return MultiProvider(
+      providers: [
+        StreamProvider<usermodel.User>.value(value: AuthService().user),
+        StreamProvider<User>.value(value: AuthService().userstatus),
+      ],
+    // return StreamProvider.value(
+    //   value: AuthService().user,
       child: MaterialApp(
         title: 'Dock Mate',
         theme: ThemeData(
