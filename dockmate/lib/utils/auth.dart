@@ -107,7 +107,7 @@ class AuthService {
       if (!result.user.emailVerified) {
         try {
           await result.user.sendEmailVerification();
-          print('returned varification snackbar');
+          print('return varification snackbar');
           return {
             'user': null,
             'msg':
