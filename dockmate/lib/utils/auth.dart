@@ -88,7 +88,7 @@ class AuthService {
       return {
         'user': userLocal,
         'msg':
-            '${user.displayName} registered successfully, a varification email is sent to your mail box'
+            '${user.displayName} registered successfully, a verification email is sent to your mail box'
       };
     } catch (e) {
       print(e.toString());
@@ -107,17 +107,17 @@ class AuthService {
       if (!result.user.emailVerified) {
         try {
           await result.user.sendEmailVerification();
-          print('return varification snackbar');
+          print('return verification snackbar');
           return {
             'user': null,
             'msg':
-                '${result.user.email} is not varified! \nAn varification email is on the way, please varify again'
+                '${result.user.email} is not verified! \nAn verification email is on the way, please verify again'
           };
         } catch (e) {
           return {
             'user': null,
             'msg':
-                "${result.user.email} is not varified! \nAn error occured while trying to send email verification \nerror message: ${e.toString()}"
+                "${result.user.email} is not verified! \nAn error occured while trying to send email verification \nerror message: ${e.toString()}"
           };
         }
       }
