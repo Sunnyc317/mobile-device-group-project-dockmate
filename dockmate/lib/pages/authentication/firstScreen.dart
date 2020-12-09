@@ -57,24 +57,25 @@ class _FirstScreenState extends State<FirstScreen> {
                   ),
                 )),
             Container(
-                margin: EdgeInsets.only(top: 5),
-                child: ButtonTheme(
-                  minWidth: 200,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ),
-                    color: Colors.white60,
-                    child: const Text('Guest Login',
-                        style: TextStyle(fontSize: 20)),
-                    onPressed: () async {
-                      // call anon sign in function
-                      var reselt = await _auth.signInAnon();
-
-                      // Navigator.of(context).pushReplacementNamed('/Login');
-                    },
+              margin: EdgeInsets.only(top: 5),
+              child: ButtonTheme(
+                minWidth: 200,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
                   ),
-                )),
+                  color: Colors.white60,
+                  child:
+                      const Text('Guest Login', style: TextStyle(fontSize: 20)),
+                  onPressed: () async {
+                    // call anon sign in function
+                    var reselt = await _auth.signInAnon();
+
+                    // Navigator.of(context).pushReplacementNamed('/Login');
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),
