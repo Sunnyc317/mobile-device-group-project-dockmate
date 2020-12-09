@@ -50,7 +50,7 @@ class _ListingState extends State<Listings> {
     "\$\$: 1800-2000",
     "\$\$: 2000-2500",
     "\$\$\$: 2500-3000",
-    "\$\$\$: 3000+",
+    "\$\$\$: 3000-4500",
     'AB',
     'BC',
     'MB',
@@ -226,7 +226,7 @@ class _ListingState extends State<Listings> {
         headlineText: "Select Filter",
         searchFieldHintText: "Search Here",
         selectedTextList: _selectedFilter, onApplyButtonClick: (list) {
-      if (list.isEmpty) list = _filterList;
+      if (list.isEmpty || list == null) list = _filterList;
       setState(() {
         _selectedFilter = List.from(list);
 

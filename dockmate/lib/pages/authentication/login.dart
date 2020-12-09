@@ -111,7 +111,7 @@ class _LoginState extends State<Login> {
                       // changed = true;
                       return Center(
                         child: Text(
-                          '${userstatus.email} is not verified \nAn varification email is on the way, please varify again',
+                          '${userstatus.email} is not verified \nAn verification email is on the way, please verify again',
                           style: TextStyle(color: Colors.red),
                         ),
                       );
@@ -119,8 +119,9 @@ class _LoginState extends State<Login> {
                       // Scaffold.of(context).showSnackBar(SnackBar(
                       //     content: Text(
                       //         '${widget.user.email} is not verified, \nAn varification email is on the way, please varify again')));
+                    } else {
+                      return Text('');
                     }
-                    else {return Text('');}
                   },
                 ),
                 Builder(
