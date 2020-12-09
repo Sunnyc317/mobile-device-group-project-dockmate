@@ -3,8 +3,8 @@ import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/user.dart';
-import 'package:dockmate/pages/app_screens/posting_form.dart';
-import 'package:dockmate/pages/app_screens/posting.dart';
+import 'package:dockmate/pages/views/post/posting_form.dart';
+import 'package:dockmate/pages/views/post/posting.dart';
 
 Icon sad_replacement_icon = Icon(Icons.satellite);
 

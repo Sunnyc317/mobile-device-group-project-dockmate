@@ -3,14 +3,11 @@ import 'package:dockmate/utils/auth.dart';
 import 'package:dockmate/utils/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:dockmate/pages/authentication/login.dart';
-import 'package:dockmate/pages/app_screens/chat.dart';
-import 'package:dockmate/pages/app_screens/settings.dart';
-import 'package:dockmate/pages/app_screens/listings.dart';
-import 'package:dockmate/pages/app_screens/my_listing.dart';
-import 'package:dockmate/pages/app_screens/map.dart';
-import 'package:dockmate/pages/authentication/register.dart';
-import 'package:dockmate/pages/authentication/firstScreen.dart';
+import 'package:dockmate/pages/views/chat/chat.dart';
+import 'package:dockmate/pages/views/settings/settings.dart';
+import 'package:dockmate/pages/views/post/listings.dart';
+import 'package:dockmate/pages/views/post/my_listing.dart';
+import 'package:dockmate/pages/views/map.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
@@ -28,8 +25,8 @@ class MyApp extends StatelessWidget {
         StreamProvider<usermodel.User>.value(value: AuthService().user),
         StreamProvider<User>.value(value: AuthService().userstatus),
       ],
-    // return StreamProvider.value(
-    //   value: AuthService().user,
+      // return StreamProvider.value(
+      //   value: AuthService().user,
       child: MaterialApp(
         title: 'Dock Mate',
         theme: ThemeData(

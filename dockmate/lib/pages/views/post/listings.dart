@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
-import 'package:dockmate/pages/app_screens/posting.dart';
-import 'package:dockmate/pages/app_screens/posting_form.dart';
+import 'package:dockmate/pages/views/post/posting.dart';
+import 'package:dockmate/pages/views/post/posting_form.dart';
 import 'package:filter_list/filter_list.dart';
 
 // Search functions referencing: https://github.com/ahmed-alzahrani/Flutter_Search_Example
