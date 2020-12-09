@@ -26,7 +26,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       ),
       body: Center(
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 120),
+          margin: EdgeInsets.only(top: 120),
           child: Form(
             key: _formKey,
             child: ListView(
