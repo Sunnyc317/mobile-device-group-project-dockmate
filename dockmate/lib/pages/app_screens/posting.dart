@@ -67,7 +67,6 @@ class _PostingState extends State<Posting> {
                         children: [
                           Container(
                               width: 285,
-                              // padding: EdgeInsets.only(right: 20),
                               margin: EdgeInsets.only(left: 22),
                               child: Text(
                                 _title,
@@ -137,10 +136,7 @@ class _PostingState extends State<Posting> {
                                       Text(_address),
                                       Container(
                                           padding: EdgeInsets.only(
-                                              // left: 10.0,
-                                              // right: 10.0,
-                                              top: 2.0,
-                                              bottom: 10.0),
+                                              top: 2.0, bottom: 10.0),
                                           child: Text(_city +
                                               ", " +
                                               _province +
