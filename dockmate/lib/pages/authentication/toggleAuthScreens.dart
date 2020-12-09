@@ -10,8 +10,8 @@ class ToggleAuthScreens extends StatefulWidget {
 }
 
 class _ToggleAuthScreensState extends State<ToggleAuthScreens> {
-  bool showSignIn = true;
-  String screen = 'firstScreen';
+  // bool showSignIn = true;
+  String screen = 'login';
 
   void toggleView(String scr) {
     // setState(() => showSignIn = !showSignIn);
@@ -20,15 +20,16 @@ class _ToggleAuthScreensState extends State<ToggleAuthScreens> {
 
   @override
   Widget build(BuildContext context) {
-    if (screen == 'firstScreen') {
-      return FirstScreen(
-        toggleView: toggleView,
-      );
-    } else if (screen == 'login') {
+    if (screen == 'login') {
       return Login(toggleView: toggleView);
     } else if (screen == 'register') {
       return Register(toggleView: toggleView);
-    }
+    } 
+    // else if (screen == 'firstScreen') {
+    //   return FirstScreen(
+    //     toggleView: toggleView,
+    //   );
+    // } 
 
     // if (showSignIn) {
     //   return Login();

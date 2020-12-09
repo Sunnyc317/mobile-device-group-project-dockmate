@@ -214,7 +214,7 @@ class _RegisterState extends State<Register> {
                     child: RaisedButton(
                       child: Text('Cancel'),
                       onPressed: () {
-                        widget.toggleView('firstScreen');
+                        widget.toggleView('login');
                         // Navigator.of(context)
                         //     .pushReplacementNamed('/FirstScreen');
                       },

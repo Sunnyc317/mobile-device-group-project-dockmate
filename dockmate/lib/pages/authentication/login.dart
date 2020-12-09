@@ -41,6 +41,12 @@ class _LoginState extends State<Login> {
                             fontWeight: FontWeight.bold, fontSize: 23))),
                 ListTile(
                     title: TextFormField(
+                  validator: (val) {
+                    if (val.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    return null;
+                  },
                   onChanged: (val) {
                     email = val;
                   },
@@ -51,6 +57,13 @@ class _LoginState extends State<Login> {
                 )),
                 ListTile(
                     title: TextFormField(
+                  validator: (val) {
+                    if (val.isEmpty) {
+                      return 'Please enter your password';
+                      setState(() {});
+                    }
+                    return null;
+                  },
                   onChanged: (val) {
                     password = val;
                   },
@@ -77,30 +90,51 @@ class _LoginState extends State<Login> {
                 Builder(
                     builder: (context) => Container(
                           margin: EdgeInsets.symmetric(
-                              horizontal: 160, vertical: 5),
+                              horizontal: 100, vertical: 5),
                           child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
                             color: Colors.blue,
-                            child: Text("Login",
-                                style: TextStyle(color: Colors.white)),
+                            child: Text(
+                              "Login",
+                              style: TextStyle(fontSize: 20, color: Colors.white)),
                             onPressed: () async {
                               _formKey.currentState.save();
-                              _auth.signinwithEmail(email, password);
-                              setState(() {});
-                              // dynamic result =
-                              //     await _auth.signinwithEmail(email, password);
+                              dynamic result =
+                                  await _auth.signinwithEmail(email, password);
 
-                              // if (result['user'] == null) {
-                              //   Scaffold.of(context).showSnackBar(
-                              //       SnackBar(content: Text(result['msg'])));
-                              // } else {
-                              //   Scaffold.of(context).showSnackBar(
-                              //       SnackBar(content: Text(result['msg'])));
-                              // }
-
-                              // Navigator.of(context).pushReplacementNamed('/Listings');
+                              if (result['user'] == null) {
+                                print('user is null');
+                                Scaffold.of(context).showSnackBar(
+                                    SnackBar(content: Text(result['msg'])));
+                              } else {
+                                setState(() {});
+                              }
                             },
                           ),
                         )),
+                Container(
+                  margin: EdgeInsets.only(top: 5, left: 100, right: 100),
+                  child: ButtonTheme(
+                    minWidth: 200,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      color: Colors.white60,
+                      child: const Text('Guest Login',
+                          style: TextStyle(fontSize: 20)),
+                      onPressed: () async {
+                        // call anon sign in function
+                        var reselt = await _auth.signInAnon();
+
+                        // Navigator.of(context).pushReplacementNamed('/Login');
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20,),
                 FlatButton(
                   child: Text("New User? Register Here!",
                       style: TextStyle(color: Colors.blue)),
