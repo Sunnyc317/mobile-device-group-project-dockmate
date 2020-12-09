@@ -32,9 +32,6 @@ class AuthService {
   }
 
   Stream<User> get userstatus {
-    // _auth.authStateChanges().listen((User user) {
-    //   return _userFromFirebaseUser;
-    // });
     return _auth.userChanges();
     // get the user auth status and return the system User object (instead of the firebase user)
     // returns null when user sign out
@@ -73,7 +70,7 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
-      user.updateProfile(displayName: '$fname $lname', photoURL: null);
+      user.updateProfile(displayName: '$fname $lname');
 
       try {
         await user.sendEmailVerification();
@@ -91,7 +88,7 @@ class AuthService {
       return {
         'user': userLocal,
         'msg':
-            '${result.user.displayName} registered successfully, a varification email is sent to your mail box'
+            '${user.displayName} registered successfully, a varification email is sent to your mail box'
       };
     } catch (e) {
       print(e.toString());
@@ -110,6 +107,12 @@ class AuthService {
       if (!result.user.emailVerified) {
         try {
           await result.user.sendEmailVerification();
+          print('returned varification snackbar');
+          return {
+            'user': null,
+            'msg':
+                '${result.user.email} is not varified! \nAn varification email is on the way, please varify again'
+          };
         } catch (e) {
           return {
             'user': null,
@@ -117,15 +120,10 @@ class AuthService {
                 "${result.user.email} is not varified! \nAn error occured while trying to send email verification \nerror message: ${e.toString()}"
           };
         }
-        print('returned varification snackbar');
-        return {
-          'user': null,
-          'msg':
-              '${result.user.email} is not varified! \nAn varification email is on the way, please varify again'
-        };
       }
-      usermodel.User user = _userFromFirebaseUser(
-          result.user); // convert firebase User to local User model
+
+      // convert firebase User to local User model
+      usermodel.User user = _userFromFirebaseUser(result.user);
       user.setname(result.user.displayName);
       user.setemail(result.user.email);
       user.setprofilepic(result.user.photoURL);
@@ -147,11 +145,17 @@ class AuthService {
 
   Future resetPassword(String email) async {
     try {
-      var result = await _auth.sendPasswordResetEmail(email: email);
+      await _auth.sendPasswordResetEmail(email: email);
       // print(result);
-      return {'linksent': true, 'msg': 'A link has been sent to $email, reset your password now!'};
+      return {
+        'linksent': true,
+        'msg': 'A link has been sent to $email, reset your password now!'
+      };
     } catch (e) {
-      return {'linksent': false, 'msg': 'failed to send link to $email \nerror: ${e.toString()}'};
+      return {
+        'linksent': false,
+        'msg': 'failed to send link to $email \nerror: ${e.toString()}'
+      };
     }
   }
 }

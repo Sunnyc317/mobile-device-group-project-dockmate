@@ -1,25 +1,37 @@
 import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:dockmate/pages/authentication/forgotPassword.dart';
 import 'package:dockmate/pages/authentication/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/auth.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   final Function toggleView;
-  Login({Key key, this.toggleView}) : super(key: key);
+  bool verified;
+  User user;
+  Login({Key key, this.toggleView, this.user, this.verified}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  // bool changed = false;
   @override
   Widget build(BuildContext context) {
-    // final user = Providor.of<usermodel.User>(Context);
+    final userstatus = Provider.of<User>(context);
     final _formKey = GlobalKey<FormState>();
+    User user = widget.user;
+    bool verified = widget.verified;
     String email;
     String password;
     AuthService _auth = AuthService();
+    // if (!changed) {
+    //   user = widget.user;
+    //   verified = widget.verified;
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +40,7 @@ class _LoginState extends State<Login> {
       ),
       body: Center(
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 120),
+          margin: EdgeInsets.only(top: 120),
           // margin: EdgeInsets.only(top: 200, bottom: 200),
           child: Form(
             key: _formKey,
@@ -47,6 +59,11 @@ class _LoginState extends State<Login> {
                     }
                     return null;
                   },
+                  onTap: () {
+                    if (userstatus != null) {
+                      _auth.signOut();
+                    }
+                  },
                   onChanged: (val) {
                     email = val;
                   },
@@ -60,13 +77,13 @@ class _LoginState extends State<Login> {
                   validator: (val) {
                     if (val.isEmpty) {
                       return 'Please enter your password';
-                      setState(() {});
                     }
                     return null;
                   },
                   onChanged: (val) {
                     password = val;
                   },
+                  obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Password',
                     border: OutlineInputBorder(),
@@ -88,32 +105,52 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Builder(
-                    builder: (context) => Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 100, vertical: 5),
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                            color: Colors.blue,
-                            child: Text(
-                              "Login",
-                              style: TextStyle(fontSize: 20, color: Colors.white)),
-                            onPressed: () async {
-                              _formKey.currentState.save();
-                              dynamic result =
-                                  await _auth.signinwithEmail(email, password);
+                  builder: (context) {
+                    print('user: $user, verified: $verified');
+                    if (userstatus != null && !userstatus.emailVerified) {
+                      // changed = true;
+                      return Center(
+                        child: Text(
+                          '${userstatus.email} is not verified \nAn varification email is on the way, please varify again',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      );
 
-                              if (result['user'] == null) {
-                                print('user is null');
-                                Scaffold.of(context).showSnackBar(
-                                    SnackBar(content: Text(result['msg'])));
-                              } else {
-                                setState(() {});
-                              }
-                            },
-                          ),
-                        )),
+                      // Scaffold.of(context).showSnackBar(SnackBar(
+                      //     content: Text(
+                      //         '${widget.user.email} is not verified, \nAn varification email is on the way, please varify again')));
+                    }
+                    else {return Text('');}
+                  },
+                ),
+                Builder(
+                  builder: (context) => Container(
+                    margin: EdgeInsets.symmetric(horizontal: 100, vertical: 5),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      color: Colors.blue,
+                      child: Text("Login",
+                          style: TextStyle(fontSize: 20, color: Colors.white)),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                          dynamic result =
+                              await _auth.signinwithEmail(email, password);
+
+                          if (result['user'] == null) {
+                            print('user is null');
+                            Scaffold.of(context).showSnackBar(
+                                SnackBar(content: Text(result['msg'])));
+                          } else {
+                            print(result['msg']);
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 5, left: 100, right: 100),
                   child: ButtonTheme(
@@ -134,7 +171,9 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20,),
+                // SizedBox(
+                //   height: 20,
+                // ),
                 FlatButton(
                   child: Text("New User? Register Here!",
                       style: TextStyle(color: Colors.blue)),
@@ -148,6 +187,7 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
+      // }),
     );
   }
 }
