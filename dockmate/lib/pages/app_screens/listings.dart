@@ -1,12 +1,11 @@
 import 'package:dockmate/model/user.dart';
-// import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:search_app_bar/search_app_bar.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
 import 'package:dockmate/pages/app_screens/posting.dart';
 import 'package:dockmate/pages/app_screens/posting_form.dart';
+import 'package:filter_list/filter_list.dart';
 
 // Search functions referencing: https://github.com/ahmed-alzahrani/Flutter_Search_Example
 class Listings extends StatefulWidget {
@@ -24,11 +23,48 @@ class _ListingState extends State<Listings> {
   String _search = "";
   List<Listing> _listings;
   List<Listing> _filteredListings;
+  List<String> _selectedFilter = [];
   Listing _listing = new Listing();
   Icon _searchIcon = new Icon(Icons.search);
   Icon _saveIcon = new Icon(Icons.bookmark_border_outlined);
   Widget _title = new Text('Listings');
   final TextEditingController _filter = new TextEditingController();
+
+  List<String> _filterList = [
+    "Studio",
+    "1 Bedroom",
+    "1+1 Bedroom",
+    "2 Bedroom",
+    "2+1 Bedroom",
+    "3 Bedroom",
+    "3+1 Bedroom",
+    "4+ Bedroom",
+    "1 Bathroom",
+    "2 Bathroom",
+    "3 Bathroom",
+    "4 Bathroom",
+    "5+ Bathroom",
+    "\$\$: 800-1000",
+    "\$\$: 1000-1200",
+    "\$\$: 1500-1800",
+    "\$\$: 1800-2000",
+    "\$\$: 2000-2500",
+    "\$\$\$: 2500-3000",
+    "\$\$\$: 3000+",
+    'AB',
+    'BC',
+    'MB',
+    'NB',
+    'NL',
+    'NS',
+    'NT',
+    'NU',
+    'ON',
+    'PE',
+    'QC',
+    'YT',
+    "US",
+  ];
 
   @override
   void initState() {
@@ -63,22 +99,27 @@ class _ListingState extends State<Listings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
-        title: _title,
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(icon: _searchIcon, onPressed: _searchPressed),
-          IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                _addListing(context);
-              }),
-        ],
-      ),
-      body: _filteredList(),
-      bottomNavigationBar: BottomBar(bottomIndex: 0),
-    );
+        appBar: AppBar(
+          leading:
+              Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+          title: _title,
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(icon: _searchIcon, onPressed: _searchPressed),
+            IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  _addListing(context);
+                }),
+          ],
+        ),
+        body: _filteredList(),
+        bottomNavigationBar: BottomBar(bottomIndex: 0),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _openFilterDialog,
+          tooltip: 'Filter',
+          child: Icon(Icons.filter_alt),
+        ));
   }
 
   Row symbols() {
@@ -175,6 +216,55 @@ class _ListingState extends State<Listings> {
         );
       },
     );
+  }
+
+  void _openFilterDialog() async {
+    await FilterListDialog.display(context,
+        allTextList: _filterList,
+        height: 480,
+        borderRadius: 20,
+        headlineText: "Select Filter",
+        searchFieldHintText: "Search Here",
+        selectedTextList: _selectedFilter, onApplyButtonClick: (list) {
+      if (list.isEmpty) list = _filterList;
+      setState(() {
+        _selectedFilter = List.from(list);
+
+        List<Listing> _temp = new List<Listing>();
+        _selectedFilter.forEach((filter) {
+          if (filter.split(" ").length == 2) {
+            var current = filter.split(" ");
+            if (current[1] == "Bedroom") {
+              _temp.addAll(_listings
+                  .where((list) => list.bedroom == current[0])
+                  .toList());
+            } else if (current[1] == "Bathroom") {
+              _temp.addAll(_listings
+                  .where((list) => list.bathroom == current[0])
+                  .toList());
+            } else if (current[0].contains("\$")) {
+              var price_range = current[1].split("-");
+              var start_price = int.parse(price_range[0]);
+              var limit_price = int.parse(price_range[1]);
+
+              _temp.addAll(_listings
+                  .where((list) =>
+                      list.price.toLowerCase() != "negotiable" &&
+                      int.parse(list.price) >= start_price &&
+                      int.parse(list.price) <= limit_price)
+                  .toList());
+            }
+          } else {
+            _temp.addAll(
+                _listings.where((list) => list.province == filter).toList());
+          }
+
+          _filteredListings = _temp;
+        });
+      });
+
+      Navigator.pop(context);
+    });
   }
 
   Future<void> _saveListing(BuildContext context) async {
