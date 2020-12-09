@@ -12,6 +12,25 @@ class PostingForm extends StatefulWidget {
 }
 
 class _PostingFormState extends State<PostingForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  int _id;
+  String _bed;
+  String _bathroom;
+  bool _isParkingAvail = false;
+  bool _isPetFriendly = false;
+  String _postalCode;
+  String _address;
+  String _city;
+  String _province;
+  String _country;
+  String _description;
+  String _duration;
+  String _status = "Available";
+  String _title;
+  String _price;
+  bool _isPublic = true;
+
   final _countryList = ["CA", "US", "Other"];
   final _statusOptions = ["Available", "Pending", "No Longer Available"];
   final _bedroomOptions = ["Studio", "1", "1+1", "2", "2+1", "3", "3+1", "4+"];
@@ -31,23 +50,6 @@ class _PostingFormState extends State<PostingForm> {
     'YT',
     "Other"
   ];
-
-  int _id;
-  String _bed;
-  String _bathroom;
-  bool _isParkingAvail = false;
-  bool _isPetFriendly = false;
-  String _postalCode;
-  String _address;
-  String _city;
-  String _province;
-  String _country;
-  String _description;
-  String _duration;
-  String _status;
-  String _title;
-  String _price;
-  bool _isPublic = false;
 
   @override
   Widget build(BuildContext context) {
@@ -71,155 +73,214 @@ class _PostingFormState extends State<PostingForm> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+          leading:
+              Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+          title: Text(widget.title)),
       body: Container(
         padding: EdgeInsets.all(16.0),
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  hintText: "Title",
-                  //errorText: 'Error Text',
-                  border: OutlineInputBorder(),
+        child: Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                ListTile(
+                    title: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "Title",
+                          border: OutlineInputBorder(),
+                        ),
+                        controller: TextEditingController(text: _title),
+                        onChanged: (value) {
+                          _title = value;
+                        },
+                        onSaved: (value) {
+                          _title = value;
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'This field is required';
+                          }
+                          return null;
+                        })),
+                ListTile(title: buildFirstRow()),
+                ListTile(title: buildSecondRow()),
+                ListTile(
+                  title: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Price",
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: TextEditingController(text: _price),
+                      onChanged: (value) {
+                        _price = value;
+                      },
+                      onSaved: (value) {
+                        _price = value;
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return null;
+                      }),
                 ),
-                controller: TextEditingController(text: _title),
-                onChanged: (value) {
-                  _title = value;
-                },
-              ),
-            ),
-            ListTile(title: buildFirstRow()),
-            ListTile(title: buildSecondRow()),
-            ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  hintText: "Price",
-                  //errorText: 'Error Text',
-                  border: OutlineInputBorder(),
+                ListTile(
+                  title: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Street",
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: TextEditingController(text: _address),
+                      onChanged: (value) {
+                        _address = value;
+                      },
+                      onSaved: (value) {
+                        _address = value;
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return null;
+                      }),
                 ),
-                controller: TextEditingController(text: _price),
-                onChanged: (value) {
-                  _price = value;
-                },
-              ),
-            ),
-            ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  hintText: "Street",
-                  //errorText: 'Error Text',
-                  border: OutlineInputBorder(),
+                ListTile(
+                  title: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "City/Town",
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: TextEditingController(text: _city),
+                      onChanged: (value) {
+                        _city = value;
+                      },
+                      onSaved: (value) {
+                        _city = value;
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return null;
+                      }),
                 ),
-                controller: TextEditingController(text: _address),
-                onChanged: (value) {
-                  _address = value;
-                },
-              ),
-            ),
-            ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  hintText: "City/Town",
-                  //errorText: 'Error Text',
-                  border: OutlineInputBorder(),
+                ListTile(
+                  title: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Postal Code",
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: TextEditingController(text: _postalCode),
+                      onChanged: (value) {
+                        _postalCode = value;
+                      },
+                      onSaved: (value) {
+                        _postalCode = value;
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return null;
+                      }),
                 ),
-                controller: TextEditingController(text: _city),
-                onChanged: (value) {
-                  _city = value;
-                },
-              ),
-            ),
-            ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  hintText: "Postal Code",
-                  //errorText: 'Error Text',
-                  border: OutlineInputBorder(),
+                ListTile(
+                    title: Row(children: [
+                  buildProvinceDropdownList(),
+                  Container(
+                      padding: EdgeInsets.only(right: 20.0),
+                      child: buildCountryDropdownList())
+                ])),
+                ListTile(
+                  title: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Duration",
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: TextEditingController(text: _duration),
+                      onChanged: (value) {
+                        _duration = value;
+                      },
+                      onSaved: (value) {
+                        _duration = value;
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return null;
+                      }),
                 ),
-                controller: TextEditingController(text: _postalCode),
-                onChanged: (value) {
-                  _postalCode = value;
-                },
-              ),
-            ),
-            ListTile(
-                title: Row(children: [
-              buildProvinceDropdownList(),
-              Container(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: buildCountryDropdownList())
-            ])),
-            ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  hintText: "Duration",
-                  //errorText: 'Error Text',
-                  border: OutlineInputBorder(),
+                ListTile(
+                  title: TextFormField(
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: "Description",
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: TextEditingController(text: _description),
+                      onChanged: (value) {
+                        _description = value;
+                      },
+                      onSaved: (value) {
+                        _description = value;
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return null;
+                      }),
                 ),
-                controller: TextEditingController(text: _duration),
-                onChanged: (value) {
-                  _duration = value;
-                },
-              ),
-            ),
-            ListTile(
-              title: TextField(
-                maxLines: 3,
-                decoration: InputDecoration(
-                  hintText: "Description",
-                  //errorText: 'Error Text',
-                  border: OutlineInputBorder(),
-                ),
-                controller: TextEditingController(text: _description),
-                onChanged: (value) {
-                  _description = value;
-                },
-              ),
-            ),
-            ListTile(title: buildStatusDropdownList()),
-            ListTile(leading: Text("Public"), title: buildVisibilityCheckbox()),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    padding: EdgeInsets.only(right: 5.0),
-                    child: RaisedButton(
-                      color: Colors.grey,
-                      onPressed: () {},
-                      child: Text("Cancel"),
-                    )),
-                RaisedButton(
-                  color: Colors.green,
-                  onPressed: () {
-                    Listing list = Listing(
-                        title: _title,
-                        address: _address,
-                        city: _city,
-                        postalCode: _postalCode,
-                        province: _province,
-                        country: _country,
-                        description: _description,
-                        price: _price,
-                        bedroom: _bed,
-                        bathroom: _bathroom,
-                        status: _status,
-                        isParkingAvail: _isParkingAvail,
-                        isPetFriendly: _isPetFriendly,
-                        isPublic: _isPublic,
-                        duration: _duration,
-                        userID: "Xgu90z0tTy0MO5gI3Bti",
-                        mainImage:
-                            "https://torontostoreys.com/wp-content/uploads/2020/03/101-St-Clair-Ave.jpeg");
-                    Navigator.pop(context, list);
-                  },
-                  child: Text("Done"),
-                ),
+                ListTile(title: buildStatusDropdownList()),
+                ListTile(
+                    leading: Text("Public"), title: buildVisibilityCheckbox()),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/Listings');
+                          },
+                          child: Text("Cancel"),
+                        )),
+                    RaisedButton(
+                      color: Colors.blue,
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          Listing list = Listing(
+                              title: _title,
+                              address: _address,
+                              city: _city,
+                              postalCode: _postalCode,
+                              province: _province,
+                              country: _country,
+                              description: _description,
+                              price: _price,
+                              bedroom: _bed,
+                              bathroom: _bathroom,
+                              status: _status,
+                              isParkingAvail: _isParkingAvail,
+                              isPetFriendly: _isPetFriendly,
+                              isPublic: _isPublic,
+                              duration: _duration,
+                              userID: "Xgu90z0tTy0MO5gI3Bti",
+                              mainImage:
+                                  "https://torontostoreys.com/wp-content/uploads/2020/03/101-St-Clair-Ave.jpeg");
+                          Navigator.pop(context, list);
+                        }
+                      },
+                      child:
+                          Text("Done", style: TextStyle(color: Colors.white)),
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
-        ),
+            )),
       ),
     );
   }

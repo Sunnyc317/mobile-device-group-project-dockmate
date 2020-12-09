@@ -23,19 +23,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // return MultiProvider(
-    //   providers: [
-    //     StreamProvider<usermodel.User>.value(
-    //       value: AuthService().user,
-    //     ),
-    //   ],
-    return StreamProvider.value(
-      // providers: [
-      //   StreamProvider<usermodel.User>.value(
-      //     value: AuthService().user,
-      //   ),
-      // ],
-      value: AuthService().user,
+    return MultiProvider(
+      providers: [
+        StreamProvider<usermodel.User>.value(value: AuthService().user),
+        StreamProvider<User>.value(value: AuthService().userstatus),
+      ],
+    // return StreamProvider.value(
+    //   value: AuthService().user,
       child: MaterialApp(
         title: 'Dock Mate',
         theme: ThemeData(
@@ -115,6 +109,7 @@ class _InitializingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
         title: Text('Dockmate'),
       ),
       body: Center(

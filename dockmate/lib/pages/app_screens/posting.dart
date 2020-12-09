@@ -53,123 +53,199 @@ class _PostingState extends State<Posting> {
     }
 
     return Scaffold(
-        appBar: AppBar(title: Text(widget.title)),
-        body: Builder(
-            builder: (context) => SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.all(30.0),
-                    child: Row(
-                      children: [
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                  child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                      width: 230,
-                                      padding: EdgeInsets.only(right: 50),
-                                      child: Text(
-                                        _title,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                  Container(
-                                    child: _isOwner
-                                        ? IconButton(
-                                            icon: Icon(Icons.create_outlined),
-                                            onPressed: () {
-                                              _updateListing(
-                                                  context, widget.listing);
-                                            },
-                                          )
-                                        : IconButton(
-                                            icon: Icon(
-                                                Icons.bookmark_border_outlined),
-                                            onPressed: () {
-                                              Scaffold.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                content: Text("Post saved"),
-                                              ));
-                                            },
-                                          ),
-                                  ),
-                                  Container(
-                                    child: _isOwner
-                                        ? IconButton(
-                                            icon: Icon(Icons.delete_outline),
-                                            onPressed: () {
-                                              _deleteConfirmation(context);
-                                            },
-                                          )
-                                        : Container(),
-                                  )
-                                ],
+      appBar: AppBar(
+          leading:
+              Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+          title: Text(widget.title)),
+      body: Builder(
+          builder: (context) => SingleChildScrollView(
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 30.0),
+                    child: Column(children: [
+                      Container(
+                          child: Row(
+                        children: [
+                          Container(
+                              width: 285,
+                              margin: EdgeInsets.only(left: 22),
+                              child: Text(
+                                _title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22,
+                                ),
                               )),
-                              Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Text(_status,
-                                      style:
-                                          TextStyle(color: idStatus(_status)))),
-                              Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Image.network(_mainImage,
-                                      height: 100,
-                                      width: 250,
-                                      fit: BoxFit.fill)),
-                              Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Text(_duration + " - \$" + _price)),
-                              Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Text(_address)),
-                              Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Text(_city +
-                                      ", " +
-                                      _province +
-                                      ", " +
-                                      _country +
-                                      " ")),
-                              Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: buildIconRow(widget.listing)),
-                              Container(
-                                  padding:
-                                      EdgeInsets.only(top: 10.0, bottom: 20.0),
-                                  width: 300,
-                                  child:
-                                      Text("Description: \n\n" + _description)),
-                              !_isOwner
-                                  ? RaisedButton.icon(
-                                      onPressed: () {
-                                        //temporarily hardcoding other user identity
-                                        _owner = "Rogue Smith";
-                                        Chat chatRoomInfo = Chat.startChatRoom(
-                                            imageURL: _mainImage,
-                                            stringUsers: ["self", _owner]);
-                                        Navigator.of(context)
-                                            .pushNamed('/Chat');
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MessageRoom.create(
-                                                      roomInfo: chatRoomInfo)),
-                                        );
-                                      },
-                                      icon:
-                                          //sad_replacement_icon,
-                                          Icon(Icons.message_outlined),
-                                      label: Text("Chat with " + "Post Owner"))
-                                  : Container(),
-                            ])
-                      ],
-                    ),
-                  ),
-                )));
+                          Container(
+                            child: _isOwner
+                                ? IconButton(
+                                    iconSize: 32,
+                                    icon: Icon(Icons.create_outlined),
+                                    onPressed: () {
+                                      _updateListing(context, widget.listing);
+                                    },
+                                  )
+                                : IconButton(
+                                    iconSize: 32,
+                                    icon: Icon(Icons.check_box_outline_blank,
+                                        color: Colors.white),
+                                    onPressed: () {},
+                                  ),
+                          ),
+                          Container(
+                            child: _isOwner
+                                ? IconButton(
+                                    iconSize: 32,
+                                    icon: Icon(Icons.delete_outline),
+                                    onPressed: () {
+                                      _deleteConfirmation(context);
+                                    },
+                                  )
+                                : IconButton(
+                                    iconSize: 32,
+                                    icon: Icon(Icons.bookmark_border_outlined),
+                                    onPressed: () {
+                                      Scaffold.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text("Post saved"),
+                                      ));
+                                    },
+                                  ),
+                          )
+                        ],
+                      )),
+                      Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: Image.network(_mainImage,
+                              height: 200, width: 370, fit: BoxFit.fill)),
+                      Container(
+                          width: 370,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                      Container(
+                                          margin: EdgeInsets.only(bottom: 6),
+                                          child: Text("Location",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 16))),
+                                      Text(_address),
+                                      Container(
+                                          padding: EdgeInsets.only(
+                                              top: 2.0, bottom: 10.0),
+                                          child: Text(_city +
+                                              ", " +
+                                              _province +
+                                              ", " +
+                                              _country +
+                                              " ")),
+                                    ])),
+                                Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          Container(
+                                              padding: EdgeInsets.only(top: 2),
+                                              margin:
+                                                  EdgeInsets.only(bottom: 3),
+                                              child: Row(children: <Widget>[
+                                                Text("\$ $_price/",
+                                                    style: TextStyle(
+                                                        color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20)),
+                                                Container(
+                                                  margin:
+                                                      EdgeInsets.only(top: 5.3),
+                                                  child: Text("mth",
+                                                      style: TextStyle(
+                                                        color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 14,
+                                                      )),
+                                                )
+                                              ])),
+                                          Text(_duration,
+                                              style: TextStyle(
+                                                color: Colors.blue,
+                                              )),
+                                          Container(
+                                              margin: EdgeInsets.only(
+                                                bottom: 12.0,
+                                              ),
+                                              child: Text(_status,
+                                                  style: TextStyle(
+                                                      color:
+                                                          idStatus(_status)))),
+                                        ])),
+                              ])),
+                      // Container(
+                      //     padding: EdgeInsets.all(10.0),
+                      //     child: buildIconRow(widget.listing)),
+                      Container(
+                          padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
+                          width: 370,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                    margin: EdgeInsets.symmetric(vertical: 5),
+                                    child: Text("Description",
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 16))),
+                                Text(_description)
+                              ])),
+                      // !_isOwner
+                      //     ? RaisedButton.icon(
+                      //         onPressed: () {
+                      //           //temporarily hardcoding other user identity
+                      //           _owner = "Rogue Smith";
+                      //           Chat chatRoomInfo = Chat.startChatRoom(
+                      //               imageURL: _mainImage,
+                      //               stringUsers: ["self", _owner]);
+                      //           Navigator.of(context).pushNamed('/Chat');
+                      //           Navigator.push(
+                      //             context,
+                      //             MaterialPageRoute(
+                      //                 builder: (context) => MessageRoom.create(
+                      //                     roomInfo: chatRoomInfo)),
+                      //           );
+                      //         },
+                      //         icon:
+                      //             //sad_replacement_icon,
+                      //             Icon(Icons.message_outlined),
+                      //         label: Text("Chat with " + "Post Owner"))
+                      //     : Container(),
+                    ])),
+              )),
+      floatingActionButton: !_isOwner
+          ? FloatingActionButton(
+              onPressed: () {
+                //temporarily hardcoding other user identity
+                _owner = "Rogue Smith";
+                Chat chatRoomInfo = Chat.startChatRoom(
+                    imageURL: _mainImage, stringUsers: ["self", _owner]);
+                Navigator.of(context).pushNamed('/Chat');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          MessageRoom.create(roomInfo: chatRoomInfo)),
+                );
+              },
+              child: Icon(Icons.message_outlined),
+            )
+          : Container(),
+    );
   }
 
   Future<void> _updateListing(BuildContext context, Listing listing) async {
@@ -192,19 +268,19 @@ class _PostingState extends State<Posting> {
               FlatButton(
                 textColor: Color(0xFF6200EE),
                 onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('CANCEL'),
+              ),
+              FlatButton(
+                textColor: Color(0xFF6200EE),
+                onPressed: () {
                   // NOT YET REDIRECTING BACK TO PREVIOUS PAGE, FIX FOR NEXT ITERATION
                   Listing _listing = new Listing();
                   _listing.delete(widget.listing.id);
                   Navigator.pop(context);
                 },
                 child: Text('YES'),
-              ),
-              FlatButton(
-                textColor: Color(0xFF6200EE),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('CANCEL'),
               ),
             ],
           );

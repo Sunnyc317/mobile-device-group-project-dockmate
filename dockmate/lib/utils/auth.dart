@@ -1,5 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart' ;
+import 'dart:ffi';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dockmate/model/user.dart' as usermodel;
+import 'package:dockmate/model/username.dart';
+import 'package:flutter/material.dart';
 
 /*
 TO-DOs
@@ -7,8 +11,8 @@ TO-DOs
 */
 
 class AuthService {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final UsernameModel usernameModel = UsernameModel();
 
   // Create user obj based on firebaseUser
 
@@ -27,51 +31,131 @@ class AuthService {
     // returns null when user sign out
   }
 
+  Stream<User> get userstatus {
+    return _auth.userChanges();
+    // get the user auth status and return the system User object (instead of the firebase user)
+    // returns null when user sign out
+  }
+
   // sign in anon
   Future signInAnon() async {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User user = result.user;
+      //adding random guest username
+      final tempName = "Guest " + UniqueKey().toString();
+      print("Guest $tempName is in");
+      usernameModel.setUsername(tempName);
       return _userFromFirebaseUser(user);
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
   // sign out
-  Future signOut() async{
+  Future signOut() async {
     try {
       return await _auth.signOut();
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password, String fname, String lname) async {
+  Future registerWithEmailAndPassword(
+      String email, String password, String fname, String lname) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      result.user.updateProfile(displayName: '$fname $lname', photoURL: null);
-      usermodel.User user = _userFromFirebaseUser(result.user); // convert firebase User to local User model
-      return {'user': user, 'msg': '${result.user.displayName} registered successfully'};
-    } catch(e) {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
+      user.updateProfile(displayName: '$fname $lname');
+
+      try {
+        await user.sendEmailVerification();
+        // return user.uid;
+      } catch (e) {
+        return {
+          'user': null,
+          'msg':
+              "An error occured while trying to send email verification \nerror message: ${e.toString()}"
+        };
+      }
+
+      usermodel.User userLocal = _userFromFirebaseUser(
+          user); // convert firebase User to local User model
+      return {
+        'user': userLocal,
+        'msg':
+            '${user.displayName} registered successfully, a verification email is sent to your mail box'
+      };
+    } catch (e) {
       print(e.toString());
-      return {'user': null, 'msg': e.toString()};
+      return {
+        'user': null,
+        'msg': 'registration unsuccessful \nerror message: ${e.toString()}'
+      };
     }
   }
 
   // sign in with email and password
-  Future signinwithEmail(String email, String password) async{
+  Future signinwithEmail(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password); 
-      usermodel.User user = _userFromFirebaseUser(result.user); // convert firebase User to local User model
-      return {'user': user, 'msg': '${result.user.displayName} signed in successfully'};
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      if (!result.user.emailVerified) {
+        try {
+          await result.user.sendEmailVerification();
+          print('return verification snackbar');
+          return {
+            'user': null,
+            'msg':
+                '${result.user.email} is not verified! \nAn verification email is on the way, please verify again'
+          };
+        } catch (e) {
+          return {
+            'user': null,
+            'msg':
+                "${result.user.email} is not verified! \nAn error occured while trying to send email verification \nerror message: ${e.toString()}"
+          };
+        }
+      }
+
+      // convert firebase User to local User model
+      usermodel.User user = _userFromFirebaseUser(result.user);
+      user.setname(result.user.displayName);
+      user.setemail(result.user.email);
+      user.setprofilepic(result.user.photoURL);
+      user.setemailvarified(result.user.emailVerified);
+      user.setphone(result.user.phoneNumber);
+
+      return {
+        'user': user,
+        'msg': '${result.user.displayName} signed in successfully'
+      };
     } catch (e) {
       print(e.toString());
-      return {'user': null, 'msg': e.toString()};
+      return {
+        'user': null,
+        'msg': 'can\'t sign in \nerror message: ${e.toString()}'
+      };
     }
   }
 
+  Future resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      // print(result);
+      return {
+        'linksent': true,
+        'msg': 'A link has been sent to $email, reset your password now!'
+      };
+    } catch (e) {
+      return {
+        'linksent': false,
+        'msg': 'failed to send link to $email \nerror: ${e.toString()}'
+      };
+    }
+  }
 }
