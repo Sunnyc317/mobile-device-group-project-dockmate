@@ -8,7 +8,7 @@ class MenuBar {
 }
 
 class BottomBar extends StatelessWidget {
-  final Function setBottomIndex;
+  final Function toggleView;
   final int bottomIndex;
   List<MenuBar> _menu = [
     MenuBar(name: 'Listing', icon: Icons.home),
@@ -18,7 +18,7 @@ class BottomBar extends StatelessWidget {
     MenuBar(name: 'Settings', icon: Icons.settings),
   ];
 
-  BottomBar({@required this.bottomIndex, this.setBottomIndex});
+  BottomBar({@required this.bottomIndex, @required this.toggleView});
 
   @override
   Widget build(BuildContext context) {
@@ -38,23 +38,24 @@ class BottomBar extends StatelessWidget {
         var page;
         switch (_pageIndex) {
           case 0:
-            page = '/Listings';
+            page = 'Listings';
             break;
           case 1:
-            page = '/Map';
+            page = 'Map';
             break;
           case 2:
-            page = '/Chat';
+            page = 'Chat';
             break;
           case 3:
-            page = '/MyListings';
+            page = 'My Listings';
             break;
           case 4:
-            page = '/Settings';
+            page = 'Settings';
             break;
         }
-
-        Navigator.of(context).pushReplacementNamed(page);
+        toggleView(page);
+        // Navigator.of(context).pushReplacementNamed(page);
+        
       },
     );
   }

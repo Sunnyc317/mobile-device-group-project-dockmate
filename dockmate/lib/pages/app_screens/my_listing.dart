@@ -9,9 +9,9 @@ import 'package:dockmate/pages/app_screens/posting.dart';
 Icon sad_replacement_icon = Icon(Icons.satellite);
 
 class MyListing extends StatefulWidget {
-  final String title;
-
-  MyListing({this.title});
+  // final String title;
+  final Function toggleView;
+  MyListing({Key key, this.toggleView}):super(key:key);
 
   @override
   _MyListingState createState() => _MyListingState();
@@ -102,7 +102,7 @@ class _MyListingState extends State<MyListing> {
           );
         },
       ),
-      bottomNavigationBar: BottomBar(bottomIndex: 3),
+      bottomNavigationBar: BottomBar(bottomIndex: 3, toggleView: widget.toggleView),
     );
   }
 

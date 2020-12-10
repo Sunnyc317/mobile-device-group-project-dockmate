@@ -9,8 +9,8 @@ final centre = LatLng(43.6532, -79.3832);
 final path = [];
 
 class Map extends StatefulWidget {
-  String title;
-  Map({this.title});
+  final Function toggleView;
+  Map({Key key, this.toggleView}):super(key:key);
   @override
   _MapState createState() => _MapState();
 }
@@ -25,7 +25,7 @@ class _MapState extends State<Map> {
         appBar: AppBar(
             leading:
                 Image.asset("assets/dock.png", scale: 20, color: Colors.white),
-            title: Text(widget.title),
+            title: Text('Find a House'),
             actions: <Widget>[]),
         body: FlutterMap(
           options: MapOptions(
@@ -40,7 +40,7 @@ class _MapState extends State<Map> {
             MarkerLayerOptions(markers: _markers()),
           ],
         ),
-        bottomNavigationBar: BottomBar(bottomIndex: 1));
+        bottomNavigationBar: BottomBar(bottomIndex: 1, toggleView: widget.toggleView));
   }
 
   List<Marker> _markers() {
