@@ -77,10 +77,12 @@ class ChatroomTile extends StatelessWidget {
 }
 
 class Chatroom extends StatefulWidget {
-  String title;
-  Chatroom({this.title});
+  // String title;
+  // Chatroom({this.title});
+  final Function toggleView;
+  Chatroom({Key key, this.toggleView}):super(key:key);
   Chat roomInfo;
-  Chatroom.create({this.roomInfo});
+  Chatroom.create({this.roomInfo, this.toggleView});
   @override
   _ChatroomState createState() => _ChatroomState();
 }
@@ -164,7 +166,7 @@ class _ChatroomState extends State<Chatroom> {
               title: Text('Chat'),
             ),
             body: _buildMessageRoom(),
-            bottomNavigationBar: BottomBar(bottomIndex: 2),
+            bottomNavigationBar: BottomBar(bottomIndex: 2, toggleView: widget.toggleView,),
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.add),
               onPressed: () => _createNewChatroom(),

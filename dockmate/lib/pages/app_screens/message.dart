@@ -97,8 +97,9 @@ class MessageTile extends StatelessWidget {
 //while this is the internal page of chatting
 class MessageRoom extends StatefulWidget {
   Chat roomInfo;
-  MessageRoom();
-  MessageRoom.create({this.roomInfo});
+  final Function toggleView;
+  MessageRoom({this.toggleView});
+  MessageRoom.create({this.roomInfo, this.toggleView});
   @override
   _MessageRoomState createState() => _MessageRoomState();
 }
@@ -452,9 +453,8 @@ class _MessageRoomState extends State<MessageRoom> {
                         ])))
               ]),
             ),
-            bottomNavigationBar: BottomBar(
-              bottomIndex: 2,
-            ),
+            bottomNavigationBar:
+                BottomBar(bottomIndex: 2, toggleView: widget.toggleView),
           );
         }
 

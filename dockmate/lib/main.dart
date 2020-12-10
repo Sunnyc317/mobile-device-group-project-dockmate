@@ -1,17 +1,8 @@
 import 'package:dockmate/model/user.dart' as usermodel;
 import 'package:dockmate/utils/auth.dart';
-import 'package:dockmate/utils/chatWrapper.dart';
 import 'package:dockmate/utils/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:dockmate/pages/authentication/login.dart';
-import 'package:dockmate/pages/app_screens/chat.dart';
-import 'package:dockmate/pages/app_screens/settings.dart';
-import 'package:dockmate/pages/app_screens/listings.dart';
-import 'package:dockmate/pages/app_screens/my_listing.dart';
-import 'package:dockmate/pages/app_screens/map.dart';
-import 'package:dockmate/pages/authentication/register.dart';
-import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
@@ -38,17 +29,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: MyHomePage(title: 'Dock Mate!'),
-        routes: <String, WidgetBuilder>{
-          // '/Login': (BuildContext context) => Login(),
-          // '/Register': (BuildContext context) => Register(),
-          '/Listings': (BuildContext context) => Listings(title: "Listings"),
-          '/Chat': (BuildContext context) => ChatWrapper(),
-          '/Map': (BuildContext context) => Map(title: "Find a House"),
-          '/MyListings': (BuildContext context) =>
-              MyListing(title: "My Listings"),
-          '/Settings': (BuildContext context) => Settings(title: "Settings"),
-          // '/FirstScreen': (BuildContext context) => FirstScreen(),
-        },
+        routes: <String, WidgetBuilder>{},
       ),
     );
   }

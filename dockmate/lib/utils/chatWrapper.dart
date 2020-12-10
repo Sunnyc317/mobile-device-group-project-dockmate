@@ -4,6 +4,9 @@ import 'package:dockmate/pages/app_screens/userChat.dart';
 import 'package:dockmate/pages/app_screens/message.dart';
 
 class ChatWrapper extends StatefulWidget {
+  final Function toggleView;
+  ChatWrapper({Key key, this.toggleView}) : super(key: key);
+
   @override
   _ChatWrapperState createState() => _ChatWrapperState();
 }
@@ -30,37 +33,6 @@ class _ChatWrapperState extends State<ChatWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    // if (_user.toLowerCase().contains("guest")) {
-    //   print("It went to guest chatroom @$_user");
-    //   return GuestChat(title: "Guest's Chat Room");
-    // } else {
-    //   print("It went to USER'S?! chatroom @$_user");
-    //   return UserChat(title: "$_user's Chat Room");
-    // }
-
-    // var futureBuilder = new FutureBuilder(
-    //     future: _getUsername(),
-    //     builder: (context, snapshot) {
-    //       switch (snapshot.connectionState) {
-    //         case ConnectionState.none:
-    //           return new Text('No preferences');
-    //         case ConnectionState.waiting:
-    //           return new Text('Loading preferences');
-    //         case ConnectionState.done:
-    //           if (snapshot.hasError)
-    //             return new Text('Error: ');
-    //           else {
-    //             if (_user.toLowerCase().contains("guest")) {
-    //               print("It went to guest chatroom @$_user");
-    //               return GuestChat(title: "Guest's Chat Room");
-    //             } else {
-    //               print("It went to USER'S?! chatroom @$_user");
-    //               return UserChat(title: "$_user's Chat Room");
-    //             }
-    //           }
-    //       }
-    //     });
-
     return FutureBuilder(
         future: _getUsername(),
         builder: (context, snapshot) {
@@ -77,7 +49,7 @@ class _ChatWrapperState extends State<ChatWrapper> {
               else {
                 if (_user.toLowerCase().contains("guest")) {
                   print("It went to guest chatroom @$_user");
-                  return MessageRoom();
+                  return MessageRoom(toggleView: widget.toggleView);
                 } else {
                   print("It went to USER'S?! chatroom @$_user");
                   return UserChat(title: "$_user's Chat Room");

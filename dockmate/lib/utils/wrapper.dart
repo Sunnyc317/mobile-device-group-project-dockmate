@@ -3,6 +3,7 @@ import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:dockmate/pages/authentication/login.dart';
 import 'package:dockmate/pages/authentication/toggleAuthScreens.dart';
 import 'package:dockmate/pages/app_screens/listings.dart';
+import 'package:dockmate/utils/toggleMainScreens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,9 +23,8 @@ class _WrapperState extends State<Wrapper> {
     
     // print(user);
     if (userstatus != null && (userstatus.emailVerified || userstatus.isAnonymous)) {
-      // Future.delayed(const Duration(seconds: 2), () {});
       print('user has signed in, should jump to listings');
-      return Listings(title: 'My listing', user: user);
+      return ToggleMainScreens();
     } else if (user == null) {
       print('user = null, not signed in');
       return ToggleAuthScreens(user: null, verified:false);
@@ -32,13 +32,6 @@ class _WrapperState extends State<Wrapper> {
       print('user = $user, not verified');
       return ToggleAuthScreens(user: userstatus, verified:false);
     } 
-    // else if (user != null && !userstatus.emailVerified) {
-    //   print('user = $user, not verified');
-    //   return Login(user:user, verified = false);
-    // }
-
     print(user);
-    // return FirstScreen(title: 'Authentication');
-    // return MyListing(title: "My Listing");
   }
 }
