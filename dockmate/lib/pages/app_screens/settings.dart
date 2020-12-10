@@ -28,6 +28,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   void initState() {
+    print("Setting's init state");
     super.initState();
     _getUsername();
   }

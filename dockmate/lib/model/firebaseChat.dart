@@ -14,22 +14,35 @@ class ChatFirebase {
     "time": Timestamp.now(),
   };
   var chatmap1 = {
-    "imageURL": "https://www.fillmurray.com/640/360",
-    "users": ["Self", "Bill Murray"],
+    "imageURL": "assets/shorsh.png",
+    "users": ["Self", "Shorsh"],
   };
 
   getChatRoomID() => _chatRoomID;
 
   Future<void> createEmptyRoom() async {
+    //this should be used only for chatting with shorsh
     print("Is the empty room called?");
     await FirebaseFirestore.instance
         .collection("chatroom")
-        .add(chatmap1)
+        .doc("Shorsh")
+        .set(chatmap1)
         .then((value) {
-      _chatRoomID = value.id;
-      addMessage(_chatRoomID, submap2);
+      _chatRoomID = "Shorsh";
+      //ideally this will be placeholder
+      // addMessage(_chatRoomID, submap2);
     });
     print("The room id: $_chatRoomID");
+
+    // await FirebaseFirestore.instance
+    //     .collection("chatroom")
+    //     .add(chatmap1)
+    //     .then((value) {
+    //   _chatRoomID = value.id;
+    //   //ideally this will be placeholder
+    //   addMessage(_chatRoomID, submap2);
+    // });
+    // print("The room id: $_chatRoomID");
   }
 
   Future<void> createChatRoom(Map<String, dynamic> chat) async {
@@ -76,4 +89,15 @@ class ChatFirebase {
         .doc();
     chatroomRef.set(msg);
   }
+
+  // Future<void> deleteMessage(
+  //   roomID,
+  // ) {
+  //   var chatroomRef = FirebaseFirestore.instance
+  //       .collection("chatroom")
+  //       .doc(roomID)
+  //       .collection('messages')
+  //       .doc();
+  //   chatroomRef.set(msg);
+  // }
 }

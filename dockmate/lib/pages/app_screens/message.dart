@@ -7,6 +7,7 @@ import 'package:dockmate/model/chat.dart';
 import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:flutter_dialogflow/dialogflow_v2.dart';
 
 class MessageTile extends StatelessWidget {
   Message msg;
@@ -86,6 +87,7 @@ class MessageRoom extends StatefulWidget {
 
 class _MessageRoomState extends State<MessageRoom> {
   final ChatFirebase firebaseDB = ChatFirebase();
+  final ScrollController _scrollController = new ScrollController();
   QuerySnapshot snapshots;
   String messageSent;
   Timestamp curTime;
@@ -134,7 +136,7 @@ class _MessageRoomState extends State<MessageRoom> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(children: <Widget>[
-        MessageTile(msg: samplemessage1),
+        // MessageTile(msg: samplemessage1),
         // MessageTile(msg: samplemessage2),
         // MessageTile(msg: samplemessage3),
         // MessageTile(msg: samplemessage4),
@@ -142,25 +144,44 @@ class _MessageRoomState extends State<MessageRoom> {
     );
   }
 
+  List sortMessage(var ss) {
+    List messages = [];
+    for (var idx = 0; idx < ss.data.documents.length; idx++) {
+      Map toAdd = Message.timestamp(
+              content: ss.data.documents[idx]["content"],
+              timestamp: ss.data.documents[idx]["time"],
+              by: ss.data.documents[idx]["by"])
+          .toMap();
+      messages.add(toAdd);
+    }
+    messages.sort((a, b) => b['time'].compareTo(a['time']));
+    print("How does messages look like really: $messages");
+    return messages;
+  }
+
   Widget generateTiles() {
     print("would the ID logic work?");
     print(widget.roomInfo.chatroomIDString);
-    if (snapshots == null) {
-      return populateExistingMessagesDefault();
-    }
+    // if (snapshots == null) {
+    //   return populateExistingMessagesDefault();
+    // }
     return StreamBuilder(
         stream: firebaseDB.getMessageStream(widget.roomInfo.chatroomIDString),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print("does it have data at some point?");
+            List messages = sortMessage(snapshot);
             return ListView.builder(
                 itemCount: snapshot.data.documents.length,
+                shrinkWrap: true,
+                reverse: true,
+                controller: _scrollController,
                 itemBuilder: (context, index) {
                   return MessageTile(
                       msg: Message.timestamp(
-                          content: snapshot.data.documents[index]["content"],
-                          by: snapshot.data.documents[index]["by"],
-                          timestamp: snapshot.data.documents[index]["time"]));
+                          content: messages[index]["content"],
+                          by: messages[index]["by"],
+                          timestamp: messages[index]["time"]));
                 });
           } else {
             print("No message snapshot has no data");
@@ -178,11 +199,8 @@ class _MessageRoomState extends State<MessageRoom> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-
-    //need more robust handling in future
-    //(check if the chatroom has already existed)
+  void initState() {
+    super.initState();
     if (snapshots == null && widget.roomInfo != null) {
       print("Wicked");
       firebaseDB.createChatRoom(widget.roomInfo.toMap()).then((value) {
@@ -195,11 +213,43 @@ class _MessageRoomState extends State<MessageRoom> {
       firebaseDB.createEmptyRoom();
       //still hardcoded sample
       widget.roomInfo = Chat.startChatRoom(
-          imageURL: "https://www.fillmurray.com/640/360",
-          stringUsers: ["Self", "Bill Murray"]);
-      widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
-      fillSnapshot("create");
+          imageURL: "assets/shorsh.png", stringUsers: ["Self", "Shorsh"]);
+      //because this is for chatbot, can hardcode it to Shorsh
+      // widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
+      setState(() {
+        widget.roomInfo.chatroomIDString = "Shorsh";
+      });
+      // fillSnapshot("create");
     }
+  }
+
+  Future<void> response(query) async {
+    AuthGoogle authGoogle =
+        await AuthGoogle(fileJson: "assets/service.json").build();
+    Dialogflow dialogflow =
+        Dialogflow(authGoogle: authGoogle, language: Language.english);
+    AIResponse aiResponse = await dialogflow.detectIntent(query);
+    print("AI is trying something:" + aiResponse.getListMessage().toString());
+    Map<String, dynamic> toSend = Message.timestamp(
+            content:
+                aiResponse.getListMessage()[0]["text"]["text"][0].toString(),
+            timestamp: curTime,
+            by: 1)
+        .toMap();
+    print("adding AI message: $toSend");
+    firebaseDB.addMessage(widget.roomInfo.chatroomIDString, toSend);
+    setState(() {});
+
+    print("And checking AI response" +
+        aiResponse.getListMessage()[0]["text"]["text"][0].toString());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
+    //need more robust handling in future
+    //(check if the chatroom has already existed)
 
     return FutureBuilder(
       // Initialize FlutterFire
@@ -256,6 +306,7 @@ class _MessageRoomState extends State<MessageRoom> {
               key: _formKey,
               child: Stack(children: <Widget>[
                 Container(
+                    alignment: Alignment.bottomCenter,
                     margin: EdgeInsets.only(bottom: 45),
                     child: generateTiles()),
                 Container(
@@ -327,6 +378,7 @@ class _MessageRoomState extends State<MessageRoom> {
                                   print("adding the message: $toSend");
                                   firebaseDB.addMessage(
                                       widget.roomInfo.chatroomIDString, toSend);
+                                  response("hello");
                                   setState(() {});
                                 },
                               ),

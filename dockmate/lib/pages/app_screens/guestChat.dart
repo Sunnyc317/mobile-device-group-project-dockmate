@@ -18,6 +18,9 @@ import 'package:dockmate/utils/sampleData.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:dockmate/model/username.dart';
+import 'package:flutter_dialogflow/dialogflow_v2.dart';
+import 'package:flutter/scheduler.dart';
 
 class ChatroomTile extends StatelessWidget {
   Chat chatroomData;
@@ -76,105 +79,82 @@ class ChatroomTile extends StatelessWidget {
   }
 }
 
-class Chatroom extends StatefulWidget {
+class GuestChat extends StatefulWidget {
   String title;
-  Chatroom({this.title});
+  GuestChat({this.title});
   Chat roomInfo;
-  Chatroom.create({this.roomInfo});
+  String _user = "USER NOT FOUND";
+  GuestChat.create({this.roomInfo});
+
   @override
-  _ChatroomState createState() => _ChatroomState();
+  _GuestChatState createState() => _GuestChatState();
 }
 
-class _ChatroomState extends State<Chatroom> {
+class _GuestChatState extends State<GuestChat> {
   final ChatFirebase firebaseDB = ChatFirebase();
+  List<Object> _messages;
+  final messageInsert = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _createNewChatroom();
+  }
 
   _createNewChatroom() {
     //Will ideally check against existing users and all that
     //but for now will just create a blank chatroom
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MessageRoom()),
-    );
-  }
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      // add your code here.
 
-  Widget _fillChatroom() {
-    //sample
-    return StreamBuilder(
-        stream: firebaseDB.getChatStream(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index) {
-                  return ChatroomTile(
-                      chatroomData: Chat.startChatRoom(
-                        imageURL: snapshot.data.documents[index]['imageURL'],
-                        stringUsers:
-                            snapshot.data.documents[index]['users'].map((item) {
-                          return item.toString();
-                        }).toList(),
-                        lastMessage: "hardcoded last message for now",
-                      ),
-                      chatroomID: snapshot.data.documents[index].id);
-                });
-          } else {
-            print("No chat snapshot has no data");
-            return Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(left: 15),
-                child: Column(children: <Widget>[
-                  ChatroomTile(chatroomData: sampleChatTile),
-                  ChatroomTile(chatroomData: sampleChatTile),
-                  ChatroomTile(chatroomData: sampleChatTile),
-                ]));
-          }
-        });
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MessageRoom()),
+      );
+    });
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => MessageRoom()),
+    // );
   }
 
   @override
   Widget build(BuildContext context) {
-    _buildMessageRoom() {
-      if (widget.roomInfo != null) {
-        print("Wicked Chat");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MessageRoom()),
-        );
-        return Scaffold();
-      }
-      return Center(child: _fillChatroom());
+    // _buildMessageRoom() {
+    //   if (widget.roomInfo != null) {
+    //     print("Wicked Chat");
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => MessageRoom()),
+    //     );
+    //     return Scaffold();
+    //   }
+    //   return Center(child: _fillChatroom());
+    // }
+
+    void response(query) async {
+      AuthGoogle authGoogle =
+          await AuthGoogle(fileJson: "assets/service.json").build();
+      Dialogflow dialogflow =
+          Dialogflow(authGoogle: authGoogle, language: Language.english);
+      AIResponse aiResponse = await dialogflow.detectIntent(query);
+      setState(() {
+        _messages.insert(0, {
+          "data": 0,
+          "message":
+              aiResponse.getListMessage()[0]["text"]["text"][0].toString()
+        });
+      });
+      print(aiResponse.getListMessage()[0]["text"]["text"][0].toString());
     }
 
-    return FutureBuilder(
-      // Initialize FlutterFire
-      future: Firebase.initializeApp(),
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          print("SNAPSHOT HAS ERROR ${snapshot.error}");
-        }
-
-        // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          print("WE GOT IN CHAT");
-          return Scaffold(
-            appBar: AppBar(
-              leading: Image.asset("assets/dock.png",
-                  scale: 20, color: Colors.white),
-              title: Text('Chat'),
-            ),
-            body: _buildMessageRoom(),
-            bottomNavigationBar: BottomBar(bottomIndex: 2),
-            floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () => _createNewChatroom(),
-            ),
-          );
-        }
-
-        // Otherwise, show something whilst waiting for initialization to complete
-        return Scaffold(body: Center(child: CircularProgressIndicator()));
-      },
+    return Scaffold(
+      // appBar: AppBar(
+      //   leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+      //   title: Text('GUEST Chat'),
+      // ),
+      // body: _createNewChatroom(),
+      bottomNavigationBar: BottomBar(bottomIndex: 2),
     );
   }
 }

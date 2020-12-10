@@ -38,6 +38,7 @@ dependencies:
   geolocator: 5.1.1
   flutter_map:
   filter_list: ^0.0.1
+  flutter_dialogflow: ^0.1.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -66,6 +67,7 @@ flutter:
   assets:
       - assets/dock.png
       - assets/placeholder_icon.png
+      - assets/service.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

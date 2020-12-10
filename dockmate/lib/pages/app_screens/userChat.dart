@@ -18,6 +18,7 @@ import 'package:dockmate/utils/sampleData.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:dockmate/model/username.dart';
 
 class ChatroomTile extends StatelessWidget {
   Chat chatroomData;
@@ -76,17 +77,43 @@ class ChatroomTile extends StatelessWidget {
   }
 }
 
-class Chatroom extends StatefulWidget {
+class UserChat extends StatefulWidget {
   String title;
-  Chatroom({this.title});
+  UserChat({this.title});
   Chat roomInfo;
-  Chatroom.create({this.roomInfo});
+  String _user = "USER NOT FOUND";
+  UserChat.create({this.roomInfo});
+
   @override
-  _ChatroomState createState() => _ChatroomState();
+  _UserChatState createState() => _UserChatState();
 }
 
-class _ChatroomState extends State<Chatroom> {
+class _UserChatState extends State<UserChat> {
   final ChatFirebase firebaseDB = ChatFirebase();
+  final UsernameModel _usernameModel = UsernameModel();
+
+  @override
+  void initState() {
+    print("User chat's init state");
+    super.initState();
+    _getUsername();
+  }
+
+  Future<void> _getUsername() async {
+    Username name = await _usernameModel.getUsername();
+    print("anything: ${name.username}");
+    setState(() {
+      widget._user = name.username;
+    });
+  }
+
+  bool _validateUsername() {
+    print("What is username? ${widget._user}");
+    if (widget._user.toLowerCase().contains("guest")) {
+      return false;
+    }
+    return true;
+  }
 
   _createNewChatroom() {
     //Will ideally check against existing users and all that
@@ -143,6 +170,19 @@ class _ChatroomState extends State<Chatroom> {
         return Scaffold();
       }
       return Center(child: _fillChatroom());
+    }
+
+    Widget _guestChat() {
+      //won't it be nice to have a chat bot
+      return Scaffold(
+        appBar: AppBar(
+          leading:
+              Image.asset("assets/dock.png", scale: 20, color: Colors.white),
+          title: Text('Chat'),
+        ),
+        body: Text("Nope"),
+        bottomNavigationBar: BottomBar(bottomIndex: 2),
+      );
     }
 
     return FutureBuilder(

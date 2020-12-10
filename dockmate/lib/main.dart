@@ -1,5 +1,6 @@
 import 'package:dockmate/model/user.dart' as usermodel;
 import 'package:dockmate/utils/auth.dart';
+import 'package:dockmate/utils/chatWrapper.dart';
 import 'package:dockmate/utils/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +29,8 @@ class MyApp extends StatelessWidget {
         StreamProvider<usermodel.User>.value(value: AuthService().user),
         StreamProvider<User>.value(value: AuthService().userstatus),
       ],
-    // return StreamProvider.value(
-    //   value: AuthService().user,
+      // return StreamProvider.value(
+      //   value: AuthService().user,
       child: MaterialApp(
         title: 'Dock Mate',
         theme: ThemeData(
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
           // '/Login': (BuildContext context) => Login(),
           // '/Register': (BuildContext context) => Register(),
           '/Listings': (BuildContext context) => Listings(title: "Listings"),
-          '/Chat': (BuildContext context) => Chatroom(title: "All Messages"),
+          '/Chat': (BuildContext context) => ChatWrapper(),
           '/Map': (BuildContext context) => Map(title: "Find a House"),
           '/MyListings': (BuildContext context) =>
               MyListing(title: "My Listings"),
