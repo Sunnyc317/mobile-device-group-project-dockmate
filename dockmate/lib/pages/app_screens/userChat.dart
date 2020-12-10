@@ -10,11 +10,9 @@ The main entry points:
 
 */
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/pages/app_screens/message.dart';
 import 'package:dockmate/model/chat.dart';
-import 'package:dockmate/utils/sampleData.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,8 +36,13 @@ class ChatroomTile extends StatelessWidget {
             children: <Widget>[
               ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(chatroomData.imageURL,
-                      width: 100, height: 100)),
+                  child: chatroomData.imageURL.contains("assets/shorsh")
+                      ? Image(
+                          width: 100,
+                          height: 100,
+                          image: AssetImage('assets/shorsh.png'))
+                      : Image.network(chatroomData.imageURL,
+                          width: 100, height: 100)),
               Container(
                   padding: EdgeInsets.only(top: 12),
                   margin: EdgeInsets.only(right: 60),
@@ -66,11 +69,12 @@ class ChatroomTile extends StatelessWidget {
         ),
         onTap: () {
           //open a message for now
+          chatroomData.chatroomIDString = chatroomID;
           Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    MessageRoom.create(roomInfo: chatroomData)),
+                    MessageRoom.open(roomInfo: chatroomData, type: "open")),
           );
           //and then fill up with existing messages
           //can animate it in future: https://flutter.dev/docs/cookbook/animation/page-route-animation
@@ -141,14 +145,51 @@ class _UserChatState extends State<UserChat> {
 
   Widget _condNoMail(index, len) {
     _isEmptyCount += 1;
-    print("index $index");
+    print("IS EMPTY $_isEmptyCount");
     print("length $len");
-    if (_isEmptyCount == len - 1) {
+    if (_isEmptyCount == len) {
       return _noMail();
+    }
+    return Container();
+  }
+
+  _decider(snapshot, index) {
+    var userList = snapshot.data.documents[index]['users'].map((item) {
+      return item.toString();
+    }).toList();
+    print("USER LIST $userList");
+    if (userList[0] == widget._user) {
+      //supposedly this means you're the tenant
+      print("it is tenant");
+      return ChatroomTile(
+          chatroomData: Chat.startChatRoom(
+            imageURL: snapshot.data.documents[index]['imageURL'],
+            stringUsers: snapshot.data.documents[index]['users'].map((item) {
+              return item.toString();
+            }).toList(),
+            lastMessage: "tenant hardcoded last message for now",
+          ),
+          chatroomID: snapshot.data.documents[index].id);
+    } else if (userList[1] == widget._user) {
+      print("it is landlord");
+      //and this means you're the landlord
+      return ChatroomTile(
+          chatroomData: Chat.startChatRoom(
+            imageURL: snapshot.data.documents[index]['imageURL'],
+            stringUsers: snapshot.data.documents[index]['users'].map((item) {
+              return item.toString();
+            }).toList(),
+            lastMessage: "landlord hardcoded last message for now",
+          ),
+          chatroomID: snapshot.data.documents[index].id);
+    } else {
+      print("it still thinks no mail?");
+      return _condNoMail(index, snapshot.data.documents.length);
     }
   }
 
   Widget _fillChatroom() {
+    _isEmptyCount = 0;
     return StreamBuilder(
         stream: firebaseDB.getChatStream(),
         builder: (context, snapshot) {
@@ -161,41 +202,8 @@ class _UserChatState extends State<UserChat> {
               return ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    var userList =
-                        snapshot.data.documents[index]['users'].map((item) {
-                      return item.toString();
-                    }).toList();
-                    if (userList[0] == widget._user) {
-                      //supposedly this means you're the tenant
-                      print("it is tenant");
-                      ChatroomTile(
-                          chatroomData: Chat.startChatRoom(
-                            imageURL: snapshot.data.documents[index]
-                                ['imageURL'],
-                            stringUsers: snapshot.data.documents[index]['users']
-                                .map((item) {
-                              return item.toString();
-                            }).toList(),
-                            lastMessage: "hardcoded last message for now",
-                          ),
-                          chatroomID: snapshot.data.documents[index].id);
-                    } else if (userList[1] == widget._user) {
-                      print("it is landlord");
-                      //and this means you're the landlord
-                      ChatroomTile(
-                          chatroomData: Chat.startChatRoom(
-                            imageURL: snapshot.data.documents[index]
-                                ['imageURL'],
-                            stringUsers: snapshot.data.documents[index]['users']
-                                .map((item) {
-                              return item.toString();
-                            }).toList(),
-                            lastMessage: "hardcoded last message for now",
-                          ),
-                          chatroomID: snapshot.data.documents[index].id);
-                    } else {
-                      return _condNoMail(index, snapshot.data.documents.length);
-                    }
+                    print("does it loop?");
+                    return _decider(snapshot, index);
                   });
             }
           } else {
@@ -219,15 +227,13 @@ class _UserChatState extends State<UserChat> {
     }
 
     _navigateToFAQ(Function toggle) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MessageRoom(
-                    toggleView: toggle,
-                  )),
-        );
-      });
+      return Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MessageRoom(
+                  currentUser: widget._user,
+                )),
+      );
     }
 
     return FutureBuilder(

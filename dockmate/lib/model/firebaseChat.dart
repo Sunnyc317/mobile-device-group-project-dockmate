@@ -41,31 +41,33 @@ However, you can ask me how to register for an account, or you can ask me about 
     chatmap1["users"] = [self, "Shorsh"];
     await FirebaseFirestore.instance
         .collection("chatroom")
-        .doc("Shorsh")
+        .doc("Shorsh" + self)
         .set(chatmap1)
         .then((value) async {
-      _chatRoomID = "Shorsh";
+      _chatRoomID = "Shorsh" + self;
       //placeholder
-      bool check = await checkExistence(_chatRoomID, self);
+      String check = await checkExistence(_chatRoomID, self);
       print("wat is check $check");
-      if (check) {
-        addSpecificMessage(_chatRoomID, "FromShorsh", submap3);
-      } else {
+      if (check == "FromShorsh") {
         addMessage(_chatRoomID, submap4);
+      } else {
+        addSpecificMessage(_chatRoomID, "FromShorsh", submap3);
       }
     });
     print("The room id: $_chatRoomID");
   }
 
-  Future<bool> checkExistence(_chatRoomID, user) async {
+  Future<String> checkExistence(_chatRoomID, user) async {
     var ss = await getMessage(_chatRoomID);
+    String returnNull = "";
     ss.docs.forEach((doc) {
       print("DOCID: ${doc.id}");
       if (doc.id == "FromShorsh") {
-        return Future<bool>.value(true);
+        print("IT SHOULD RETURN TRUE AT LEAST ONCE");
+        returnNull = doc.id;
       }
     });
-    return Future<bool>.value(false);
+    return returnNull;
   }
 
   Future<void> createChatRoom(Map<String, dynamic> chat) async {

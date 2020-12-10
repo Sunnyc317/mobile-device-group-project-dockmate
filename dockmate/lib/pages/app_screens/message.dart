@@ -99,8 +99,12 @@ class MessageRoom extends StatefulWidget {
   Chat roomInfo;
   final Function toggleView;
   final String currentUser;
-  MessageRoom({this.toggleView, this.currentUser});
-  MessageRoom.create({this.roomInfo, this.toggleView, this.currentUser});
+  final type;
+  MessageRoom({this.toggleView, this.currentUser, this.type});
+  MessageRoom.create(
+      {this.roomInfo, this.toggleView, this.currentUser, this.type});
+  MessageRoom.open(
+      {this.roomInfo, this.toggleView, this.currentUser, this.type});
   @override
   _MessageRoomState createState() => _MessageRoomState();
 }
@@ -226,13 +230,16 @@ class _MessageRoomState extends State<MessageRoom> {
   @override
   void initState() {
     super.initState();
-    if (snapshots == null && widget.roomInfo != null) {
+    if (widget.roomInfo != null && widget.type == "create") {
       print("Wicked");
       firebaseDB.createChatRoom(widget.roomInfo.toMap()).then((value) {
         widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
         print("set up chatroomID be ${widget.roomInfo.chatroomIDString}");
         fillSnapshot("create");
       });
+    } else if (widget.type == "open") {
+      print("idk, what do I miss?");
+      print("wat is ${widget.roomInfo.toMap()}");
     } else if (widget.roomInfo == null) {
       //create a brand new chatroom
       firebaseDB.createEmptyRoom(widget.currentUser);
@@ -243,7 +250,7 @@ class _MessageRoomState extends State<MessageRoom> {
       //because this is for chatbot, can hardcode it to Shorsh
       // widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
       setState(() {
-        widget.roomInfo.chatroomIDString = "Shorsh";
+        widget.roomInfo.chatroomIDString = "Shorsh" + widget.currentUser;
       });
       // fillSnapshot("create");
     }
@@ -270,7 +277,7 @@ class _MessageRoomState extends State<MessageRoom> {
   }
 
   Widget _setHeader() {
-    if (widget.roomInfo.chatroomIDString == "Shorsh") {
+    if (widget.roomInfo.chatroomIDString.contains("Shorsh")) {
       //return shorsh version
       return Container(
           decoration: BoxDecoration(
@@ -455,8 +462,9 @@ class _MessageRoomState extends State<MessageRoom> {
                         ])))
               ]),
             ),
-            bottomNavigationBar:
-                BottomBar(bottomIndex: 2, toggleView: widget.toggleView),
+            bottomNavigationBar: (widget.toggleView != null)
+                ? BottomBar(bottomIndex: 2, toggleView: widget.toggleView)
+                : null,
           );
         }
 
