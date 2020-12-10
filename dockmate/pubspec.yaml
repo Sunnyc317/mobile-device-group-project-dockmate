@@ -24,7 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  search_app_bar: ^1.0.2+2
   sqflite:
   path: 
   provider:
