@@ -31,6 +31,7 @@ However, you can ask me how to register for an account, or you can ask me about 
   var chatmap1 = {
     "imageURL": "assets/shorsh.png",
     "users": ["Self", "Shorsh"],
+    "title": "Your friendly seahorse mate"
   };
 
   getChatRoomID() => _chatRoomID;
@@ -102,6 +103,17 @@ However, you can ask me how to register for an account, or you can ask me about 
         .snapshots();
   }
 
+  Future<String> getTitle(chatroomID) async {
+    await FirebaseFirestore.instance
+        .collection("chatroom")
+        .doc(chatroomID)
+        .get()
+        .then((value) {
+      print("valueee $value");
+      return "uwu";
+    });
+  }
+
   Stream getChatStream() {
     return FirebaseFirestore.instance.collection("chatroom").snapshots();
   }
@@ -122,6 +134,11 @@ However, you can ask me how to register for an account, or you can ask me about 
         .collection('messages')
         .doc(msgID);
     chatroomRef.set(msg);
+  }
+
+  Future<void> deleteChatroom(roomID) {
+    var chatroomRef =
+        FirebaseFirestore.instance.collection("chatroom").doc(roomID).delete();
   }
 
   // Future<void> deleteMessage(

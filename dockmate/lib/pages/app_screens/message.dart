@@ -100,11 +100,20 @@ class MessageRoom extends StatefulWidget {
   final Function toggleView;
   final String currentUser;
   final type;
-  MessageRoom({this.toggleView, this.currentUser, this.type});
+  String postTitle;
+  MessageRoom({this.toggleView, this.currentUser, this.type, this.postTitle});
   MessageRoom.create(
-      {this.roomInfo, this.toggleView, this.currentUser, this.type});
+      {this.roomInfo,
+      this.toggleView,
+      this.currentUser,
+      this.type,
+      this.postTitle});
   MessageRoom.open(
-      {this.roomInfo, this.toggleView, this.currentUser, this.type});
+      {this.roomInfo,
+      this.toggleView,
+      this.currentUser,
+      this.type,
+      this.postTitle});
   @override
   _MessageRoomState createState() => _MessageRoomState();
 }
@@ -139,7 +148,7 @@ class _MessageRoomState extends State<MessageRoom> {
     );
   }
 
-  Widget populateExistingMessages() {
+  void populateExistingMessages() {
     //ideally this calls the DB, get the messages, return streambuilder
     //for now just return sad looking messages
 
@@ -232,12 +241,15 @@ class _MessageRoomState extends State<MessageRoom> {
     super.initState();
     if (widget.roomInfo != null && widget.type == "create") {
       print("Wicked");
-      firebaseDB.createChatRoom(widget.roomInfo.toMap()).then((value) {
+      var roomMap = widget.roomInfo.toMap();
+      roomMap["title"] = widget.postTitle;
+      firebaseDB.createChatRoom(roomMap).then((value) {
         widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
         print("set up chatroomID be ${widget.roomInfo.chatroomIDString}");
         fillSnapshot("create");
       });
     } else if (widget.type == "open") {
+      widget.postTitle = widget.roomInfo.title;
       print("idk, what do I miss?");
       print("wat is ${widget.roomInfo.toMap()}");
     } else if (widget.roomInfo == null) {
@@ -246,7 +258,8 @@ class _MessageRoomState extends State<MessageRoom> {
       //still hardcoded sample
       widget.roomInfo = Chat.startChatRoom(
           imageURL: "assets/shorsh.png",
-          stringUsers: [widget.currentUser, "Shorsh"]);
+          stringUsers: [widget.currentUser, "Shorsh"],
+          title: widget.postTitle);
       //because this is for chatbot, can hardcode it to Shorsh
       // widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
       setState(() {
@@ -305,6 +318,10 @@ class _MessageRoomState extends State<MessageRoom> {
             ],
           ));
     } else {
+      print("is title not string? ${widget.roomInfo.toMap()}");
+      // if(widget.roomInfo.chatroomIDString != null){
+      //   widget.postTitle = firebaseDB.getTitle()
+      // }
       return Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -318,7 +335,7 @@ class _MessageRoomState extends State<MessageRoom> {
             ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                   height: 75,
@@ -326,8 +343,13 @@ class _MessageRoomState extends State<MessageRoom> {
                   child: Image.network(widget.roomInfo.imageURL,
                       height: 200, width: 150, fit: BoxFit.fill)),
               Container(
-                child: Text("The owner of this place"),
-              )
+                  margin: EdgeInsets.only(top: 5, left: 20),
+                  padding: EdgeInsets.only(top: 9, right: 20),
+                  height: 75,
+                  width: 150,
+                  child: widget.postTitle == null
+                      ? ("Untitled posting?")
+                      : Text(widget.postTitle))
             ],
           ));
     }

@@ -50,7 +50,10 @@ class _ChatWrapperState extends State<ChatWrapper> {
                 if (_user.toLowerCase().contains("guest")) {
                   print("It went to guest chatroom @$_user");
                   return MessageRoom(
-                      toggleView: widget.toggleView, currentUser: _user);
+                    toggleView: widget.toggleView,
+                    currentUser: _user,
+                    postTitle: "Your helpful seahorse mate",
+                  );
                 } else {
                   print("It went to USER'S?! chatroom @$_user");
                   return UserChat(

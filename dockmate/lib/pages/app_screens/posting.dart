@@ -234,27 +234,20 @@ class _PostingState extends State<Posting> {
                 //temporarily hardcoding other user identity
                 UsernameModel usernameModel = UsernameModel();
                 Username name = await usernameModel.getUsername();
-                _owner = "Rogue Smith";
+                _owner = "Placeholder Landlord";
                 Chat chatRoomInfo = Chat.startChatRoom(
-                    imageURL: _mainImage, stringUsers: [name.username, _owner]);
+                    imageURL: _mainImage,
+                    stringUsers: [name.username, _owner],
+                    title: widget.listing.title);
 
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => MessageRoom.create(
-                          roomInfo: chatRoomInfo, type: "create")),
+                          roomInfo: chatRoomInfo,
+                          type: "create",
+                          postTitle: widget.listing.title)),
                 );
-
-                // UserChat(
-                //       title: "$_user's Chat Room",
-                //       toggleView: widget.toggleView);
-                // Navigator.of(context).pushNamed('/Chat');
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) =>
-                //           MessageRoom.create(roomInfo: chatRoomInfo)),
-                // );
               },
               child: Icon(Icons.message_outlined),
             )

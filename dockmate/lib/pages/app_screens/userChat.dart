@@ -17,7 +17,6 @@ import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:dockmate/model/username.dart';
-import 'package:flutter/scheduler.dart';
 
 class ChatroomTile extends StatelessWidget {
   Chat chatroomData;
@@ -26,16 +25,48 @@ class ChatroomTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _showWarning(BuildContext context, name, id) {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Delete chatroom?'),
+            content:
+                Text("Are you sure you would like to remove chatroom $name"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Yes'),
+                color: Colors.blue,
+                onPressed: () {
+                  ChatFirebase model = ChatFirebase();
+                  model.deleteChatroom(id);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        child: Container(
+      behavior: HitTestBehavior.opaque,
+      child: Column(children: [
+        Container(
           padding: EdgeInsets.only(top: 30),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(6),
                   child: chatroomData.imageURL.contains("assets/shorsh")
                       ? Image(
                           width: 100,
@@ -45,7 +76,7 @@ class ChatroomTile extends StatelessWidget {
                           width: 100, height: 100)),
               Container(
                   padding: EdgeInsets.only(top: 12),
-                  margin: EdgeInsets.only(right: 60),
+                  margin: EdgeInsets.only(left: 10, right: 30),
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -67,18 +98,25 @@ class ChatroomTile extends StatelessWidget {
             ],
           ),
         ),
-        onTap: () {
-          //open a message for now
-          chatroomData.chatroomIDString = chatroomID;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    MessageRoom.open(roomInfo: chatroomData, type: "open")),
-          );
-          //and then fill up with existing messages
-          //can animate it in future: https://flutter.dev/docs/cookbook/animation/page-route-animation
-        });
+        Divider(color: Colors.grey, indent: 130, endIndent: 30)
+      ]),
+      onTap: () {
+        //open a message for now
+        chatroomData.chatroomIDString = chatroomID;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  MessageRoom.open(roomInfo: chatroomData, type: "open")),
+        );
+        //and then fill up with existing messages
+        //can animate it in future: https://flutter.dev/docs/cookbook/animation/page-route-animation
+      },
+      onLongPress: () {
+        print("watcha doin");
+        _showWarning(context, chatroomData.stringUsers[1], chatroomID);
+      },
+    );
   }
 }
 
@@ -114,23 +152,6 @@ class _UserChatState extends State<UserChat> {
     });
   }
 
-  bool _validateUsername() {
-    print("What is username? ${widget._user}");
-    if (widget._user.toLowerCase().contains("guest")) {
-      return false;
-    }
-    return true;
-  }
-
-  _createNewChatroom() {
-    //Will ideally check against existing users and all that
-    //but for now will just create a blank chatroom
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MessageRoom()),
-    );
-  }
-
   Widget _noMail() {
     return Container(
       alignment: Alignment.center,
@@ -147,9 +168,9 @@ class _UserChatState extends State<UserChat> {
     _isEmptyCount += 1;
     print("IS EMPTY $_isEmptyCount");
     print("length $len");
-    if (_isEmptyCount == len) {
-      return _noMail();
-    }
+    // if (_isEmptyCount == len) {
+    //   return _noMail();
+    // }
     return Container();
   }
 
@@ -163,24 +184,24 @@ class _UserChatState extends State<UserChat> {
       print("it is tenant");
       return ChatroomTile(
           chatroomData: Chat.startChatRoom(
-            imageURL: snapshot.data.documents[index]['imageURL'],
-            stringUsers: snapshot.data.documents[index]['users'].map((item) {
-              return item.toString();
-            }).toList(),
-            lastMessage: "tenant hardcoded last message for now",
-          ),
+              imageURL: snapshot.data.documents[index]['imageURL'],
+              stringUsers: snapshot.data.documents[index]['users'].map((item) {
+                return item.toString();
+              }).toList(),
+              lastMessage: "tenant hardcoded last message for now",
+              title: snapshot.data.documents[index]['title']),
           chatroomID: snapshot.data.documents[index].id);
     } else if (userList[1] == widget._user) {
       print("it is landlord");
       //and this means you're the landlord
       return ChatroomTile(
           chatroomData: Chat.startChatRoom(
-            imageURL: snapshot.data.documents[index]['imageURL'],
-            stringUsers: snapshot.data.documents[index]['users'].map((item) {
-              return item.toString();
-            }).toList(),
-            lastMessage: "landlord hardcoded last message for now",
-          ),
+              imageURL: snapshot.data.documents[index]['imageURL'],
+              stringUsers: snapshot.data.documents[index]['users'].map((item) {
+                return item.toString();
+              }).toList(),
+              lastMessage: "landlord hardcoded last message for now",
+              title: snapshot.data.documents[index]['title']),
           chatroomID: snapshot.data.documents[index].id);
     } else {
       print("it still thinks no mail?");
@@ -232,6 +253,7 @@ class _UserChatState extends State<UserChat> {
         MaterialPageRoute(
             builder: (context) => MessageRoom(
                   currentUser: widget._user,
+                  postTitle: "Your helpful seahorse mate",
                 )),
       );
     }
