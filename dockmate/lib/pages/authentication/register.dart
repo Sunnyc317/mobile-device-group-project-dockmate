@@ -214,7 +214,7 @@ class _RegisterState extends State<Register> {
                     child: RaisedButton(
                       child: Text('Cancel'),
                       onPressed: () {
-                        widget.toggleView('firstScreen');
+                        widget.toggleView('login');
                         // Navigator.of(context)
                         //     .pushReplacementNamed('/FirstScreen');
                       },
@@ -228,8 +228,8 @@ class _RegisterState extends State<Register> {
                           // case 1: register success, proceed to Hoursing type preference
                           if (_formKey.currentState.validate()) {
                             print("First name: $fname is registered");
-                            usernameModel.setUsername(
-                                fname); //save username to sqflite to be used by other parts
+                            // usernameModel.setUsername(
+                            //     fname); //save username to sqflite to be used by other parts
                             _formKey.currentState.save();
                             dynamic result =
                                 await _auth.registerWithEmailAndPassword(

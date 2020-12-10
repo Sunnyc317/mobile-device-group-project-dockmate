@@ -11,8 +11,10 @@ class User {
   String first_name;
   String last_name;
   String email;
+  var profile_pic;
+  bool emailvarified = false;
   List<String> wantHouseTypes;
-  // String phone;
+  String phone;
   // String address;
   // String city;
   // String postal_code;
@@ -51,6 +53,16 @@ class User {
     }
     return result;
   }
+
+
+  void setname(String username) {
+    this.first_name = username.splitMapJoin(' ')[0];
+    this.last_name = username.splitMapJoin(' ')[1];
+  }
+  void setemailvarified(bool emailvarified) {this.emailvarified = emailvarified;}
+  void setprofilepic(var profile_pic) {this.profile_pic = profile_pic;}
+  void setemail(String email) {this.email = email;}
+  void setphone(String phone) {this.phone = phone;}
 
   String getUser() {
     //getAllUsers();

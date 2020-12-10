@@ -189,8 +189,9 @@ class _PostingFormState extends State<PostingForm> {
                 Container(
                     padding: EdgeInsets.only(right: 8.0),
                     child: RaisedButton(
-                      // color: Colors.grey,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacementNamed('/Listings');
+                      },
                       child: Text("Cancel"),
                     )),
                 RaisedButton(
