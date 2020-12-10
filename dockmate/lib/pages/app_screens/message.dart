@@ -7,6 +7,8 @@ import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class MessageTile extends StatelessWidget {
   Message msg;
@@ -104,9 +106,11 @@ class MessageRoom extends StatefulWidget {
 class _MessageRoomState extends State<MessageRoom> {
   final ChatFirebase firebaseDB = ChatFirebase();
   final ScrollController _scrollController = new ScrollController();
+  final picker = ImagePicker();
   QuerySnapshot snapshots;
   String messageSent;
   Timestamp curTime;
+  File _image;
 
   _showWarning(BuildContext context) {
     showDialog<void>(
@@ -262,6 +266,48 @@ class _MessageRoomState extends State<MessageRoom> {
         aiResponse.getListMessage()[0]["text"]["text"][0].toString());
   }
 
+  Widget _setHeader() {
+    if (widget.roomInfo.chatroomIDString == "Shorsh") {
+      //return shorsh version
+      return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                  height: 75,
+                  // width: 100,
+                  child: Image(image: AssetImage('assets/shorsh.png'))),
+              Container(
+                child: Text("Your helpful seahorse mate"),
+              )
+            ],
+          ));
+    }
+  }
+
+  Future _getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -323,9 +369,10 @@ class _MessageRoomState extends State<MessageRoom> {
             body: Form(
               key: _formKey,
               child: Stack(children: <Widget>[
+                _setHeader(),
                 Container(
                     alignment: Alignment.bottomCenter,
-                    margin: EdgeInsets.only(bottom: 45),
+                    margin: EdgeInsets.only(bottom: 45, top: 75),
                     child: generateTiles()),
                 Container(
                     //the entire bottom part
@@ -348,7 +395,7 @@ class _MessageRoomState extends State<MessageRoom> {
                             ),
                             onPressed: () {
                               //to be implemented
-                              _showWarning(context);
+                              _getImage();
                             },
                           ),
                           Row(

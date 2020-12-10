@@ -39,6 +39,7 @@ dependencies:
   flutter_map:
   filter_list: ^0.0.1
   flutter_dialogflow: ^0.1.2
+  image_picker:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -68,6 +69,7 @@ flutter:
       - assets/dock.png
       - assets/placeholder_icon.png
       - assets/service.json
+      - assets/shorsh.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

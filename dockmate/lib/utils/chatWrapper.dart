@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dockmate/model/username.dart';
-import 'package:dockmate/pages/app_screens/guestChat.dart';
 import 'package:dockmate/pages/app_screens/userChat.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:dockmate/pages/app_screens/message.dart';
 
 class ChatWrapper extends StatefulWidget {
@@ -79,7 +77,6 @@ class _ChatWrapperState extends State<ChatWrapper> {
               else {
                 if (_user.toLowerCase().contains("guest")) {
                   print("It went to guest chatroom @$_user");
-                  // return GuestChat(title: "Guest's Chat Room");
                   return MessageRoom();
                 } else {
                   print("It went to USER'S?! chatroom @$_user");
