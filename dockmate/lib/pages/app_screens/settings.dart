@@ -5,9 +5,10 @@ import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/username.dart';
 
 class Settings extends StatefulWidget {
-  String title;
-  usermodel.User user;
-  Settings({this.title, this.user});
+  // String title;
+  // usermodel.User user;
+  final Function toggleView;
+  Settings({Key key, this.toggleView}):super(key:key);
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -103,7 +104,7 @@ class _SettingsState extends State<Settings> {
                   // RaisedButton(onPressed: () => initSampleName()),
                 ]),
           ))),
-      bottomNavigationBar: BottomBar(bottomIndex: 4),
+      bottomNavigationBar: BottomBar(bottomIndex: 4, toggleView: widget.toggleView,),
     );
   }
 }
