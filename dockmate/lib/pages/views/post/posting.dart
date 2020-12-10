@@ -249,12 +249,15 @@ class _PostingState extends State<Posting> {
   }
 
   Future<void> _updateListing(BuildContext context, Listing listing) async {
-    var list = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            PostingForm(title: 'Edit Listing', listing: listing)));
-
     Listing _listing = new Listing();
-    if (list != null) _listing.update(list);
+    Listing list = listing;
+
+    list = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            PostingForm(title: 'Edit Listing', listing: list)));
+
+    print(list.title);
+    if (list != null) await _listing.update(list);
   }
 
   Future<void> _deleteConfirmation(BuildContext context) async {

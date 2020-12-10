@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Listing {
   String id;
   User owner;
-  // String because we might use the firestore link
   String mainImage;
   List<String> images;
   DateTime date;

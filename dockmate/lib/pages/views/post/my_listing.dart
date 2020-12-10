@@ -6,8 +6,6 @@ import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/views/post/posting_form.dart';
 import 'package:dockmate/pages/views/post/posting.dart';
 
-Icon sad_replacement_icon = Icon(Icons.satellite);
-
 class MyListing extends StatefulWidget {
   final String title;
 
