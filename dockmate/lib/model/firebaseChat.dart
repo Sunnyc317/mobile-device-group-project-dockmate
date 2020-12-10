@@ -22,6 +22,12 @@ However, you can ask me how to register for an account, or you can ask me about 
     "by": 1,
     "time": Timestamp.now(),
   };
+  var submap4 = {
+    "content":
+        '''Welcome back to Dock Mate! I'm still Shorsh, your friendly seahorse guide!\n\nHow can I help?''',
+    "by": 1,
+    "time": Timestamp.now(),
+  };
   var chatmap1 = {
     "imageURL": "assets/shorsh.png",
     "users": ["Self", "Shorsh"],
@@ -29,19 +35,37 @@ However, you can ask me how to register for an account, or you can ask me about 
 
   getChatRoomID() => _chatRoomID;
 
-  Future<void> createEmptyRoom() async {
+  Future<void> createEmptyRoom(String self) async {
     //this should be used only for chatting with shorsh
     print("Is the empty room called?");
+    chatmap1["users"] = [self, "Shorsh"];
     await FirebaseFirestore.instance
         .collection("chatroom")
         .doc("Shorsh")
         .set(chatmap1)
-        .then((value) {
+        .then((value) async {
       _chatRoomID = "Shorsh";
       //placeholder
-      addSpecificMessage(_chatRoomID, "FromShorsh", submap3);
+      bool check = await checkExistence(_chatRoomID, self);
+      print("wat is check $check");
+      if (check) {
+        addSpecificMessage(_chatRoomID, "FromShorsh", submap3);
+      } else {
+        addMessage(_chatRoomID, submap4);
+      }
     });
     print("The room id: $_chatRoomID");
+  }
+
+  Future<bool> checkExistence(_chatRoomID, user) async {
+    var ss = await getMessage(_chatRoomID);
+    ss.docs.forEach((doc) {
+      print("DOCID: ${doc.id}");
+      if (doc.id == "FromShorsh") {
+        return Future<bool>.value(true);
+      }
+    });
+    return Future<bool>.value(false);
   }
 
   Future<void> createChatRoom(Map<String, dynamic> chat) async {

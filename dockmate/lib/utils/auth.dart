@@ -130,6 +130,8 @@ class AuthService {
       user.setemailvarified(result.user.emailVerified);
       user.setphone(result.user.phoneNumber);
 
+      usernameModel.setUsername(result.user.displayName);
+
       return {
         'user': user,
         'msg': '${result.user.displayName} signed in successfully'

@@ -98,8 +98,9 @@ class MessageTile extends StatelessWidget {
 class MessageRoom extends StatefulWidget {
   Chat roomInfo;
   final Function toggleView;
-  MessageRoom({this.toggleView});
-  MessageRoom.create({this.roomInfo, this.toggleView});
+  final String currentUser;
+  MessageRoom({this.toggleView, this.currentUser});
+  MessageRoom.create({this.roomInfo, this.toggleView, this.currentUser});
   @override
   _MessageRoomState createState() => _MessageRoomState();
 }
@@ -234,10 +235,11 @@ class _MessageRoomState extends State<MessageRoom> {
       });
     } else if (widget.roomInfo == null) {
       //create a brand new chatroom
-      firebaseDB.createEmptyRoom();
+      firebaseDB.createEmptyRoom(widget.currentUser);
       //still hardcoded sample
       widget.roomInfo = Chat.startChatRoom(
-          imageURL: "assets/shorsh.png", stringUsers: ["Self", "Shorsh"]);
+          imageURL: "assets/shorsh.png",
+          stringUsers: [widget.currentUser, "Shorsh"]);
       //because this is for chatbot, can hardcode it to Shorsh
       // widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
       setState(() {

@@ -19,6 +19,7 @@ import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:dockmate/model/username.dart';
+import 'package:flutter/scheduler.dart';
 
 class ChatroomTile extends StatelessWidget {
   Chat chatroomData;
@@ -79,10 +80,11 @@ class ChatroomTile extends StatelessWidget {
 
 class UserChat extends StatefulWidget {
   String title;
-  UserChat({this.title});
+  UserChat({this.title, this.toggleView});
   Chat roomInfo;
   String _user = "USER NOT FOUND";
-  UserChat.create({this.roomInfo});
+  Function toggleView;
+  UserChat.create({this.roomInfo, this.toggleView});
 
   @override
   _UserChatState createState() => _UserChatState();
@@ -125,35 +127,45 @@ class _UserChatState extends State<UserChat> {
   }
 
   Widget _fillChatroom() {
-    //sample
     return StreamBuilder(
         stream: firebaseDB.getChatStream(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index) {
-                  return ChatroomTile(
-                      chatroomData: Chat.startChatRoom(
-                        imageURL: snapshot.data.documents[index]['imageURL'],
-                        stringUsers:
-                            snapshot.data.documents[index]['users'].map((item) {
-                          return item.toString();
-                        }).toList(),
-                        lastMessage: "hardcoded last message for now",
-                      ),
-                      chatroomID: snapshot.data.documents[index].id);
-                });
-          } else {
-            print("No chat snapshot has no data");
-            return Container(
+            //there will always be a data, so what I should do is to check if data is placeholder or not
+            if (snapshot.data.documents.length <= 1) {
+              //it can only be the placeholder
+              return Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(left: 15),
-                child: Column(children: <Widget>[
-                  ChatroomTile(chatroomData: sampleChatTile),
-                  ChatroomTile(chatroomData: sampleChatTile),
-                  ChatroomTile(chatroomData: sampleChatTile),
-                ]));
+                child: Center(
+                    child: Column(children: [
+                  Image(image: AssetImage('assets/shorsh.png')),
+                  Text("You have no mails!")
+                ])),
+                // child: Column(children: <Widget>[
+                //   ChatroomTile(chatroomData: sampleChatTile),
+                //   ChatroomTile(chatroomData: sampleChatTile),
+                //   ChatroomTile(chatroomData: sampleChatTile),
+                // ])
+              );
+            } else {
+              return ListView.builder(
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (context, index) {
+                    return ChatroomTile(
+                        chatroomData: Chat.startChatRoom(
+                          imageURL: snapshot.data.documents[index]['imageURL'],
+                          stringUsers: snapshot.data.documents[index]['users']
+                              .map((item) {
+                            return item.toString();
+                          }).toList(),
+                          lastMessage: "hardcoded last message for now",
+                        ),
+                        chatroomID: snapshot.data.documents[index].id);
+                  });
+            }
+          } else {
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
         });
   }
@@ -169,20 +181,19 @@ class _UserChatState extends State<UserChat> {
         );
         return Scaffold();
       }
-      return Center(child: _fillChatroom());
+      return Container(child: _fillChatroom());
     }
 
-    Widget _guestChat() {
-      //won't it be nice to have a chat bot
-      return Scaffold(
-        appBar: AppBar(
-          leading:
-              Image.asset("assets/dock.png", scale: 20, color: Colors.white),
-          title: Text('Chat'),
-        ),
-        body: Text("Nope"),
-        bottomNavigationBar: BottomBar(bottomIndex: 2),
-      );
+    _navigateToFAQ(Function toggle) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MessageRoom(
+                    toggleView: toggle,
+                  )),
+        );
+      });
     }
 
     return FutureBuilder(
@@ -201,13 +212,16 @@ class _UserChatState extends State<UserChat> {
             appBar: AppBar(
               leading: Image.asset("assets/dock.png",
                   scale: 20, color: Colors.white),
-              title: Text('Chat'),
+              title: Text(widget.title),
             ),
             body: _buildMessageRoom(),
-            bottomNavigationBar: BottomBar(bottomIndex: 2),
+            bottomNavigationBar: BottomBar(
+              bottomIndex: 2,
+              toggleView: widget.toggleView,
+            ),
             floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () => _createNewChatroom(),
+              child: Icon(Icons.help),
+              onPressed: () => _navigateToFAQ(widget.toggleView),
             ),
           );
         }

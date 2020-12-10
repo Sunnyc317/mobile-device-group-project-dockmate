@@ -49,10 +49,13 @@ class _ChatWrapperState extends State<ChatWrapper> {
               else {
                 if (_user.toLowerCase().contains("guest")) {
                   print("It went to guest chatroom @$_user");
-                  return MessageRoom(toggleView: widget.toggleView);
+                  return MessageRoom(
+                      toggleView: widget.toggleView, currentUser: _user);
                 } else {
                   print("It went to USER'S?! chatroom @$_user");
-                  return UserChat(title: "$_user's Chat Room");
+                  return UserChat(
+                      title: "$_user's Chat Room",
+                      toggleView: widget.toggleView);
                 }
               }
           }
