@@ -93,6 +93,7 @@ class UserChat extends StatefulWidget {
 class _UserChatState extends State<UserChat> {
   final ChatFirebase firebaseDB = ChatFirebase();
   final UsernameModel _usernameModel = UsernameModel();
+  int _isEmptyCount = 0;
 
   @override
   void initState() {
@@ -126,6 +127,27 @@ class _UserChatState extends State<UserChat> {
     );
   }
 
+  Widget _noMail() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(left: 15),
+      child: Center(
+          child: Column(children: [
+        Image(image: AssetImage('assets/shorsh.png')),
+        Text("You have no mails!")
+      ])),
+    );
+  }
+
+  Widget _condNoMail(index, len) {
+    _isEmptyCount += 1;
+    print("index $index");
+    print("length $len");
+    if (_isEmptyCount == len - 1) {
+      return _noMail();
+    }
+  }
+
   Widget _fillChatroom() {
     return StreamBuilder(
         stream: firebaseDB.getChatStream(),
@@ -134,34 +156,46 @@ class _UserChatState extends State<UserChat> {
             //there will always be a data, so what I should do is to check if data is placeholder or not
             if (snapshot.data.documents.length <= 1) {
               //it can only be the placeholder
-              return Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(left: 15),
-                child: Center(
-                    child: Column(children: [
-                  Image(image: AssetImage('assets/shorsh.png')),
-                  Text("You have no mails!")
-                ])),
-                // child: Column(children: <Widget>[
-                //   ChatroomTile(chatroomData: sampleChatTile),
-                //   ChatroomTile(chatroomData: sampleChatTile),
-                //   ChatroomTile(chatroomData: sampleChatTile),
-                // ])
-              );
+              return _noMail();
             } else {
               return ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    return ChatroomTile(
-                        chatroomData: Chat.startChatRoom(
-                          imageURL: snapshot.data.documents[index]['imageURL'],
-                          stringUsers: snapshot.data.documents[index]['users']
-                              .map((item) {
-                            return item.toString();
-                          }).toList(),
-                          lastMessage: "hardcoded last message for now",
-                        ),
-                        chatroomID: snapshot.data.documents[index].id);
+                    var userList =
+                        snapshot.data.documents[index]['users'].map((item) {
+                      return item.toString();
+                    }).toList();
+                    if (userList[0] == widget._user) {
+                      //supposedly this means you're the tenant
+                      print("it is tenant");
+                      ChatroomTile(
+                          chatroomData: Chat.startChatRoom(
+                            imageURL: snapshot.data.documents[index]
+                                ['imageURL'],
+                            stringUsers: snapshot.data.documents[index]['users']
+                                .map((item) {
+                              return item.toString();
+                            }).toList(),
+                            lastMessage: "hardcoded last message for now",
+                          ),
+                          chatroomID: snapshot.data.documents[index].id);
+                    } else if (userList[1] == widget._user) {
+                      print("it is landlord");
+                      //and this means you're the landlord
+                      ChatroomTile(
+                          chatroomData: Chat.startChatRoom(
+                            imageURL: snapshot.data.documents[index]
+                                ['imageURL'],
+                            stringUsers: snapshot.data.documents[index]['users']
+                                .map((item) {
+                              return item.toString();
+                            }).toList(),
+                            lastMessage: "hardcoded last message for now",
+                          ),
+                          chatroomID: snapshot.data.documents[index].id);
+                    } else {
+                      return _condNoMail(index, snapshot.data.documents.length);
+                    }
                   });
             }
           } else {
