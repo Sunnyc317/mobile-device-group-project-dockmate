@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/message.dart';
-import 'package:dockmate/utils/sampleData.dart';
 import 'package:dockmate/model/chat.dart';
 import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:flutter_dialogflow/dialogflow_v2.dart';
+import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class MessageTile extends StatelessWidget {
   Message msg;
@@ -36,6 +38,22 @@ class MessageTile extends StatelessWidget {
       },
     };
 
+    String _formatDate(Timestamp ts) {
+      var now = new DateTime.now();
+      var format = new DateFormat('HH:mm a');
+      var date = DateTime.fromMicrosecondsSinceEpoch(ts.microsecondsSinceEpoch);
+      var diff = date.difference(now);
+      var time = '';
+      if (diff.inDays == 1) {
+        time = diff.inDays.toString() + 'DAY AGO';
+      } else if (diff.inDays > 1) {
+        time = diff.inDays.toString() + 'DAYS AGO';
+      } else {
+        time = format.format(date);
+      }
+      return time;
+    }
+
     Widget basicBox() {
       int user = msg.by;
       return Container(
@@ -62,9 +80,10 @@ class MessageTile extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 8, left: 8, right: 8),
               child: Text(
                 (msg.time == null)
-                    ? timeago.format(msg.timestamp
-                        .toDate()) //will work on different time display later
-                    : msg.time.toString(),
+                    ? _formatDate(msg.timestamp)
+                    : DateTime.fromMicrosecondsSinceEpoch(
+                            msg.time.microsecondsSinceEpoch)
+                        .toString(),
                 textAlign: TextAlign.left,
               )),
         ],
@@ -78,17 +97,35 @@ class MessageTile extends StatelessWidget {
 //while this is the internal page of chatting
 class MessageRoom extends StatefulWidget {
   Chat roomInfo;
-  MessageRoom();
-  MessageRoom.create({this.roomInfo});
+  final Function toggleView;
+  final String currentUser;
+  final type;
+  String postTitle;
+  MessageRoom({this.toggleView, this.currentUser, this.type, this.postTitle});
+  MessageRoom.create(
+      {this.roomInfo,
+      this.toggleView,
+      this.currentUser,
+      this.type,
+      this.postTitle});
+  MessageRoom.open(
+      {this.roomInfo,
+      this.toggleView,
+      this.currentUser,
+      this.type,
+      this.postTitle});
   @override
   _MessageRoomState createState() => _MessageRoomState();
 }
 
 class _MessageRoomState extends State<MessageRoom> {
   final ChatFirebase firebaseDB = ChatFirebase();
+  final ScrollController _scrollController = new ScrollController();
+  final picker = ImagePicker();
   QuerySnapshot snapshots;
   String messageSent;
   Timestamp curTime;
+  File _image;
 
   _showWarning(BuildContext context) {
     showDialog<void>(
@@ -111,7 +148,7 @@ class _MessageRoomState extends State<MessageRoom> {
     );
   }
 
-  Widget populateExistingMessages() {
+  void populateExistingMessages() {
     //ideally this calls the DB, get the messages, return streambuilder
     //for now just return sad looking messages
 
@@ -134,7 +171,7 @@ class _MessageRoomState extends State<MessageRoom> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(children: <Widget>[
-        MessageTile(msg: samplemessage1),
+        // MessageTile(msg: samplemessage1),
         // MessageTile(msg: samplemessage2),
         // MessageTile(msg: samplemessage3),
         // MessageTile(msg: samplemessage4),
@@ -142,25 +179,47 @@ class _MessageRoomState extends State<MessageRoom> {
     );
   }
 
+  List sortMessage(var ss) {
+    List messages = [];
+    for (var idx = 0; idx < ss.data.documents.length; idx++) {
+      Map toAdd = Message.timestamp(
+              content: ss.data.documents[idx]["content"],
+              timestamp: ss.data.documents[idx]["time"],
+              by: ss.data.documents[idx]["by"])
+          .toMap();
+      messages.add(toAdd);
+    }
+    messages.sort((a, b) =>
+        DateTime.fromMicrosecondsSinceEpoch(b['time'].microsecondsSinceEpoch)
+            .compareTo(DateTime.fromMicrosecondsSinceEpoch(
+                a['time'].microsecondsSinceEpoch)));
+    print("How does messages look like really: $messages");
+    return messages;
+  }
+
   Widget generateTiles() {
     print("would the ID logic work?");
     print(widget.roomInfo.chatroomIDString);
-    if (snapshots == null) {
-      return populateExistingMessagesDefault();
-    }
+    // if (snapshots == null) {
+    //   return populateExistingMessagesDefault();
+    // }
     return StreamBuilder(
         stream: firebaseDB.getMessageStream(widget.roomInfo.chatroomIDString),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print("does it have data at some point?");
+            List messages = sortMessage(snapshot);
             return ListView.builder(
                 itemCount: snapshot.data.documents.length,
+                shrinkWrap: true,
+                reverse: true,
+                controller: _scrollController,
                 itemBuilder: (context, index) {
                   return MessageTile(
                       msg: Message.timestamp(
-                          content: snapshot.data.documents[index]["content"],
-                          by: snapshot.data.documents[index]["by"],
-                          timestamp: snapshot.data.documents[index]["time"]));
+                          content: messages[index]["content"],
+                          by: messages[index]["by"],
+                          timestamp: messages[index]["time"]));
                 });
           } else {
             print("No message snapshot has no data");
@@ -178,28 +237,142 @@ class _MessageRoomState extends State<MessageRoom> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.roomInfo != null && widget.type == "create") {
+      print("Wicked");
+      var roomMap = widget.roomInfo.toMap();
+      roomMap["title"] = widget.postTitle;
+      firebaseDB.createChatRoom(roomMap).then((value) {
+        widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
+        print("set up chatroomID be ${widget.roomInfo.chatroomIDString}");
+        fillSnapshot("create");
+      });
+    } else if (widget.type == "open") {
+      widget.postTitle = widget.roomInfo.title;
+      print("idk, what do I miss?");
+      print("wat is ${widget.roomInfo.toMap()}");
+    } else if (widget.roomInfo == null) {
+      //create a brand new chatroom
+      firebaseDB.createEmptyRoom(widget.currentUser);
+      //still hardcoded sample
+      widget.roomInfo = Chat.startChatRoom(
+          imageURL: "assets/shorsh.png",
+          stringUsers: [widget.currentUser, "Shorsh"],
+          title: widget.postTitle);
+      //because this is for chatbot, can hardcode it to Shorsh
+      // widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
+      setState(() {
+        widget.roomInfo.chatroomIDString = "Shorsh" + widget.currentUser;
+      });
+      // fillSnapshot("create");
+    }
+  }
+
+  Future<void> response(query) async {
+    AuthGoogle authGoogle =
+        await AuthGoogle(fileJson: "assets/service.json").build();
+    Dialogflow dialogflow =
+        Dialogflow(authGoogle: authGoogle, language: Language.english);
+    AIResponse aiResponse = await dialogflow.detectIntent(query);
+    print("AI is trying something:" + aiResponse.getListMessage().toString());
+    Map<String, dynamic> toSend = Message.timestamp(
+            content:
+                aiResponse.getListMessage()[0]["text"]["text"][0].toString(),
+            timestamp: Timestamp.now(),
+            by: 1)
+        .toMap();
+    print("adding AI message: $toSend");
+    firebaseDB.addMessage(widget.roomInfo.chatroomIDString, toSend);
+    setState(() {});
+    print("And checking AI response" +
+        aiResponse.getListMessage()[0]["text"]["text"][0].toString());
+  }
+
+  Widget _setHeader() {
+    if (widget.roomInfo.chatroomIDString != null &&
+        widget.roomInfo.chatroomIDString.contains("Shorsh")) {
+      //return shorsh version
+      return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                  height: 75,
+                  // width: 100,
+                  child: Image(image: AssetImage('assets/shorsh.png'))),
+              Container(
+                child: Text("Your helpful seahorse mate"),
+              )
+            ],
+          ));
+    } else {
+      print("is title not string? ${widget.roomInfo.toMap()}");
+      // if(widget.roomInfo.chatroomIDString != null){
+      //   widget.postTitle = firebaseDB.getTitle()
+      // }
+      return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  height: 75,
+                  // width: 100,
+                  child: Image.network(widget.roomInfo.imageURL,
+                      height: 200, width: 150, fit: BoxFit.fill)),
+              Container(
+                  margin: EdgeInsets.only(top: 5, left: 20),
+                  padding: EdgeInsets.only(top: 9, right: 20),
+                  height: 75,
+                  width: 150,
+                  child: widget.postTitle == null
+                      ? ("Untitled posting?")
+                      : Text(widget.postTitle))
+            ],
+          ));
+    }
+  }
+
+  Future _getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
 
     //need more robust handling in future
     //(check if the chatroom has already existed)
-    if (snapshots == null && widget.roomInfo != null) {
-      print("Wicked");
-      firebaseDB.createChatRoom(widget.roomInfo.toMap()).then((value) {
-        widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
-        print("set up chatroomID be ${widget.roomInfo.chatroomIDString}");
-        fillSnapshot("create");
-      });
-    } else if (widget.roomInfo == null) {
-      //create a brand new chatroom
-      firebaseDB.createEmptyRoom();
-      //still hardcoded sample
-      widget.roomInfo = Chat.startChatRoom(
-          imageURL: "https://www.fillmurray.com/640/360",
-          stringUsers: ["Self", "Bill Murray"]);
-      widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
-      fillSnapshot("create");
-    }
 
     return FutureBuilder(
       // Initialize FlutterFire
@@ -255,8 +428,10 @@ class _MessageRoomState extends State<MessageRoom> {
             body: Form(
               key: _formKey,
               child: Stack(children: <Widget>[
+                _setHeader(),
                 Container(
-                    margin: EdgeInsets.only(bottom: 45),
+                    alignment: Alignment.bottomCenter,
+                    margin: EdgeInsets.only(bottom: 45, top: 75),
                     child: generateTiles()),
                 Container(
                     //the entire bottom part
@@ -279,7 +454,7 @@ class _MessageRoomState extends State<MessageRoom> {
                             ),
                             onPressed: () {
                               //to be implemented
-                              _showWarning(context);
+                              _getImage();
                             },
                           ),
                           Row(
@@ -327,6 +502,7 @@ class _MessageRoomState extends State<MessageRoom> {
                                   print("adding the message: $toSend");
                                   firebaseDB.addMessage(
                                       widget.roomInfo.chatroomIDString, toSend);
+                                  response(messageSent);
                                   setState(() {});
                                 },
                               ),
@@ -335,9 +511,9 @@ class _MessageRoomState extends State<MessageRoom> {
                         ])))
               ]),
             ),
-            bottomNavigationBar: BottomBar(
-              bottomIndex: 2,
-            ),
+            bottomNavigationBar: (widget.toggleView != null)
+                ? BottomBar(bottomIndex: 2, toggleView: widget.toggleView)
+                : null,
           );
         }
 

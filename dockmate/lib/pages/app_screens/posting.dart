@@ -3,6 +3,7 @@ import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/util.dart';
 import 'package:dockmate/model/chat.dart';
 import 'package:dockmate/pages/app_screens/message.dart';
+import 'package:dockmate/model/username.dart';
 import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/app_screens/posting_form.dart';
 
@@ -229,17 +230,23 @@ class _PostingState extends State<Posting> {
               )),
       floatingActionButton: !_isOwner
           ? FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
                 //temporarily hardcoding other user identity
-                _owner = "Rogue Smith";
+                UsernameModel usernameModel = UsernameModel();
+                Username name = await usernameModel.getUsername();
+                _owner = "Placeholder Landlord";
                 Chat chatRoomInfo = Chat.startChatRoom(
-                    imageURL: _mainImage, stringUsers: ["self", _owner]);
-                Navigator.of(context).pushNamed('/Chat');
+                    imageURL: _mainImage,
+                    stringUsers: [name.username, _owner],
+                    title: widget.listing.title);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          MessageRoom.create(roomInfo: chatRoomInfo)),
+                      builder: (context) => MessageRoom.create(
+                          roomInfo: chatRoomInfo,
+                          type: "create",
+                          postTitle: widget.listing.title)),
                 );
               },
               child: Icon(Icons.message_outlined),
