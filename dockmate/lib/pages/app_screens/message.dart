@@ -277,7 +277,8 @@ class _MessageRoomState extends State<MessageRoom> {
   }
 
   Widget _setHeader() {
-    if (widget.roomInfo.chatroomIDString.contains("Shorsh")) {
+    if (widget.roomInfo.chatroomIDString != null &&
+        widget.roomInfo.chatroomIDString.contains("Shorsh")) {
       //return shorsh version
       return Container(
           decoration: BoxDecoration(
@@ -300,6 +301,32 @@ class _MessageRoomState extends State<MessageRoom> {
                   child: Image(image: AssetImage('assets/shorsh.png'))),
               Container(
                 child: Text("Your helpful seahorse mate"),
+              )
+            ],
+          ));
+    } else {
+      return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                  height: 75,
+                  // width: 100,
+                  child: Image.network(widget.roomInfo.imageURL,
+                      height: 200, width: 150, fit: BoxFit.fill)),
+              Container(
+                child: Text("The owner of this place"),
               )
             ],
           ));

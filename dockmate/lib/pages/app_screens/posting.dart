@@ -3,6 +3,7 @@ import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/util.dart';
 import 'package:dockmate/model/chat.dart';
 import 'package:dockmate/pages/app_screens/message.dart';
+import 'package:dockmate/model/username.dart';
 import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/app_screens/posting_form.dart';
 
@@ -229,18 +230,31 @@ class _PostingState extends State<Posting> {
               )),
       floatingActionButton: !_isOwner
           ? FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
                 //temporarily hardcoding other user identity
+                UsernameModel usernameModel = UsernameModel();
+                Username name = await usernameModel.getUsername();
                 _owner = "Rogue Smith";
                 Chat chatRoomInfo = Chat.startChatRoom(
-                    imageURL: _mainImage, stringUsers: ["self", _owner]);
-                Navigator.of(context).pushNamed('/Chat');
+                    imageURL: _mainImage, stringUsers: [name.username, _owner]);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          MessageRoom.create(roomInfo: chatRoomInfo)),
+                      builder: (context) => MessageRoom.create(
+                          roomInfo: chatRoomInfo, type: "create")),
                 );
+
+                // UserChat(
+                //       title: "$_user's Chat Room",
+                //       toggleView: widget.toggleView);
+                // Navigator.of(context).pushNamed('/Chat');
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) =>
+                //           MessageRoom.create(roomInfo: chatRoomInfo)),
+                // );
               },
               child: Icon(Icons.message_outlined),
             )
