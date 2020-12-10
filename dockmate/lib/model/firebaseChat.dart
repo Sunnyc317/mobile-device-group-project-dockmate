@@ -13,6 +13,15 @@ class ChatFirebase {
     "by": 1,
     "time": Timestamp.now(),
   };
+  var submap3 = {
+    "content":
+        '''Welcome to Dock Mate! I'm Shorsh, your friendly seahorse guide!
+Since you are not a registered user, I can't let you contact the landlord just yet.
+
+However, you can ask me how to register for an account, or you can ask me about the weather! :)''',
+    "by": 1,
+    "time": Timestamp.now(),
+  };
   var chatmap1 = {
     "imageURL": "assets/shorsh.png",
     "users": ["Self", "Shorsh"],
@@ -29,20 +38,10 @@ class ChatFirebase {
         .set(chatmap1)
         .then((value) {
       _chatRoomID = "Shorsh";
-      //ideally this will be placeholder
-      // addMessage(_chatRoomID, submap2);
+      //placeholder
+      addSpecificMessage(_chatRoomID, "FromShorsh", submap3);
     });
     print("The room id: $_chatRoomID");
-
-    // await FirebaseFirestore.instance
-    //     .collection("chatroom")
-    //     .add(chatmap1)
-    //     .then((value) {
-    //   _chatRoomID = value.id;
-    //   //ideally this will be placeholder
-    //   addMessage(_chatRoomID, submap2);
-    // });
-    // print("The room id: $_chatRoomID");
   }
 
   Future<void> createChatRoom(Map<String, dynamic> chat) async {
@@ -87,6 +86,15 @@ class ChatFirebase {
         .doc(roomID)
         .collection('messages')
         .doc();
+    chatroomRef.set(msg);
+  }
+
+  Future<void> addSpecificMessage(roomID, msgID, msg) {
+    var chatroomRef = FirebaseFirestore.instance
+        .collection("chatroom")
+        .doc(roomID)
+        .collection('messages')
+        .doc(msgID);
     chatroomRef.set(msg);
   }
 

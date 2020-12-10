@@ -2,12 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/message.dart';
-import 'package:dockmate/utils/sampleData.dart';
 import 'package:dockmate/model/chat.dart';
 import 'package:dockmate/model/firebaseChat.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
+import 'package:intl/intl.dart';
 
 class MessageTile extends StatelessWidget {
   Message msg;
@@ -37,6 +36,22 @@ class MessageTile extends StatelessWidget {
       },
     };
 
+    String _formatDate(Timestamp ts) {
+      var now = new DateTime.now();
+      var format = new DateFormat('HH:mm a');
+      var date = DateTime.fromMicrosecondsSinceEpoch(ts.microsecondsSinceEpoch);
+      var diff = date.difference(now);
+      var time = '';
+      if (diff.inDays == 1) {
+        time = diff.inDays.toString() + 'DAY AGO';
+      } else if (diff.inDays > 1) {
+        time = diff.inDays.toString() + 'DAYS AGO';
+      } else {
+        time = format.format(date);
+      }
+      return time;
+    }
+
     Widget basicBox() {
       int user = msg.by;
       return Container(
@@ -63,9 +78,10 @@ class MessageTile extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 8, left: 8, right: 8),
               child: Text(
                 (msg.time == null)
-                    ? timeago.format(msg.timestamp
-                        .toDate()) //will work on different time display later
-                    : msg.time.toString(),
+                    ? _formatDate(msg.timestamp)
+                    : DateTime.fromMicrosecondsSinceEpoch(
+                            msg.time.microsecondsSinceEpoch)
+                        .toString(),
                 textAlign: TextAlign.left,
               )),
         ],
@@ -154,7 +170,10 @@ class _MessageRoomState extends State<MessageRoom> {
           .toMap();
       messages.add(toAdd);
     }
-    messages.sort((a, b) => b['time'].compareTo(a['time']));
+    messages.sort((a, b) =>
+        DateTime.fromMicrosecondsSinceEpoch(b['time'].microsecondsSinceEpoch)
+            .compareTo(DateTime.fromMicrosecondsSinceEpoch(
+                a['time'].microsecondsSinceEpoch)));
     print("How does messages look like really: $messages");
     return messages;
   }
@@ -233,13 +252,12 @@ class _MessageRoomState extends State<MessageRoom> {
     Map<String, dynamic> toSend = Message.timestamp(
             content:
                 aiResponse.getListMessage()[0]["text"]["text"][0].toString(),
-            timestamp: curTime,
+            timestamp: Timestamp.now(),
             by: 1)
         .toMap();
     print("adding AI message: $toSend");
     firebaseDB.addMessage(widget.roomInfo.chatroomIDString, toSend);
     setState(() {});
-
     print("And checking AI response" +
         aiResponse.getListMessage()[0]["text"]["text"][0].toString());
   }
@@ -378,7 +396,7 @@ class _MessageRoomState extends State<MessageRoom> {
                                   print("adding the message: $toSend");
                                   firebaseDB.addMessage(
                                       widget.roomInfo.chatroomIDString, toSend);
-                                  response("hello");
+                                  response(messageSent);
                                   setState(() {});
                                 },
                               ),
