@@ -1,7 +1,5 @@
 import 'package:dockmate/model/user.dart';
-// import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:search_app_bar/search_app_bar.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
@@ -39,9 +37,6 @@ class _ListingState extends State<Listings> {
 
   @override
   Widget build(BuildContext context) {
-    // AuthService _auth = AuthService();
-    //final Filter filter;
-
     Row symbols() {
       return Row(children: <Widget>[
         Container(

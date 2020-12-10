@@ -1,13 +1,22 @@
+import 'package:dockmate/utils/util.dart';
 import 'package:latlong/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/listing.dart';
+import 'package:dockmate/pages/app_screens/posting.dart';
 
 final centre = LatLng(43.6532, -79.3832);
 MapController _mapController = MapController();
-List<Placemark> _places = [];
+List<ListingPlace> _lp = [];
+
+class ListingPlace {
+  Listing listing;
+  Placemark place;
+
+  ListingPlace({this.listing, this.place});
+}
 
 class Map extends StatefulWidget {
   String title;
@@ -74,16 +83,15 @@ class _MapState extends State<Map> {
               .placemarkFromAddress(element.address)
               .then((List<Placemark> places) {
             for (Placemark place in places) {
-              _places.add(place);
+              _lp.add(ListingPlace(listing: element, place: place));
             }
           });
         });
       });
     });
 
-    _places.forEach((place) {
-      loc = LatLng(place.position.latitude, place.position.longitude);
-
+    _lp.forEach((lp) {
+      loc = LatLng(lp.place.position.latitude, lp.place.position.longitude);
       _marks.add(Marker(
           height: 45.0,
           width: 45.0,
@@ -96,7 +104,7 @@ class _MapState extends State<Map> {
                   color: Colors.blue,
                 ),
                 onPressed: () {
-                  _showModalBottomSheet(place);
+                  _showModalBottomSheet(lp.listing);
                 },
               ))));
     });
@@ -104,23 +112,35 @@ class _MapState extends State<Map> {
     return _marks;
   }
 
-  Future<void> _showModalBottomSheet(Placemark place) {
-    String _address = place.subThoroughfare + " " + place.thoroughfare;
+  Future<void> _showModalBottomSheet(Listing listing) {
     return showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: 200,
+          height: 350,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(_address),
-                ElevatedButton(
-                  child: const Text('Close'),
-                  onPressed: () => Navigator.pop(context),
-                )
+                buildListRow(
+                    listing,
+                    Row(
+                      children: [
+                        IconButton(
+                            icon: Icon(Icons.open_in_full),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      Posting(title: '', listing: listing)));
+                            }),
+                        IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            })
+                      ],
+                    ))
               ],
             ),
           ),
