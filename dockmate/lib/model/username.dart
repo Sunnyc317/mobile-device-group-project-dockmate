@@ -27,7 +27,7 @@ class UsernameModel {
     final db = await DBUtils.init();
     final userMap = await db.query('usernames');
     var allUsernames = [];
-    print("usermap ${userMap[9]}");
+    print("usermap $userMap");
     if (userMap.length > 0) {
       for (int i = 0; i < userMap.length; i++) {
         allUsernames.add(Username.fromMap(userMap[i]));

@@ -10,7 +10,7 @@ class DBUtils {
       path.join(await getDatabasesPath(), 'dockmate.db'),
       onCreate: (db, version) {
         db.execute(
-            'CREATE TABLE usernames(id INTEGER PRIMARY KEY AUTO INCREMENT, username TEXT)');
+            'CREATE TABLE usernames(id INTEGER AUTO INCREMENT, username TEXT)');
       },
       version: 1,
     );
