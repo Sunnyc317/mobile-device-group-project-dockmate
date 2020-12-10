@@ -1,7 +1,7 @@
 import 'package:dockmate/pages/app_screens/chat.dart';
 import 'package:dockmate/pages/app_screens/listings.dart';
 import 'package:dockmate/pages/app_screens/my_listing.dart';
-import 'package:dockmate/pages/app_screens/settings.dart';
+import 'package:dockmate/pages/Settings/settings.dart';
 import 'package:dockmate/pages/authentication/login.dart';
 import 'package:dockmate/pages/authentication/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';

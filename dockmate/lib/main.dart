@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/pages/authentication/login.dart';
 import 'package:dockmate/pages/app_screens/chat.dart';
-import 'package:dockmate/pages/app_screens/settings.dart';
+import 'package:dockmate/pages/Settings/settings.dart';
 import 'package:dockmate/pages/app_screens/listings.dart';
 import 'package:dockmate/pages/app_screens/my_listing.dart';
 import 'package:dockmate/pages/app_screens/map.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: MyHomePage(title: 'Dock Mate!'),
-        routes: <String, WidgetBuilder>{
+        // routes: <String, WidgetBuilder>{
           // '/Login': (BuildContext context) => Login(),
           // '/Register': (BuildContext context) => Register(),
           // '/Listings': (BuildContext context) => Listings(),
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
           //     MyListing(title: "My Listings"),
           // '/Settings': (BuildContext context) => Settings(title: "Settings"),
           // '/FirstScreen': (BuildContext context) => FirstScreen(),
-        },
+        // },
       ),
     );
   }
