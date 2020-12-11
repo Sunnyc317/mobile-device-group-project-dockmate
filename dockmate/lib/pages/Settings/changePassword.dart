@@ -12,7 +12,7 @@ class ChangePassword extends StatefulWidget {
   // final Function toggleView;
   // bool verified;
   // User user;
-  // ChangePassword({Key key, this.toggleView, this.user, this.verified}) : super(key: key);
+  ChangePassword({Key key}) : super(key: key);
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
@@ -109,8 +109,9 @@ class _ChangePasswordState extends State<ChangePassword> {
 
                           if (result['updated']) {
                             print('password updated. suppose to pop navigator');
-                             Scaffold.of(context).showSnackBar(
-                                SnackBar(content: Text(result['msg'])));
+                            Navigator.pop(context,result['msg']);
+                            //  Scaffold.of(context).showSnackBar(
+                            //     SnackBar(content: Text(result['msg'])));
                           } else {
                             Scaffold.of(context).showSnackBar(
                                 SnackBar(content: Text(result['msg'])));

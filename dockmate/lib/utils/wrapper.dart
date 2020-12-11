@@ -19,6 +19,7 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     final user = Provider.of<usermodel.User>(context);
     final userstatus = Provider.of<User>(context);
+    final language = Provider.of<String>(context);
     // get the user object as in user.dart
     
     // print(user);

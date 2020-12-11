@@ -1,0 +1,9 @@
+{
+    "Settings": {
+        "Status": "connectez-vous en tant que: ",
+        "EditProfile": "Editer le profil", 
+        "SelectLanguage": "Choisir la langue", 
+        "ChangePassword": "Changer le mot de passe",
+        "Logout": "Déconnexion"
+    }
+}

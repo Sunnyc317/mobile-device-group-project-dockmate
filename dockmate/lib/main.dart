@@ -1,24 +1,42 @@
 import 'package:dockmate/model/user.dart' as usermodel;
 import 'package:dockmate/utils/auth.dart';
+import 'package:dockmate/utils/language.dart';
 import 'package:dockmate/utils/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_i18n/loaders/decoders/json_decode_strategy.dart';
+import 'package:flutter_i18n/loaders/local_translation_loader.dart';
 
 void main() async {
+  final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
+    translationLoader: FileTranslationLoader(
+        useCountryCode: false,
+        fallbackFile: 'en',
+        basePath: 'assets/flutter_i18n'),
+  );
+  // WidgetsFlutterBinding.ensureInitialized();
+  await flutterI18nDelegate.load(null);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MyApp(flutterI18nDelegate));
 }
 
 class MyApp extends StatelessWidget {
+  final FlutterI18nDelegate flutterI18nDelegate;
+
+  MyApp(this.flutterI18nDelegate);
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         StreamProvider<usermodel.User>.value(value: AuthService().user),
         StreamProvider<User>.value(value: AuthService().userstatus),
+        Provider<String>.value(value: Language().lang),
       ],
       // return StreamProvider.value(
       //   value: AuthService().user,
@@ -30,6 +48,21 @@ class MyApp extends StatelessWidget {
         ),
         home: MyHomePage(title: 'Dock Mate!'),
         routes: <String, WidgetBuilder>{},
+        localizationsDelegates: [
+          flutterI18nDelegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+          // FlutterI18nDelegate(
+          //   translationLoader: LocalTranslationLoader(
+          //     basePath: 'assets/flutter_i18n',
+          //     decodeStrategies: [
+          //       JsonDecodeStrategy(),
+          //     ],
+          //   ),
+          // ),
+          // GlobalMaterialLocalizations.delegate,
+          // GlobalWidgetsLocalizations.delegate,
+        ],
       ),
     );
   }

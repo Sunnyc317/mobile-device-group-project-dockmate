@@ -1,0 +1,9 @@
+{
+    "Settings": {
+        "Status": "Signed in as: ",
+        "EditProfile": "Edit Profile", 
+        "SelectLanguage": "Select Language", 
+        "ChangePassword": "Change Password",
+        "Logout": "Log out"
+    }
+}

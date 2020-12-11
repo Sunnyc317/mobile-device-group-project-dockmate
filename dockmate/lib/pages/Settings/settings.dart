@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/username.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class Settings extends StatefulWidget {
   // String title;
@@ -56,8 +59,10 @@ class _SettingsState extends State<Settings> {
                 child: ListView(padding: EdgeInsets.all(8), children: [
                   ListTile(
                     title: Wrap(children: [
+                      
                       Text(
-                        "Signed in as: ",
+                        // "Signed in as: ",
+                        FlutterI18n.translate(context, "Settings.Status"),
                         style: TextStyle(
                             fontSize: 20,
                             color: Color.fromRGBO(88, 126, 163, 1)),
@@ -72,7 +77,7 @@ class _SettingsState extends State<Settings> {
                   ),
                   Builder(
                     builder: (context) => ListTile(
-                      title: Text('Edit Profile'),
+                      title: Text(FlutterI18n.translate(context, "Settings.EditProfile"),),
                       leading: Icon(Icons.edit),
                       onTap: () {
                         if (user.isAnonymous) {
@@ -89,29 +94,33 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   ListTile(
-                    title: Text('Select Language'),
+                    title: Text(FlutterI18n.translate(context, "Settings.SelectLanguage"),),
                     leading: Icon(Icons.flag),
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      String lang = await Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => SelectLanguage()));
+                      Locale newLocale = Locale(lang);
+                      await FlutterI18n.refresh(context, newLocale);
+                      setState(() {});
                     },
                   ),
                   Builder(
                     builder: (context) => ListTile(
-                      title: Text('Change Password'),
+                      title: Text(FlutterI18n.translate(context, "Settings.ChangePassword")),
                       leading: Icon(Icons.security),
                       onTap: () async {
                         if (user.isAnonymous) {
                           Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text('can\'t change password as a guest')));
+                              content:
+                                  Text('can\'t change password as a guest')));
                         } else {
                           await Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ChangePassword()));
-                          
+
                           Scaffold.of(context).showSnackBar(SnackBar(
                               content: Text('password updated successfully')));
                         }
@@ -119,7 +128,7 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   ListTile(
-                      title: Text('Log Out',
+                      title: Text(FlutterI18n.translate(context, "Settings.Logout"),
                           style: TextStyle(
                               color: Color.fromRGBO(222, 115, 89, 1))),
                       leading: Icon(Icons.exit_to_app),

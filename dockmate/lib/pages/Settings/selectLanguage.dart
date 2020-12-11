@@ -5,9 +5,19 @@ class SelectLanguage extends StatefulWidget {
   _SelectLanguageState createState() => _SelectLanguageState();
 }
 
+
 class _SelectLanguageState extends State<SelectLanguage> {
+int _selectedIndex;
+String language = 'English';
+  @override
+  void initState() {
+    _selectedIndex = 0;
+    language = 'English';
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    // String language = 'English';
     return Scaffold(
       appBar: AppBar(title: Text('Select Language')),
       body: Padding(
@@ -15,17 +25,40 @@ class _SelectLanguageState extends State<SelectLanguage> {
         child: ListView(padding: EdgeInsets.all(8), children: [
           ListTile(
             title: Text('English'),
-            onTap: () {},
+            tileColor:
+                _selectedIndex == 0 ? Colors.blue[100] : Colors.white,
+            onTap: () {
+              setState(() {
+                _selectedIndex = 0;
+                language = 'English';
+              });
+              // language = 'English';
+            },
           ),
           ListTile(
             title: Text('French'),
-            onTap: () {},
+            tileColor:
+                _selectedIndex == 1 ? Colors.blue[100] : Colors.white,
+            onTap: () {
+              setState(() {
+                _selectedIndex = 1;
+                language = 'French';
+              });
+            },
           ),
           SizedBox(height: 50),
           RaisedButton(
             child: Text('Confirm',
                 style: TextStyle(fontSize: 20, color: Colors.white)),
-            onPressed: () {},
+            onPressed: () {
+              if (language == 'English') {
+                // Locale newLocale = Locale('en');
+                Navigator.pop(context, 'en');
+              } else if (language == 'French') {
+                // Locale newLocale = Locale('fr');
+                Navigator.pop(context, 'fr');
+              }
+            },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
             ),
