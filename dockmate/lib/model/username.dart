@@ -2,6 +2,7 @@ import 'package:dockmate/model/dbUtils.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Username {
+  // Very simple username object to mimic session storage
   int id;
   String username;
 
@@ -21,13 +22,12 @@ class Username {
 }
 
 class UsernameModel {
+  // Used to access SQFLite that stores current user name
   getUsername() async {
     //just always get the latest one
-    print("attempting to get username");
     final db = await DBUtils.init();
     final userMap = await db.query('usernames');
     var allUsernames = [];
-    print("usermap $userMap");
     if (userMap.length > 0) {
       for (int i = 0; i < userMap.length; i++) {
         allUsernames.add(Username.fromMap(userMap[i]));
@@ -37,7 +37,6 @@ class UsernameModel {
   }
 
   setUsername(String username) async {
-    print("attempting to set username");
     final db = await DBUtils.init();
     await db.insert(
       'usernames',

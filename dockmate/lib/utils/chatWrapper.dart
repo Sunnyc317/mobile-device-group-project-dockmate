@@ -3,6 +3,7 @@ import 'package:dockmate/model/username.dart';
 import 'package:dockmate/pages/chat/userChat.dart';
 import 'package:dockmate/pages/chat/message.dart';
 
+// This class handles different types of Chat to be shown
 class ChatWrapper extends StatefulWidget {
   final Function toggleView;
   ChatWrapper({Key key, this.toggleView}) : super(key: key);
@@ -15,19 +16,10 @@ class _ChatWrapperState extends State<ChatWrapper> {
   final UsernameModel _usernameModel = UsernameModel();
   String _user = "USER NOT FOUND";
 
-  // @override
-  // void initState() {
-  //   print("Chat wrapper's init state");
-  //   super.initState();
-  //   _getUsername();
-  // }
-
   Future<String> _getUsername() async {
-    print("now we get userrname in chat wrapper");
+    // Get username to determine chat type
     Username name = await _usernameModel.getUsername();
-    print("chat wrrapper's anything: ${name.username}");
     _user = name.username;
-    print("entire get username in chat wrapper is done");
     return name.username;
   }
 
@@ -48,14 +40,14 @@ class _ChatWrapperState extends State<ChatWrapper> {
                 return Scaffold(body: Text('Error: You should not see this!'));
               else {
                 if (_user.toLowerCase().contains("guest")) {
-                  print("It went to guest chatroom @$_user");
+                  // Block guest from being able to access all chatrooms
                   return MessageRoom(
                     toggleView: widget.toggleView,
                     currentUser: _user,
                     postTitle: "Your helpful seahorse mate",
                   );
                 } else {
-                  print("It went to USER'S?! chatroom @$_user");
+                  // Show normal chatrooms
                   return UserChat(
                       title: "$_user's Chat Room",
                       toggleView: widget.toggleView);

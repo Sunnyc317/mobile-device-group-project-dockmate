@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:dockmate/utils/sampleDataChart.dart';
 
+// Displays survey result as horizontal bar chart
 class NewsChart extends StatefulWidget {
   final String title;
   final List<Post> posts;
@@ -19,7 +20,6 @@ class _NewsChartState extends State<NewsChart> {
       ),
       body: Container(
         padding: const EdgeInsets.all(10.0),
-        // margin: const EdgeInsets.only(left: 8),
         child: SizedBox(
           height: 500.0,
           child: charts.BarChart(
