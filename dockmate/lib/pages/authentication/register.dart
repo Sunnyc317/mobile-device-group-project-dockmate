@@ -34,25 +34,6 @@ class _RegisterState extends State<Register> {
         leading: Image.asset("assets/dock.png", scale: 20, color: Colors.white),
         title: Text("Registration"),
       ),
-      // appBar: AppBar(
-      //   title: Row(
-      //     mainAxisAlignment: MainAxisAlignment.start,
-      //     children: [
-      //       Container(
-      //         child: Image.asset("assets/placeholder_icon.png", scale: 20),
-      //         margin: EdgeInsets.only(right: 10),
-      //       ),
-      //       Text('Registration'),
-      //     ],
-      //   ),
-      //   actions: <Widget>[
-      //     FlatButton.icon(
-      //         onPressed: () => widget.toggleView('login'),
-      //         // Navigator.of(context).pushReplacementNamed('/Login'),
-      //         icon: Icon(Icons.person),
-      //         label: Text('Log in'))
-      //   ],
-      // ),
       body: Container(
         // margin: EdgeInsets.all(10),
         margin: EdgeInsets.symmetric(vertical: 18),
@@ -128,28 +109,6 @@ class _RegisterState extends State<Register> {
                   email = value;
                 },
               )),
-              // TextFormField(
-              //   decoration: const InputDecoration(
-              //     hintText: '(xxx) xxx-xxxx',
-              //     labelText: 'Phone number',
-              //   ),
-              //   validator: (value) {
-              //     if (value.length != 10) {
-              //       return 'phone number format wrong';
-              //     }
-              //     return null;
-              //   },
-              //   onChanged: (value) {
-              //     if (value.length != 10) {
-              //       return 'phone number format wrong';
-              //     } else {
-              //       return null;
-              //     }
-              //   },
-              //   onSaved: (value) {
-              //     phone = value;
-              //   },
-              // ),
               ListTile(
                   title: TextFormField(
                 decoration: const InputDecoration(

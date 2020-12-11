@@ -1,4 +1,3 @@
-import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 
