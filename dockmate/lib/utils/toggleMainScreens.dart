@@ -1,9 +1,9 @@
-import 'package:dockmate/pages/app_screens/listings.dart';
-import 'package:dockmate/pages/app_screens/my_listing.dart';
-import 'package:dockmate/pages/settings/settings.dart';
+import 'package:dockmate/pages/post/listings.dart';
+import 'package:dockmate/pages/post/my_listing.dart';
+import 'package:dockmate/pages/Settings/settings.dart';
 import 'package:dockmate/utils/chatWrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:dockmate/pages/app_screens/map.dart' as mapScreen;
+import 'package:dockmate/pages/map.dart' as mapScreen;
 
 // Authenticate is for toggling between login and register
 class ToggleMainScreens extends StatefulWidget {

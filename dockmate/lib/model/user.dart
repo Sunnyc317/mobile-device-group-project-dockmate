@@ -1,26 +1,17 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:core';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dockmate/model/listing.dart';
-import 'package:dockmate/model/message.dart';
 
 class User {
-  String id; 
+  String id;
   int sqfid;
   String first_name = 'nofirstname';
   String last_name = 'nolastname';
   String email;
   bool notifON = true;
-  // bool emailvarified = false;
   List<String> wantHouseTypes;
   String phone;
   String province;
   String country;
-  // bool landlord;
-  // List<Listing> my_listings;
-  // List<Listing> saved_listings;
-  // List<Message> messages; // Im not sure what the format on this yet....
-  //temporary for chat purposes
+
   User({this.id});
   User.chat({this.first_name, this.last_name});
 
@@ -30,7 +21,11 @@ class User {
     this.first_name = map['firstname'];
     this.last_name = map['lastname'];
     this.email = map['email'];
-    if(map['notifON']==1) {this.notifON=true;} else {this.notifON=false;}
+    if (map['notifON'] == 1) {
+      this.notifON = true;
+    } else {
+      this.notifON = false;
+    }
     this.notifON = map['notifON'];
     this.phone = map['phone'];
     this.wantHouseTypes = map['wantHouseType'].split(',');
@@ -60,8 +55,14 @@ class User {
     this.first_name = username.splitMapJoin(' ')[0];
     this.last_name = username.splitMapJoin(' ')[1];
   }
-  void setemail(String email) {this.email = email;}
-  void setphone(String phone) {this.phone = phone;}
+
+  void setemail(String email) {
+    this.email = email;
+  }
+
+  void setphone(String phone) {
+    this.phone = phone;
+  }
 
   String getUser() {
     return id;
@@ -69,7 +70,6 @@ class User {
 
   @override
   String toString() {
-    // TODO: implement toString
     return super.toString();
   }
 }

@@ -11,7 +11,7 @@ The main entry points:
 */
 
 import 'package:flutter/material.dart';
-import 'package:dockmate/pages/app_screens/message.dart';
+import 'package:dockmate/pages/chat/message.dart';
 import 'package:dockmate/model/chat.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/firebaseChat.dart';
