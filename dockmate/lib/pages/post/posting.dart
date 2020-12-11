@@ -49,7 +49,11 @@ class _PostingState extends State<Posting> {
       _mainImage = widget.listing.mainImage;
       _userID = widget.listing.userID;
 
+      // Currently hardcoded
       User user = User(id: "2FXgu90z0tTy0MO5gI3Bti");
+
+      // This logic is for either to e.g. message or save postings IF not owner
+      // Otherwise, user can edit and delete
       if (user.getUser() == _userID) _isOwner = true;
     }
 
@@ -205,27 +209,6 @@ class _PostingState extends State<Posting> {
                                             color: Colors.grey, fontSize: 16))),
                                 Text(_description)
                               ])),
-                      // !_isOwner
-                      //     ? RaisedButton.icon(
-                      //         onPressed: () {
-                      //           //temporarily hardcoding other user identity
-                      //           _owner = "Rogue Smith";
-                      //           Chat chatRoomInfo = Chat.startChatRoom(
-                      //               imageURL: _mainImage,
-                      //               stringUsers: ["self", _owner]);
-                      //           Navigator.of(context).pushNamed('/Chat');
-                      //           Navigator.push(
-                      //             context,
-                      //             MaterialPageRoute(
-                      //                 builder: (context) => MessageRoom.create(
-                      //                     roomInfo: chatRoomInfo)),
-                      //           );
-                      //         },
-                      //         icon:
-                      //             //sad_replacement_icon,
-                      //             Icon(Icons.message_outlined),
-                      //         label: Text("Chat with " + "Post Owner"))
-                      //     : Container(),
                     ])),
               )),
       floatingActionButton: !_isOwner
@@ -255,6 +238,8 @@ class _PostingState extends State<Posting> {
     );
   }
 
+  // When updating the list
+  // NOTE: This has slight bug where it's not updating the data on the database
   Future<void> _updateListing(BuildContext context, Listing listing) async {
     Listing _listing = new Listing();
     Listing list = listing;
@@ -267,6 +252,9 @@ class _PostingState extends State<Posting> {
     if (list != null) await _listing.update(list);
   }
 
+  // Confirmation dialog when trying to delete post
+  // Then delete post
+  // NOTE: This has slight bug where it's not deleting the data on the database
   Future<void> _deleteConfirmation(BuildContext context) async {
     showDialog(
         context: context,

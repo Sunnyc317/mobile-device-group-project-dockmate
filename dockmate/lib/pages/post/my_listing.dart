@@ -32,6 +32,7 @@ class _MyListingState extends State<MyListing> {
   Future<void> reload() async {
     await _getUsername();
     User user = new User(id: "empty");
+    // Temporary logic, hardcoded
     if (username.contains("Jessica")) user = User(id: "2FXgu90z0tTy0MO5gI3Bti");
 
     _listing.getAllListings().first.then((list) {
@@ -109,6 +110,9 @@ class _MyListingState extends State<MyListing> {
     );
   }
 
+  // Confirmation dialog when trying to delete post
+  // Then delete post
+  // NOTE: This has slight bug where it's not deleting the data on the database
   Future<void> _deleteConfirmation(BuildContext context) async {
     showDialog(
         context: context,
@@ -138,6 +142,7 @@ class _MyListingState extends State<MyListing> {
         });
   }
 
+  // When adding new listing
   Future<void> _addListing(BuildContext context) async {
     var list = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PostingForm(title: 'Add Listing')));
@@ -146,6 +151,8 @@ class _MyListingState extends State<MyListing> {
     reload();
   }
 
+  // When updating the list
+  // NOTE: This has slight bug where it's not updating the data on the database
   Future<void> _updateListing(BuildContext context) async {
     var list = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PostingForm(
@@ -156,6 +163,7 @@ class _MyListingState extends State<MyListing> {
     reload();
   }
 
+  // When opening individual post
   Future<void> _openListing(BuildContext context) async {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
@@ -164,6 +172,7 @@ class _MyListingState extends State<MyListing> {
     reload();
   }
 
+  // Get username who is logged in, currently to show relevant listing the user own
   Future<void> _getUsername() async {
     Username name = await _usernameModel.getUsername();
     setState(() {

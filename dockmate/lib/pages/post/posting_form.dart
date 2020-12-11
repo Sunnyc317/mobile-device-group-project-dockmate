@@ -31,6 +31,7 @@ class _PostingFormState extends State<PostingForm> {
   String _price;
   bool _isPublic = true;
 
+  // The dropdown options
   final _countryList = ["CA", "US", "Other"];
   final _statusOptions = ["Available", "Pending", "No Longer Available"];
   final _bedroomOptions = ["Studio", "1", "1+1", "2", "2+1", "3", "3+1", "4+"];
@@ -53,6 +54,7 @@ class _PostingFormState extends State<PostingForm> {
 
   @override
   Widget build(BuildContext context) {
+    // If this is to populate and act as update form
     if (widget.listing != null) {
       print("not null");
       _title = widget.listing.title;
@@ -329,6 +331,9 @@ class _PostingFormState extends State<PostingForm> {
     );
   }
 
+  /*
+   * From this point onwards are widget that build each dropdown categories
+   */
   Widget buildBedDropdownList() {
     return Row(children: [
       Container(padding: EdgeInsets.only(right: 5.0), child: Text("Bedroom")),
@@ -429,6 +434,9 @@ class _PostingFormState extends State<PostingForm> {
     ]);
   }
 
+  /*
+   * From this point onwards are widget that build each checkboxes categories
+   */
   Widget buildParkingCheckbox() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

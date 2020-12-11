@@ -10,8 +10,6 @@ import 'package:filter_list/filter_list.dart';
 
 // Search functions referencing: https://github.com/ahmed-alzahrani/Flutter_Search_Example
 class Listings extends StatefulWidget {
-  // final String title;
-  // User user;
   final Function toggleView;
 
   Listings({Key key, this.toggleView}) : super(key: key);
@@ -36,7 +34,6 @@ class _ListingState extends State<Listings> {
   final TextEditingController _filter = new TextEditingController();
 
   List<String> _filterList = [
-    "Saved Posts",
     "Studio",
     "1 Bedroom",
     "1+1 Bedroom",
@@ -102,6 +99,7 @@ class _ListingState extends State<Listings> {
     });
   }
 
+  // This function is to attained all saved listings by the user
   void _getSavedListings(userID) {
     _listing.getAllListings().first.then((a) {
       _savedListings.getAllSavedListings().first.then((b) {
@@ -142,6 +140,7 @@ class _ListingState extends State<Listings> {
         ));
   }
 
+  // This function will be called when use click search icon
   void _searchPressed() {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
@@ -161,10 +160,12 @@ class _ListingState extends State<Listings> {
     });
   }
 
+  // This is the main body, will return all the listings both all or when filtered
   Widget _filteredList() {
     String userID = _user.getUser();
     _getSavedListings(userID);
 
+    // This is to identify if the filtering/searching is happening and the listings will be updated
     if (_search != "") {
       // Search through address
       _filteredListings = _listings
@@ -194,10 +195,13 @@ class _ListingState extends State<Listings> {
         Container(
           child: IconButton(
             icon: Icon(Icons.message_outlined),
-            onPressed: () {},
+            onPressed: () {
+              // THIS IS TO BE IMPLEMENTED
+            },
           ),
         ),
         Container(
+          // THIS IS ONLY HALF IMPLEMENTED
           child: IconButton(
             icon: _saveIcon,
             //_savedList.contains((i) => i.id == _filteredListings[index].id)
@@ -245,6 +249,7 @@ class _ListingState extends State<Listings> {
     );
   }
 
+  // This will pop up when the filter button is clicked, it and shows the filter options
   void _openFilterDialog() async {
     await FilterListDialog.display(context,
         allTextList: _filterList,
@@ -298,12 +303,15 @@ class _ListingState extends State<Listings> {
     });
   }
 
+  // NOTE: THIS IS STILL A TO DO, CURRENTLY NOT FUNCTIONING
+  // This is to save listings binded to the user
   Future<void> _saveListing(Listing listing) async {
     String userID = _user.getUser();
     _savedListings.insert(SavedListings(listingID: listing.id, userID: userID));
     reload();
   }
 
+  // This will open adding listing form
   Future<void> _addListing(BuildContext context) async {
     var list = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PostingForm(title: 'Add Listing')));
@@ -312,6 +320,7 @@ class _ListingState extends State<Listings> {
     reload();
   }
 
+  // This will open the individual post
   Future<void> _openListing(BuildContext context) async {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>

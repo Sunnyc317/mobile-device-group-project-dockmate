@@ -7,7 +7,7 @@ import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/pages/post/posting.dart';
 
-final centre = LatLng(43.6532, -79.3832);
+final centre = LatLng(43.6532, -79.3832); // Toronto
 MapController _mapController = MapController();
 List<ListingPlace> _lp = [];
 
@@ -72,6 +72,7 @@ class _MapState extends State<Map> {
             BottomBar(bottomIndex: 1, toggleView: widget.toggleView));
   }
 
+  // To mark all the points corresponding to existing listings
   List<Marker> _markers() {
     LatLng loc;
     List<Marker> _marks = [];
@@ -113,6 +114,8 @@ class _MapState extends State<Map> {
     return _marks;
   }
 
+  // When the mark is clicked, it will show the preview of the listings
+  // User will be able to expand the full listing
   Future<void> _showModalBottomSheet(Listing listing) {
     return showModalBottomSheet<void>(
       context: context,
