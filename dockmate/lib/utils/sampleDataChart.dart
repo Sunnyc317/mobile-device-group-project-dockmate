@@ -1,3 +1,5 @@
+// Sample data for datachart display (survey)
+
 class Post {
   String title;
   int numUpVotes;

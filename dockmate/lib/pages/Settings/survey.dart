@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dockmate/pages/Settings/dataChart.dart';
 import 'package:dockmate/utils/sampleDataChart.dart';
 
+// Using datachart to conduct survey with upvotes and downvotes
 class Survey extends StatefulWidget {
   Survey();
 
