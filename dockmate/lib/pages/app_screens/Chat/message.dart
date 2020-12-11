@@ -1,3 +1,8 @@
+/*
+This page deals with individual chatroom
+The messages seen and the functionality once you enter a specific chatroom
+*/
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/bottombar.dart';
@@ -318,10 +323,6 @@ class _MessageRoomState extends State<MessageRoom> {
             ],
           ));
     } else {
-      print("is title not string? ${widget.roomInfo.toMap()}");
-      // if(widget.roomInfo.chatroomIDString != null){
-      //   widget.postTitle = firebaseDB.getTitle()
-      // }
       return Container(
           decoration: BoxDecoration(
             color: Colors.white,

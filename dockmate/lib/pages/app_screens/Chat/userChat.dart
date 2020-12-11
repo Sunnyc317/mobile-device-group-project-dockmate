@@ -1,13 +1,7 @@
 /*
-The chat main screen
-
-The main entry points:
-1. A plus button maybe at top of page (to create new message)
-  then open an empty chat form
-    validate on clicking send
-2. From clicking a link somewhere
-  if from clicking a link somewhere, just need to digest data
-
+This page deals with the Chat interface, 
+what you see when you click on the Chat tab
+and the representation of each chat rooms.
 */
 
 import 'package:flutter/material.dart';
@@ -26,6 +20,7 @@ class ChatroomTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _showWarning(BuildContext context, name, id) {
+      // Show notification before deleting a chatroom
       showDialog<void>(
         context: context,
         barrierDismissible: true,
@@ -56,6 +51,7 @@ class ChatroomTile extends StatelessWidget {
       );
     }
 
+    // This portion creates each chatroom tiles
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: Column(children: [
@@ -101,7 +97,7 @@ class ChatroomTile extends StatelessWidget {
         Divider(color: Colors.grey, indent: 130, endIndent: 30)
       ]),
       onTap: () {
-        //open a message for now
+        // Open the message corresponding to that chatroom
         chatroomData.chatroomIDString = chatroomID;
         Navigator.push(
           context,
@@ -109,11 +105,9 @@ class ChatroomTile extends StatelessWidget {
               builder: (context) =>
                   MessageRoom.open(roomInfo: chatroomData, type: "open")),
         );
-        //and then fill up with existing messages
-        //can animate it in future: https://flutter.dev/docs/cookbook/animation/page-route-animation
       },
       onLongPress: () {
-        print("watcha doin");
+        // Show a warning before deleting the specific chatroom
         _showWarning(context, chatroomData.stringUsers[1], chatroomID);
       },
     );
@@ -122,10 +116,10 @@ class ChatroomTile extends StatelessWidget {
 
 class UserChat extends StatefulWidget {
   String title;
+  Function toggleView;
   UserChat({this.title, this.toggleView});
   Chat roomInfo;
   String _user = "USER NOT FOUND";
-  Function toggleView;
   UserChat.create({this.roomInfo, this.toggleView});
 
   @override
@@ -133,26 +127,28 @@ class UserChat extends StatefulWidget {
 }
 
 class _UserChatState extends State<UserChat> {
-  final ChatFirebase firebaseDB = ChatFirebase();
+  final ChatFirebase _firebaseDB = ChatFirebase();
   final UsernameModel _usernameModel = UsernameModel();
   int _isEmptyCount = 0;
 
   @override
   void initState() {
+    // Set username once on creation
     print("User chat's init state");
     super.initState();
     _getUsername();
   }
 
   Future<void> _getUsername() async {
+    // Get current username from sqflite
     Username name = await _usernameModel.getUsername();
-    print("anything: ${name.username}");
     setState(() {
       widget._user = name.username;
     });
   }
 
   Widget _noMail() {
+    // Ideally shown when there is zero chatrooms in the chat
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(left: 15),
@@ -165,9 +161,9 @@ class _UserChatState extends State<UserChat> {
   }
 
   Widget _condNoMail(index, len) {
+    // An attempt to show empty page when there is zero chat room
+    // Didn't quite work, so return only container for now.
     _isEmptyCount += 1;
-    print("IS EMPTY $_isEmptyCount");
-    print("length $len");
     // if (_isEmptyCount == len) {
     //   return _noMail();
     // }
@@ -178,7 +174,6 @@ class _UserChatState extends State<UserChat> {
     var userList = snapshot.data.documents[index]['users'].map((item) {
       return item.toString();
     }).toList();
-    print("USER LIST $userList");
     if (userList[0] == widget._user) {
       //supposedly this means you're the tenant
       print("it is tenant");
@@ -212,7 +207,7 @@ class _UserChatState extends State<UserChat> {
   Widget _fillChatroom() {
     _isEmptyCount = 0;
     return StreamBuilder(
-        stream: firebaseDB.getChatStream(),
+        stream: _firebaseDB.getChatStream(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             //there will always be a data, so what I should do is to check if data is placeholder or not

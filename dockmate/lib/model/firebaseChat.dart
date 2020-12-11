@@ -2,14 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatFirebase {
   String _chatRoomID;
+
+  //Sample placeholder data
   var submap1 = {
     "content": "Hello!",
-    "by": 1,
-    "time": Timestamp.now(),
-  };
-  var submap2 = {
-    "content":
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "by": 1,
     "time": Timestamp.now(),
   };
@@ -37,8 +33,7 @@ However, you can ask me how to register for an account, or you can ask me about 
   getChatRoomID() => _chatRoomID;
 
   Future<void> createEmptyRoom(String self) async {
-    //this should be used only for chatting with shorsh
-    print("Is the empty room called?");
+    // Create empty room, only for guest chatbot instance
     chatmap1["users"] = [self, "Shorsh"];
     await FirebaseFirestore.instance
         .collection("chatroom")
@@ -46,9 +41,9 @@ However, you can ask me how to register for an account, or you can ask me about 
         .set(chatmap1)
         .then((value) async {
       _chatRoomID = "Shorsh" + self;
-      //placeholder
+
+      // Add placeholder message depending on entrance
       String check = await checkExistence(_chatRoomID, self);
-      print("wat is check $check");
       if (check == "FromShorsh") {
         addMessage(_chatRoomID, submap4);
       } else {
@@ -59,12 +54,11 @@ However, you can ask me how to register for an account, or you can ask me about 
   }
 
   Future<String> checkExistence(_chatRoomID, user) async {
+    // This helps to check whether user talks to chatbot the first time or not
     var ss = await getMessage(_chatRoomID);
     String returnNull = "";
     ss.docs.forEach((doc) {
-      print("DOCID: ${doc.id}");
       if (doc.id == "FromShorsh") {
-        print("IT SHOULD RETURN TRUE AT LEAST ONCE");
         returnNull = doc.id;
       }
     });
@@ -72,22 +66,18 @@ However, you can ask me how to register for an account, or you can ask me about 
   }
 
   Future<void> createChatRoom(Map<String, dynamic> chat) async {
+    // Creates a chatroom from any other entrance (so non guest user)
     await FirebaseFirestore.instance
         .collection("chatroom")
         .add(chat)
         .then((value) {
-      print("Was the value ID correct to begin with? ${value.id}");
       _chatRoomID = value.id;
       addMessage(_chatRoomID, submap1);
     });
-    //uncomment to see scrolling
-    // addMessage(_chatRoomID, submap2);
-    // addMessage(_chatRoomID, submap1);
-    // addMessage(_chatRoomID, submap2);
   }
 
   Future<QuerySnapshot> getMessage(chatroomID) async {
-    print("what is chatroom ID passed: $chatroomID");
+    // Retrieve all messages of a specific chatroom
     return await FirebaseFirestore.instance
         .collection("chatroom")
         .doc(chatroomID)
@@ -96,6 +86,7 @@ However, you can ask me how to register for an account, or you can ask me about 
   }
 
   Stream getMessageStream(chatroomID) {
+    // Return message stream to be used by StreamBuilder
     return FirebaseFirestore.instance
         .collection("chatroom")
         .doc(chatroomID)
@@ -104,10 +95,12 @@ However, you can ask me how to register for an account, or you can ask me about 
   }
 
   Stream getChatStream() {
+    // Return chat stream to be used by StreamBuilder
     return FirebaseFirestore.instance.collection("chatroom").snapshots();
   }
 
   void addMessage(roomID, msg) {
+    // Add a message to a specific chatroom
     var chatroomRef = FirebaseFirestore.instance
         .collection("chatroom")
         .doc(roomID)
@@ -117,6 +110,7 @@ However, you can ask me how to register for an account, or you can ask me about 
   }
 
   void addSpecificMessage(roomID, msgID, msg) {
+    // Add a message with specific message ID to a specific chatroom
     var chatroomRef = FirebaseFirestore.instance
         .collection("chatroom")
         .doc(roomID)
@@ -126,17 +120,7 @@ However, you can ask me how to register for an account, or you can ask me about 
   }
 
   void deleteChatroom(roomID) {
+    // Delete an entire chatroom
     FirebaseFirestore.instance.collection("chatroom").doc(roomID).delete();
   }
-
-  // Future<void> deleteMessage(
-  //   roomID,
-  // ) {
-  //   var chatroomRef = FirebaseFirestore.instance
-  //       .collection("chatroom")
-  //       .doc(roomID)
-  //       .collection('messages')
-  //       .doc();
-  //   chatroomRef.set(msg);
-  // }
 }
