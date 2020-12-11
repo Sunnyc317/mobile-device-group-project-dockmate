@@ -15,20 +15,92 @@ This application is to provide students to find housing easier
 2. Run `cd dockmate`
 3. Run `flutter run`
 
-## What to Expect
+Note for testing:
+a. You can use "Guest Login"
+b. If you need to test as registered user, use the following credential:
+```
+email: jessica.jessica@ontariotechu.net
+password: 11111111
+```
+c. You can register, make sure it's a valid email to do the verification
 
-1. The login authentication is not in place yet, so you can just click login/next to the main features
-2. Some of the code is still hardcoded or some button aren't functional yet, on those cases, most likely commented in the code
 
-## Demo
+## Folder Structure
 
-See: https://streamable.com/txsjye
+We have 3 main folders:
+- model: where all the database and classes are organized in
+- pages: where all the UI and part of the backend are in
+- utils: common functionalities (e.g. notification), wrapper classes, and others
 
-## Functional Requirements
+Inside `pages`, we organize them by page category:
+- authentication: this is for registration and login related activity, where the username is being initialized/set for other pages
+- chat: this is where all the chat related to the user will be displayed and where the interaction will happeng between user and current chatbot in place
+- post: listview of the public and individual listings as well as the forms related to add and edit the post
+- Settings: user will find pages to edit their profile (name, email), change their password, change the app language, and logout in this folder
+- map.dart: the page where it shows all the postings locations
 
-1. Multiple screens/navigation
-2. Dialogs and pickers (in forms and e.g. delete confirmation)
-3. Notifications (after registration)
-4. Snackbars (e.g. after saving a post, save button isn't functional yet)
-5. Local storage (SQLite to bind user state in the app)
-6. Cloud storage (Firestore, for now data for "listings" and "chats" are from Firestore)
+## Functionalities
+
+1. [Registration](###registration)
+2. [Guest Login - Sign Out](###guest-login-and-sign-out)
+3. [Forgot Password](###forgot-password)
+4. [Login](###login)
+5. [Listings and My Listings](###listings-and-my-listings)
+6. [Search and Filter Listings](#search-and-filter-listings)
+7. [Chat and Chatbot](###chat-and-chatbot)
+8. [Map](###map)
+9. [CRUD Listings](###crud-listings)
+10. [Edit Profile](###edit-profile)
+11. [Survey](###survey)
+12. [Change Language](###change-language)
+
+### Registration
+<center><img src="images/registration.gif" alt="demo" width="500"/></center>
+
+### Guest Login and Sign Out
+<center><img src="images/guest-login.gif" alt="demo" width="300"/></center>
+
+### Forgot Password
+<center><img src="images/reset-password.gif" alt="demo" width="500"/></center>
+
+### Login
+<center><img src="images/login.gif" alt="demo" width="300"/></center>
+
+### Listings and My Listings
+<center><img src="images/listings.gif" alt="demo" width="300"/></center>
+
+### Search and Filter Listings
+<center><img src="images/filter.gif" alt="demo" width="300"/></center>
+
+### Chat and Chatbot
+
+Shorsh and Messages
+<center><img src="images/chatbot.gif" alt="demo" width="300"/></center>
+
+
+Guest View Chat (Shorsh)
+<center><img src="images/shorsh-guest-demo.gif" alt="demo" width="300"/></center>
+
+
+Delete Chat (do long tap)
+<center><img src="images/delete-chat.gif" alt="demo" width="300"/></center>
+
+### Map
+<center><img src="images/map.gif" alt="demo" width="300"/></center>
+
+### CRUD Listings
+
+Create
+<center><img src="images/add-listing.gif" alt="demo" width="300"/></center>
+
+Update and Delete
+<center><img src="images/edit.gif" alt="demo" width="300"/></center>
+
+### Edit profile
+<center><img src="images/edit-profile.gif" alt="demo" width="300"/></center>
+
+### Survey
+<center><img src="images/survey.gif" alt="demo" width="300"/></center>
+
+### Change Language
+<center><img src="images/internalization.gif" alt="demo" width="300"/></center>
