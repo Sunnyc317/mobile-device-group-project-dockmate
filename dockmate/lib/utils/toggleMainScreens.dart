@@ -1,10 +1,10 @@
-import 'package:dockmate/pages/app_screens/chat.dart';
 import 'package:dockmate/pages/app_screens/listings.dart';
 import 'package:dockmate/pages/app_screens/my_listing.dart';
 import 'package:dockmate/pages/Settings/settings.dart';
 import 'package:dockmate/pages/authentication/login.dart';
 import 'package:dockmate/pages/authentication/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dockmate/utils/chatWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/pages/app_screens/map.dart' as mapScreen;
 
@@ -32,7 +32,7 @@ class _ToggleMainScreensState extends State<ToggleMainScreens> {
     } else if (screen == 'Map') {
       return mapScreen.Map(toggleView: toggleView);
     } else if (screen == 'Chat') {
-      return Chatroom(toggleView: toggleView);
+      return ChatWrapper(toggleView: toggleView);
     } else if (screen == 'My Listings') {
       return MyListing(toggleView: toggleView);
     } else if (screen == 'Settings') {

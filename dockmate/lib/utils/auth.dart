@@ -1,4 +1,4 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dockmate/model/user.dart' as usermodel;
@@ -12,7 +12,7 @@ TO-DOs
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final UsernameModel usernameModel = UsernameModel();
+  final UsernameModel usernameModel = UsernameModel();
 
   // Create user obj based on firebaseUser
 
@@ -142,6 +142,8 @@ class AuthService {
       // user.setprofilepic(result.user.photoURL);
       // user.setemailvarified(result.user.emailVerified);
       user.setphone(result.user.phoneNumber);
+
+      usernameModel.setUsername(result.user.displayName);
 
       return {
         'user': user,

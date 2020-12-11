@@ -3,14 +3,6 @@ import 'package:dockmate/utils/auth.dart';
 import 'package:dockmate/utils/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:dockmate/pages/authentication/login.dart';
-import 'package:dockmate/pages/app_screens/chat.dart';
-import 'package:dockmate/pages/Settings/settings.dart';
-import 'package:dockmate/pages/app_screens/listings.dart';
-import 'package:dockmate/pages/app_screens/my_listing.dart';
-import 'package:dockmate/pages/app_screens/map.dart';
-import 'package:dockmate/pages/authentication/register.dart';
-import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
@@ -28,8 +20,8 @@ class MyApp extends StatelessWidget {
         StreamProvider<usermodel.User>.value(value: AuthService().user),
         StreamProvider<User>.value(value: AuthService().userstatus),
       ],
-    // return StreamProvider.value(
-    //   value: AuthService().user,
+      // return StreamProvider.value(
+      //   value: AuthService().user,
       child: MaterialApp(
         title: 'Dock Mate',
         theme: ThemeData(
@@ -37,17 +29,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: MyHomePage(title: 'Dock Mate!'),
-        // routes: <String, WidgetBuilder>{
-          // '/Login': (BuildContext context) => Login(),
-          // '/Register': (BuildContext context) => Register(),
-          // '/Listings': (BuildContext context) => Listings(),
-          // '/Chat': (BuildContext context) => Chatroom(title: "All Messages"),
-          // '/Map': (BuildContext context) => Map(title: "Find a House"),
-          // '/MyListings': (BuildContext context) =>
-          //     MyListing(title: "My Listings"),
-          // '/Settings': (BuildContext context) => Settings(title: "Settings"),
-          // '/FirstScreen': (BuildContext context) => FirstScreen(),
-        // },
+        routes: <String, WidgetBuilder>{},
       ),
     );
   }

@@ -115,7 +115,8 @@ class _ListingState extends State<Listings> {
           ],
         ),
         body: _filteredList(),
-        bottomNavigationBar: BottomBar(bottomIndex: 0, toggleView: widget.toggleView),
+        bottomNavigationBar:
+            BottomBar(bottomIndex: 0, toggleView: widget.toggleView),
         floatingActionButton: FloatingActionButton(
           onPressed: _openFilterDialog,
           tooltip: 'Filter',
