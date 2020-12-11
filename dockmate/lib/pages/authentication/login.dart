@@ -1,4 +1,3 @@
-import 'package:dockmate/model/usersqfModel.dart';
 import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:dockmate/pages/authentication/forgotPassword.dart';
 import 'package:dockmate/pages/authentication/register.dart';
@@ -22,7 +21,6 @@ class _LoginState extends State<Login> {
   // bool changed = false;
   @override
   Widget build(BuildContext context) {
-    final _model = UserModel();
     final userstatus = Provider.of<User>(context);
     final _formKey = GlobalKey<FormState>();
     User user = widget.user;
@@ -147,13 +145,6 @@ class _LoginState extends State<Login> {
                             Scaffold.of(context).showSnackBar(
                                 SnackBar(content: Text(result['msg'])));
                           } else {
-                            _model.insertUser(result['user']);
-                            bool idNotExist =
-                                await _model.idNotExist(result['user'].id);
-                            if (idNotExist) {
-                              _model.insertUser(result['user']);
-                              print('created user ${result['user']}');
-                            }
                             print(result['msg']);
                           }
                         }

@@ -1,7 +1,7 @@
 import 'package:dockmate/model/user.dart' as usermodel;
 import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:dockmate/pages/authentication/login.dart';
-import 'package:dockmate/utils/toggleAuthScreens.dart';
+import 'package:dockmate/pages/authentication/toggleAuthScreens.dart';
 import 'package:dockmate/pages/app_screens/listings.dart';
 import 'package:dockmate/utils/toggleMainScreens.dart';
 import 'package:firebase_auth/firebase_auth.dart';

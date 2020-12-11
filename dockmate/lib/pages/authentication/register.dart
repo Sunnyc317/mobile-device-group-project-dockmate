@@ -1,7 +1,6 @@
 import 'package:dockmate/model/user.dart';
-import 'package:dockmate/model/usersqfModel.dart';
 import 'package:dockmate/pages/authentication/newUser_housingType.dart';
-import 'package:dockmate/pages/Settings/settings.dart';
+import 'package:dockmate/pages/app_screens/settings.dart';
 import 'package:dockmate/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/model/username.dart';
@@ -30,7 +29,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    final _model = UserModel();
+    UsernameModel usernameModel = UsernameModel();
     AuthService _auth = AuthService();
     return Scaffold(
       appBar: AppBar(
@@ -240,7 +239,6 @@ class _RegisterState extends State<Register> {
                               Scaffold.of(context).showSnackBar(
                                   SnackBar(content: Text(result['msg'])));
                             } else {
-                              
                               Scaffold.of(context).showSnackBar(
                                   SnackBar(content: Text(result['msg'])));
                             }
@@ -261,5 +259,23 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+  }
+
+  _register() {
+    // dynamic result = await _auth.regist
+    // register new user in firebase
+
+    // User newuser = new User(
+    // email: email,
+    // phone: phone,
+    // password: password
+    // );
+
+    // return {
+    //   'msg': 'User ${user.first_name} registered',
+    //   'registered': false
+    // };
+    // return {'msg' : 'user ${user.email} registration failed. ', 'registered':false};
+    // return {'msg' : 'user ${fname} failed. ', 'registered':false};
   }
 }
