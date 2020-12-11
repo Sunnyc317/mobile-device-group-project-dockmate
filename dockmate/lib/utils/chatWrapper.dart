@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dockmate/model/username.dart';
-import 'package:dockmate/pages/app_screens/Chat/userChat.dart';
-import 'package:dockmate/pages/app_screens/Chat/message.dart';
+import 'package:dockmate/pages/chat/userChat.dart';
+import 'package:dockmate/pages/chat/message.dart';
 
 class ChatWrapper extends StatefulWidget {
   final Function toggleView;

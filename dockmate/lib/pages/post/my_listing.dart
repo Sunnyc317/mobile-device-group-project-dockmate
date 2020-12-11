@@ -3,15 +3,14 @@ import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/user.dart';
-import 'package:dockmate/pages/app_screens/posting_form.dart';
-import 'package:dockmate/pages/app_screens/posting.dart';
-
-Icon sad_replacement_icon = Icon(Icons.satellite);
+import 'package:dockmate/pages/post/posting_form.dart';
+import 'package:dockmate/pages/post/posting.dart';
+import 'package:dockmate/model/username.dart';
 
 class MyListing extends StatefulWidget {
   // final String title;
   final Function toggleView;
-  MyListing({Key key, this.toggleView}):super(key:key);
+  MyListing({Key key, this.toggleView}) : super(key: key);
 
   @override
   _MyListingState createState() => _MyListingState();
@@ -21,6 +20,8 @@ class _MyListingState extends State<MyListing> {
   int _selectedIndex;
   List<Listing> _listings;
   Listing _listing = new Listing();
+  final UsernameModel _usernameModel = UsernameModel();
+  String username = "";
 
   @override
   void initState() {
@@ -28,8 +29,11 @@ class _MyListingState extends State<MyListing> {
     reload();
   }
 
-  void reload() {
-    User user = User(id: "2FXgu90z0tTy0MO5gI3Bti");
+  Future<void> reload() async {
+    await _getUsername();
+    User user = new User(id: "empty");
+    if (username.contains("Jessica")) user = User(id: "2FXgu90z0tTy0MO5gI3Bti");
+
     _listing.getAllListings().first.then((list) {
       setState(() {
         _listings = list.where((i) => i.userID == user.getUser()).toList();
@@ -39,8 +43,6 @@ class _MyListingState extends State<MyListing> {
 
   @override
   Widget build(BuildContext context) {
-    //inal Filter filter;
-
     Row symbols(index) {
       return Row(
         children: [
@@ -102,7 +104,8 @@ class _MyListingState extends State<MyListing> {
           );
         },
       ),
-      bottomNavigationBar: BottomBar(bottomIndex: 3, toggleView: widget.toggleView),
+      bottomNavigationBar:
+          BottomBar(bottomIndex: 3, toggleView: widget.toggleView),
     );
   }
 
@@ -159,5 +162,13 @@ class _MyListingState extends State<MyListing> {
             Posting(title: '', listing: _listings[_selectedIndex])));
     _selectedIndex = -1;
     reload();
+  }
+
+  Future<void> _getUsername() async {
+    Username name = await _usernameModel.getUsername();
+    print("my listing: ${name.username}");
+    setState(() {
+      username = name.username;
+    });
   }
 }

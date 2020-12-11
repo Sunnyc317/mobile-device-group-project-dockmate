@@ -1,10 +1,11 @@
 import 'package:dockmate/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/model/listing.dart';
+import 'package:dockmate/model/saved_listing.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
-import 'package:dockmate/pages/app_screens/posting.dart';
-import 'package:dockmate/pages/app_screens/posting_form.dart';
+import 'package:dockmate/pages/post/posting.dart';
+import 'package:dockmate/pages/post/posting_form.dart';
 import 'package:filter_list/filter_list.dart';
 
 // Search functions referencing: https://github.com/ahmed-alzahrani/Flutter_Search_Example
@@ -22,8 +23,11 @@ class Listings extends StatefulWidget {
 class _ListingState extends State<Listings> {
   int _selectedIndex;
   String _search = "";
+  User _user = User(id: "2FXgu90z0tTy0MO5gI3Bti");
   List<Listing> _listings;
+  SavedListings _savedListings = new SavedListings();
   List<Listing> _filteredListings;
+  List<Listing> _savedList;
   List<String> _selectedFilter = [];
   Listing _listing = new Listing();
   Icon _searchIcon = new Icon(Icons.search);
@@ -32,6 +36,7 @@ class _ListingState extends State<Listings> {
   final TextEditingController _filter = new TextEditingController();
 
   List<String> _filterList = [
+    "Saved Posts",
     "Studio",
     "1 Bedroom",
     "1+1 Bedroom",
@@ -97,6 +102,19 @@ class _ListingState extends State<Listings> {
     });
   }
 
+  void _getSavedListings(userID) {
+    _listing.getAllListings().first.then((a) {
+      _savedListings.getAllSavedListings().first.then((b) {
+        var userList = b.where((i) => i.userID == userID).toList();
+        userList.forEach((list) {
+          setState(() {
+            _savedList = a.where((i) => i.id == list.listingID).toList();
+          });
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,28 +142,6 @@ class _ListingState extends State<Listings> {
         ));
   }
 
-  Row symbols() {
-    return Row(children: <Widget>[
-      Container(
-        child: IconButton(
-          icon: Icon(Icons.message_outlined),
-          onPressed: () {},
-        ),
-      ),
-      Container(
-        child: IconButton(
-          icon: _saveIcon,
-          onPressed: () {
-            _saveListing(context);
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("Post saved"),
-            ));
-          },
-        ),
-      )
-    ]);
-  }
-
   void _searchPressed() {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
@@ -166,6 +162,9 @@ class _ListingState extends State<Listings> {
   }
 
   Widget _filteredList() {
+    String userID = _user.getUser();
+    _getSavedListings(userID);
+
     if (_search != "") {
       // Search through address
       _filteredListings = _listings
@@ -190,6 +189,31 @@ class _ListingState extends State<Listings> {
       }
     }
 
+    Row symbols(var index) {
+      return Row(children: <Widget>[
+        Container(
+          child: IconButton(
+            icon: Icon(Icons.message_outlined),
+            onPressed: () {},
+          ),
+        ),
+        Container(
+          child: IconButton(
+            icon: _saveIcon,
+            //_savedList.contains((i) => i.id == _filteredListings[index].id)
+            //   ? Icon(Icons.bookmark)
+            //   : Icon(Icons.bookmark_border),
+            onPressed: () {
+              _saveListing(_filteredListings[index]);
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text("Post Saved"),
+              ));
+            },
+          ),
+        )
+      ]);
+    }
+
     return ListView.builder(
       itemCount: _filteredListings != null ? _filteredListings.length : 0,
       itemBuilder: (BuildContext context, int index) {
@@ -212,7 +236,8 @@ class _ListingState extends State<Listings> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(children: <Widget>[
-                              buildListRow(_filteredListings[index], symbols()),
+                              buildListRow(
+                                  _filteredListings[index], symbols(index)),
                             ]),
                           ])))),
         );
@@ -256,6 +281,10 @@ class _ListingState extends State<Listings> {
                       int.parse(list.price) <= limit_price)
                   .toList());
             }
+          } else if (filter == "Saved Posts") {
+            String userID = _user.getUser();
+            _getSavedListings(userID);
+            _temp.addAll(_savedList);
           } else {
             _temp.addAll(
                 _listings.where((list) => list.province == filter).toList());
@@ -269,8 +298,9 @@ class _ListingState extends State<Listings> {
     });
   }
 
-  Future<void> _saveListing(BuildContext context) async {
-    // TO BE IMPLEMENTED
+  Future<void> _saveListing(Listing listing) async {
+    String userID = _user.getUser();
+    _savedListings.insert(SavedListings(listingID: listing.id, userID: userID));
     reload();
   }
 

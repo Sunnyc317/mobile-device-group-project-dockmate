@@ -5,7 +5,7 @@ and the representation of each chat rooms.
 */
 
 import 'package:flutter/material.dart';
-import 'package:dockmate/pages/app_screens/Chat/message.dart';
+import 'package:dockmate/pages/chat/message.dart';
 import 'package:dockmate/model/chat.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/firebaseChat.dart';
@@ -129,7 +129,7 @@ class UserChat extends StatefulWidget {
 class _UserChatState extends State<UserChat> {
   final ChatFirebase _firebaseDB = ChatFirebase();
   final UsernameModel _usernameModel = UsernameModel();
-  int _isEmptyCount = 0;
+  // int _isEmptyCount = 0;
 
   @override
   void initState() {
@@ -163,20 +163,20 @@ class _UserChatState extends State<UserChat> {
   Widget _condNoMail(index, len) {
     // An attempt to show empty page when there is zero chat room
     // Didn't quite work, so return only container for now.
-    _isEmptyCount += 1;
+    // _isEmptyCount += 1;
     // if (_isEmptyCount == len) {
     //   return _noMail();
     // }
     return Container();
   }
 
-  _decider(snapshot, index) {
+  Widget _decider(snapshot, index) {
+    // Conditional to decide how to build the chat room tiles
     var userList = snapshot.data.documents[index]['users'].map((item) {
       return item.toString();
     }).toList();
     if (userList[0] == widget._user) {
-      //supposedly this means you're the tenant
-      print("it is tenant");
+      // To be implemented: the tenant view
       return ChatroomTile(
           chatroomData: Chat.startChatRoom(
               imageURL: snapshot.data.documents[index]['imageURL'],
@@ -187,8 +187,7 @@ class _UserChatState extends State<UserChat> {
               title: snapshot.data.documents[index]['title']),
           chatroomID: snapshot.data.documents[index].id);
     } else if (userList[1] == widget._user) {
-      print("it is landlord");
-      //and this means you're the landlord
+      // To be implemented: the landlord view
       return ChatroomTile(
           chatroomData: Chat.startChatRoom(
               imageURL: snapshot.data.documents[index]['imageURL'],
@@ -199,26 +198,25 @@ class _UserChatState extends State<UserChat> {
               title: snapshot.data.documents[index]['title']),
           chatroomID: snapshot.data.documents[index].id);
     } else {
-      print("it still thinks no mail?");
+      // Ideally returns placeholder no-message view
       return _condNoMail(index, snapshot.data.documents.length);
     }
   }
 
   Widget _fillChatroom() {
-    _isEmptyCount = 0;
     return StreamBuilder(
         stream: _firebaseDB.getChatStream(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            //there will always be a data, so what I should do is to check if data is placeholder or not
             if (snapshot.data.documents.length <= 1) {
-              //it can only be the placeholder
+              // Specifically only when there is only 1 message in the database
+              // which is the placeholder
               return _noMail();
             } else {
+              // Fill chat with the available chatrooms
               return ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    print("does it loop?");
                     return _decider(snapshot, index);
                   });
             }
@@ -231,8 +229,8 @@ class _UserChatState extends State<UserChat> {
   @override
   Widget build(BuildContext context) {
     _buildMessageRoom() {
+      // Build individual chat room's messages
       if (widget.roomInfo != null) {
-        print("Wicked Chat");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MessageRoom()),
@@ -243,6 +241,7 @@ class _UserChatState extends State<UserChat> {
     }
 
     _navigateToFAQ(Function toggle) {
+      // Trigger direct call to chatbot
       return Navigator.push(
         context,
         MaterialPageRoute(
@@ -264,7 +263,6 @@ class _UserChatState extends State<UserChat> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print("WE GOT IN CHAT");
           return Scaffold(
             appBar: AppBar(
               leading: Image.asset("assets/dock.png",

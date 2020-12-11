@@ -55,7 +55,6 @@ class BottomBar extends StatelessWidget {
         }
         toggleView(page);
         // Navigator.of(context).pushReplacementNamed(page);
-        
       },
     );
   }
