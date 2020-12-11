@@ -2,6 +2,7 @@ import 'package:dockmate/model/user.dart' as usermodel;
 import 'package:dockmate/pages/Settings/changePassword.dart';
 import 'package:dockmate/pages/Settings/editProfile.dart';
 import 'package:dockmate/pages/Settings/selectLanguage.dart';
+import 'package:dockmate/pages/Settings/survey.dart';
 import 'package:dockmate/utils/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -105,19 +106,29 @@ class _SettingsState extends State<Settings> {
                       onTap: () async {
                         if (user.isAnonymous) {
                           Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text('can\'t change password as a guest')));
+                              content:
+                                  Text('can\'t change password as a guest')));
                         } else {
                           await Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ChangePassword()));
-                          
+
                           Scaffold.of(context).showSnackBar(SnackBar(
                               content: Text('password updated successfully')));
                         }
                       },
                     ),
                   ),
+                  ListTile(
+                      title: Text(
+                        'Take a Survey!',
+                      ),
+                      leading: Icon(Icons.lightbulb),
+                      onTap: () async {
+                        await Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Survey()));
+                      }),
                   ListTile(
                       title: Text('Log Out',
                           style: TextStyle(

@@ -1,13 +1,7 @@
 /*
-The chat main screen
-
-The main entry points:
-1. A plus button maybe at top of page (to create new message)
-  then open an empty chat form
-    validate on clicking send
-2. From clicking a link somewhere
-  if from clicking a link somewhere, just need to digest data
-
+This page deals with the Chat interface, 
+what you see when you click on the Chat tab
+and the representation of each chat rooms.
 */
 
 import 'package:flutter/material.dart';
@@ -26,6 +20,7 @@ class ChatroomTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _showWarning(BuildContext context, name, id) {
+      // Show notification before deleting a chatroom
       showDialog<void>(
         context: context,
         barrierDismissible: true,
@@ -56,6 +51,7 @@ class ChatroomTile extends StatelessWidget {
       );
     }
 
+    // This portion creates each chatroom tiles
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: Column(children: [
@@ -101,7 +97,7 @@ class ChatroomTile extends StatelessWidget {
         Divider(color: Colors.grey, indent: 130, endIndent: 30)
       ]),
       onTap: () {
-        //open a message for now
+        // Open the message corresponding to that chatroom
         chatroomData.chatroomIDString = chatroomID;
         Navigator.push(
           context,
@@ -109,11 +105,9 @@ class ChatroomTile extends StatelessWidget {
               builder: (context) =>
                   MessageRoom.open(roomInfo: chatroomData, type: "open")),
         );
-        //and then fill up with existing messages
-        //can animate it in future: https://flutter.dev/docs/cookbook/animation/page-route-animation
       },
       onLongPress: () {
-        print("watcha doin");
+        // Show a warning before deleting the specific chatroom
         _showWarning(context, chatroomData.stringUsers[1], chatroomID);
       },
     );
@@ -122,10 +116,10 @@ class ChatroomTile extends StatelessWidget {
 
 class UserChat extends StatefulWidget {
   String title;
+  Function toggleView;
   UserChat({this.title, this.toggleView});
   Chat roomInfo;
   String _user = "USER NOT FOUND";
-  Function toggleView;
   UserChat.create({this.roomInfo, this.toggleView});
 
   @override
@@ -133,26 +127,28 @@ class UserChat extends StatefulWidget {
 }
 
 class _UserChatState extends State<UserChat> {
-  final ChatFirebase firebaseDB = ChatFirebase();
+  final ChatFirebase _firebaseDB = ChatFirebase();
   final UsernameModel _usernameModel = UsernameModel();
-  int _isEmptyCount = 0;
+  // int _isEmptyCount = 0;
 
   @override
   void initState() {
+    // Set username once on creation
     print("User chat's init state");
     super.initState();
     _getUsername();
   }
 
   Future<void> _getUsername() async {
+    // Get current username from sqflite
     Username name = await _usernameModel.getUsername();
-    print("anything: ${name.username}");
     setState(() {
       widget._user = name.username;
     });
   }
 
   Widget _noMail() {
+    // Ideally shown when there is zero chatrooms in the chat
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(left: 15),
@@ -165,23 +161,22 @@ class _UserChatState extends State<UserChat> {
   }
 
   Widget _condNoMail(index, len) {
-    _isEmptyCount += 1;
-    print("IS EMPTY $_isEmptyCount");
-    print("length $len");
+    // An attempt to show empty page when there is zero chat room
+    // Didn't quite work, so return only container for now.
+    // _isEmptyCount += 1;
     // if (_isEmptyCount == len) {
     //   return _noMail();
     // }
     return Container();
   }
 
-  _decider(snapshot, index) {
+  Widget _decider(snapshot, index) {
+    // Conditional to decide how to build the chat room tiles
     var userList = snapshot.data.documents[index]['users'].map((item) {
       return item.toString();
     }).toList();
-    print("USER LIST $userList");
     if (userList[0] == widget._user) {
-      //supposedly this means you're the tenant
-      print("it is tenant");
+      // To be implemented: the tenant view
       return ChatroomTile(
           chatroomData: Chat.startChatRoom(
               imageURL: snapshot.data.documents[index]['imageURL'],
@@ -192,8 +187,7 @@ class _UserChatState extends State<UserChat> {
               title: snapshot.data.documents[index]['title']),
           chatroomID: snapshot.data.documents[index].id);
     } else if (userList[1] == widget._user) {
-      print("it is landlord");
-      //and this means you're the landlord
+      // To be implemented: the landlord view
       return ChatroomTile(
           chatroomData: Chat.startChatRoom(
               imageURL: snapshot.data.documents[index]['imageURL'],
@@ -204,26 +198,25 @@ class _UserChatState extends State<UserChat> {
               title: snapshot.data.documents[index]['title']),
           chatroomID: snapshot.data.documents[index].id);
     } else {
-      print("it still thinks no mail?");
+      // Ideally returns placeholder no-message view
       return _condNoMail(index, snapshot.data.documents.length);
     }
   }
 
   Widget _fillChatroom() {
-    _isEmptyCount = 0;
     return StreamBuilder(
-        stream: firebaseDB.getChatStream(),
+        stream: _firebaseDB.getChatStream(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            //there will always be a data, so what I should do is to check if data is placeholder or not
             if (snapshot.data.documents.length <= 1) {
-              //it can only be the placeholder
+              // Specifically only when there is only 1 message in the database
+              // which is the placeholder
               return _noMail();
             } else {
+              // Fill chat with the available chatrooms
               return ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    print("does it loop?");
                     return _decider(snapshot, index);
                   });
             }
@@ -236,8 +229,8 @@ class _UserChatState extends State<UserChat> {
   @override
   Widget build(BuildContext context) {
     _buildMessageRoom() {
+      // Build individual chat room's messages
       if (widget.roomInfo != null) {
-        print("Wicked Chat");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MessageRoom()),
@@ -248,6 +241,7 @@ class _UserChatState extends State<UserChat> {
     }
 
     _navigateToFAQ(Function toggle) {
+      // Trigger direct call to chatbot
       return Navigator.push(
         context,
         MaterialPageRoute(
@@ -269,7 +263,6 @@ class _UserChatState extends State<UserChat> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print("WE GOT IN CHAT");
           return Scaffold(
             appBar: AppBar(
               leading: Image.asset("assets/dock.png",

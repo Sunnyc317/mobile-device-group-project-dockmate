@@ -1,3 +1,8 @@
+/*
+This page deals with individual chatroom
+The messages seen and the functionality once you enter a specific chatroom
+*/
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/bottombar.dart';
@@ -11,14 +16,13 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class MessageTile extends StatelessWidget {
+  // This class handles each message block
   Message msg;
   MessageTile({this.msg});
   @override
   Widget build(BuildContext context) {
-    //so will return left or right depending on user index
-    //try to keep user index 0 as the sender
-    //and user index 1 as the recipient
-
+    // 0 means sender UI
+    // 1 means recipient UI
     Map<int, Map> userSpecific = {
       0: {
         "borderColour": Colors.blue[400],
@@ -39,6 +43,7 @@ class MessageTile extends StatelessWidget {
     };
 
     String _formatDate(Timestamp ts) {
+      // Helps to format date to show under the messages
       var now = new DateTime.now();
       var format = new DateFormat('HH:mm a');
       var date = DateTime.fromMicrosecondsSinceEpoch(ts.microsecondsSinceEpoch);
@@ -55,6 +60,7 @@ class MessageTile extends StatelessWidget {
     }
 
     Widget basicBox() {
+      // Creates the respective message box
       int user = msg.by;
       return Container(
           child: Column(
@@ -94,14 +100,15 @@ class MessageTile extends StatelessWidget {
   }
 }
 
-//while this is the internal page of chatting
 class MessageRoom extends StatefulWidget {
+  // This class handles the entire chatroom
   Chat roomInfo;
   final Function toggleView;
   final String currentUser;
   final type;
   String postTitle;
   MessageRoom({this.toggleView, this.currentUser, this.type, this.postTitle});
+  // Ideally these constructors are to be used to determine types
   MessageRoom.create(
       {this.roomInfo,
       this.toggleView,
@@ -125,9 +132,11 @@ class _MessageRoomState extends State<MessageRoom> {
   QuerySnapshot snapshots;
   String messageSent;
   Timestamp curTime;
+  // To be implemented - sending images through chat
   File _image;
 
   _showWarning(BuildContext context) {
+    // Show warning for features yet implemented
     showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -148,29 +157,12 @@ class _MessageRoomState extends State<MessageRoom> {
     );
   }
 
-  void populateExistingMessages() {
-    //ideally this calls the DB, get the messages, return streambuilder
-    //for now just return sad looking messages
-
-    List<Message> messageArray;
-    print("JUST WANT TO CHECK THAT EVERYTHING'S WORKING");
-    (snapshots == null)
-        ? print("nooo snapshot is null")
-        : snapshots.docs.forEach((doc) {
-            Message msg = Message.timestamp(
-                content: doc["content"], by: doc["by"], timestamp: doc["time"]);
-            messageArray.add(msg);
-            print('''content: ${doc["content"]}
-            by: ${doc["by"]}
-            time: ${doc["time"]}
-            ''');
-          });
-  }
-
   Widget populateExistingMessagesDefault() {
+    // If there is no message yet, put a blank page
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(children: <Widget>[
+        // Sample placeholder messages
         // MessageTile(msg: samplemessage1),
         // MessageTile(msg: samplemessage2),
         // MessageTile(msg: samplemessage3),
@@ -180,6 +172,7 @@ class _MessageRoomState extends State<MessageRoom> {
   }
 
   List sortMessage(var ss) {
+    // Helper function to sort and show messages in chronological order
     List messages = [];
     for (var idx = 0; idx < ss.data.documents.length; idx++) {
       Map toAdd = Message.timestamp(
@@ -193,21 +186,15 @@ class _MessageRoomState extends State<MessageRoom> {
         DateTime.fromMicrosecondsSinceEpoch(b['time'].microsecondsSinceEpoch)
             .compareTo(DateTime.fromMicrosecondsSinceEpoch(
                 a['time'].microsecondsSinceEpoch)));
-    print("How does messages look like really: $messages");
     return messages;
   }
 
   Widget generateTiles() {
-    print("would the ID logic work?");
-    print(widget.roomInfo.chatroomIDString);
-    // if (snapshots == null) {
-    //   return populateExistingMessagesDefault();
-    // }
+    // The builder to generate each message tiles
     return StreamBuilder(
         stream: firebaseDB.getMessageStream(widget.roomInfo.chatroomIDString),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print("does it have data at some point?");
             List messages = sortMessage(snapshot);
             return ListView.builder(
                 itemCount: snapshot.data.documents.length,
@@ -222,13 +209,13 @@ class _MessageRoomState extends State<MessageRoom> {
                           timestamp: messages[index]["time"]));
                 });
           } else {
-            print("No message snapshot has no data");
             return populateExistingMessagesDefault();
           }
         });
   }
 
-  fillSnapshot(type) async {
+  void fillSnapshot(type) async {
+    // Get snapshot to get the data from firestore
     QuerySnapshot tempSnapshots =
         await firebaseDB.getMessage(widget.roomInfo.chatroomIDString);
     setState(() {
@@ -238,38 +225,36 @@ class _MessageRoomState extends State<MessageRoom> {
 
   @override
   void initState() {
+    // Initially determine type of chatroom
     super.initState();
     if (widget.roomInfo != null && widget.type == "create") {
-      print("Wicked");
+      // A chatroom is to be created from scratch with some info
       var roomMap = widget.roomInfo.toMap();
       roomMap["title"] = widget.postTitle;
       firebaseDB.createChatRoom(roomMap).then((value) {
         widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
-        print("set up chatroomID be ${widget.roomInfo.chatroomIDString}");
+        print("chatroom ${widget.roomInfo.chatroomIDString} has been set.");
         fillSnapshot("create");
       });
     } else if (widget.type == "open") {
+      // There is already an existing chatroom, just open it.
       widget.postTitle = widget.roomInfo.title;
-      print("idk, what do I miss?");
-      print("wat is ${widget.roomInfo.toMap()}");
     } else if (widget.roomInfo == null) {
-      //create a brand new chatroom
+      //create a very blank chatroom - used for chatbot scenario
       firebaseDB.createEmptyRoom(widget.currentUser);
-      //still hardcoded sample
+      //because this is for chatbot, it is hardcoded
       widget.roomInfo = Chat.startChatRoom(
           imageURL: "assets/shorsh.png",
           stringUsers: [widget.currentUser, "Shorsh"],
           title: widget.postTitle);
-      //because this is for chatbot, can hardcode it to Shorsh
-      // widget.roomInfo.chatroomIDString = firebaseDB.getChatRoomID();
       setState(() {
         widget.roomInfo.chatroomIDString = "Shorsh" + widget.currentUser;
       });
-      // fillSnapshot("create");
     }
   }
 
   Future<void> response(query) async {
+    // Function to handle AI response for Chatbot
     AuthGoogle authGoogle =
         await AuthGoogle(fileJson: "assets/service.json").build();
     Dialogflow dialogflow =
@@ -282,17 +267,15 @@ class _MessageRoomState extends State<MessageRoom> {
             timestamp: Timestamp.now(),
             by: 1)
         .toMap();
-    print("adding AI message: $toSend");
     firebaseDB.addMessage(widget.roomInfo.chatroomIDString, toSend);
     setState(() {});
-    print("And checking AI response" +
-        aiResponse.getListMessage()[0]["text"]["text"][0].toString());
   }
 
   Widget _setHeader() {
+    // Determines header of the chat depending on type of chat
     if (widget.roomInfo.chatroomIDString != null &&
         widget.roomInfo.chatroomIDString.contains("Shorsh")) {
-      //return shorsh version
+      // Return Chatbot version
       return Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -318,10 +301,7 @@ class _MessageRoomState extends State<MessageRoom> {
             ],
           ));
     } else {
-      print("is title not string? ${widget.roomInfo.toMap()}");
-      // if(widget.roomInfo.chatroomIDString != null){
-      //   widget.postTitle = firebaseDB.getTitle()
-      // }
+      // Return version with title of posting dynamically added
       return Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -356,6 +336,7 @@ class _MessageRoomState extends State<MessageRoom> {
   }
 
   Future _getImage() async {
+    // Half progress to be able to send images through chat
     final pickedFile = await picker.getImage(source: ImageSource.camera);
 
     setState(() {
@@ -371,9 +352,6 @@ class _MessageRoomState extends State<MessageRoom> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
 
-    //need more robust handling in future
-    //(check if the chatroom has already existed)
-
     return FutureBuilder(
       // Initialize FlutterFire
       future: Firebase.initializeApp(),
@@ -385,7 +363,6 @@ class _MessageRoomState extends State<MessageRoom> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print("WE GOT IN MESSAGES");
           return Scaffold(
             appBar: AppBar(
               leading: Image.asset("assets/dock.png",
@@ -499,7 +476,6 @@ class _MessageRoomState extends State<MessageRoom> {
                                               timestamp: curTime,
                                               by: 0)
                                           .toMap();
-                                  print("adding the message: $toSend");
                                   firebaseDB.addMessage(
                                       widget.roomInfo.chatroomIDString, toSend);
                                   response(messageSent);
