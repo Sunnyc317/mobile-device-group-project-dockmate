@@ -172,4 +172,14 @@ class AuthService {
       };
     }
   }
+
+  Future updatePassword(String password) async {
+    try {
+      print('auth: the password updated is $password');
+      await _auth.currentUser.updatePassword(password);
+      return {'updated': true, 'msg': 'password updated successfully'};
+    } catch (e) {
+      return {'updated': false, 'msg': 'fail to update password \nerror: ${e.toString()}'};
+    }
+  }
 }
