@@ -1,6 +1,6 @@
 import 'package:dockmate/pages/app_screens/listings.dart';
 import 'package:dockmate/pages/app_screens/my_listing.dart';
-import 'package:dockmate/pages/app_screens/settings.dart';
+import 'package:dockmate/pages/settings/settings.dart';
 import 'package:dockmate/utils/chatWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/pages/app_screens/map.dart' as mapScreen;
