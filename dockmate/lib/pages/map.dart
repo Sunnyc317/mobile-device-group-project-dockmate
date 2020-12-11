@@ -5,7 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/model/listing.dart';
-import 'package:dockmate/pages/app_screens/posting.dart';
+import 'package:dockmate/pages/post/posting.dart';
 
 final centre = LatLng(43.6532, -79.3832);
 MapController _mapController = MapController();

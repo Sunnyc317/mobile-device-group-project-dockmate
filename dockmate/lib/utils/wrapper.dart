@@ -1,8 +1,5 @@
 import 'package:dockmate/model/user.dart' as usermodel;
-import 'package:dockmate/pages/authentication/firstScreen.dart';
-import 'package:dockmate/pages/authentication/login.dart';
 import 'package:dockmate/utils/toggleAuthScreens.dart';
-import 'package:dockmate/pages/app_screens/listings.dart';
 import 'package:dockmate/utils/toggleMainScreens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,18 +18,19 @@ class _WrapperState extends State<Wrapper> {
     final userstatus = Provider.of<User>(context);
     final language = Provider.of<String>(context);
     // get the user object as in user.dart
-    
+
     // print(user);
-    if (userstatus != null && (userstatus.emailVerified || userstatus.isAnonymous)) {
+    if (userstatus != null &&
+        (userstatus.emailVerified || userstatus.isAnonymous)) {
       print('user has signed in, should jump to listings');
       return ToggleMainScreens();
     } else if (user == null) {
       print('user = null, not signed in');
-      return ToggleAuthScreens(user: null, verified:false);
+      return ToggleAuthScreens(user: null, verified: false);
     } else if (user != null && !userstatus.emailVerified) {
       print('user = $user, not verified');
-      return ToggleAuthScreens(user: userstatus, verified:false);
-    } 
+      return ToggleAuthScreens(user: userstatus, verified: false);
+    }
     print(user);
   }
 }

@@ -57,7 +57,7 @@ class AuthService {
       //adding random guest username
       final tempName = "Guest " + UniqueKey().toString();
       print("Guest $tempName is in");
-      // usernameModel.setUsername(tempName);
+      usernameModel.setUsername(tempName);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

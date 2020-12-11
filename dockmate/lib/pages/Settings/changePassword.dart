@@ -49,7 +49,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 ListTile(
-                    title: Text("enter new password"),
+                    title: Text("Enter new password"),
                     subtitle: TextFormField(
                       obscureText: true,
                       validator: (val) {
@@ -58,7 +58,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                         }
                         return null;
                       },
-                      onSaved: (val) {password = val;},
+                      onSaved: (val) {
+                        password = val;
+                      },
                       onChanged: (val) {
                         password = val;
                         // if (val.length > 0 && val.length < 8) {

@@ -1,11 +1,8 @@
 import 'package:dockmate/model/usersqfModel.dart';
-import 'package:dockmate/pages/authentication/firstScreen.dart';
 import 'package:dockmate/pages/authentication/forgotPassword.dart';
-import 'package:dockmate/pages/authentication/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/auth.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {

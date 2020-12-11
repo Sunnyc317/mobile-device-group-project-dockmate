@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/util.dart';
 import 'package:dockmate/model/chat.dart';
-import 'package:dockmate/pages/app_screens/message.dart';
+import 'package:dockmate/pages/chat/message.dart';
 import 'package:dockmate/model/username.dart';
 import 'package:dockmate/model/user.dart';
-import 'package:dockmate/pages/app_screens/posting_form.dart';
+import 'package:dockmate/pages/post/posting_form.dart';
 
 class Posting extends StatefulWidget {
   final String title;
@@ -256,12 +256,15 @@ class _PostingState extends State<Posting> {
   }
 
   Future<void> _updateListing(BuildContext context, Listing listing) async {
-    var list = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            PostingForm(title: 'Edit Listing', listing: listing)));
-
     Listing _listing = new Listing();
-    if (list != null) _listing.update(list);
+    Listing list = listing;
+
+    list = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            PostingForm(title: 'Edit Listing', listing: list)));
+
+    print(list.title);
+    if (list != null) await _listing.update(list);
   }
 
   Future<void> _deleteConfirmation(BuildContext context) async {
