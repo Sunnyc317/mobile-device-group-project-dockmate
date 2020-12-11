@@ -97,7 +97,7 @@ Update and Delete
 <center><img src="images/edit.gif" alt="demo" width="300"/></center>
 
 ### Edit profile
-<center><img src="images/edit-profile.gif" alt="demo" width="300"/></center>
+<center><img src="images/editProfile.gif" alt="demo" width="300"/></center>
 
 ### Survey
 <center><img src="images/survey.gif" alt="demo" width="300"/></center>
