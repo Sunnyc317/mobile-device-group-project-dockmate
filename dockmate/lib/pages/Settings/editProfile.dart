@@ -117,26 +117,27 @@ class _EditProfileState extends State<EditProfile> {
                               lname = value;
                             },
                           )),
-                      ListTile(
-                          title: Text('Current email: ${email}',
-                              style: TextStyle(fontSize: 20)),
-                          subtitle: TextFormField(
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              // hintText: 'Enter new email address',
-                              labelText: 'Enter new email address',
-                            ),
-                            validator: (value) {
-                              return null;
-                            },
-                            onChanged: (value) {
-                              email = value;
-                              return null;
-                            },
-                            onSaved: (value) {
-                              email = value;
-                            },
-                          )),
+                          
+                      // ListTile(
+                      //     title: Text('Current email: ${email}',
+                      //         style: TextStyle(fontSize: 20)),
+                      //     subtitle: TextFormField(
+                      //       decoration: const InputDecoration(
+                      //         border: OutlineInputBorder(),
+                      //         // hintText: 'Enter new email address',
+                      //         labelText: 'Enter new email address',
+                      //       ),
+                      //       validator: (value) {
+                      //         return null;
+                      //       },
+                      //       onChanged: (value) {
+                      //         email = value;
+                      //         return null;
+                      //       },
+                      //       onSaved: (value) {
+                      //         email = value;
+                      //       },
+                      //     )),
                       // ListTile(
                       //   title: Text(user.phone),
                       //   subtitle: TextFormField(
@@ -163,61 +164,64 @@ class _EditProfileState extends State<EditProfile> {
                       //     },
                       //   ),
                       // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: RaisedButton(
-                              child: Text('Cancel'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                          Container(
-                            child: Builder(
-                              builder: (context) => RaisedButton(
-                                color: Colors.blue,
-                                onPressed: () async {
-                                  // case 1: register success, proceed to Hoursing type preference
-                                  if (_formKey.currentState.validate()) {
-                                    print("First name: $fname is registered");
-                                    // usernameModel.setUsername(
-                                    //     fname); //save username to sqflite to be used by other parts
-                                    _formKey.currentState.save();
-                                    print('lname');
-                                    if (lname.isNotEmpty) {
-                                      print('here at lastname $lname');
-                                      user.last_name = lname;
-                                      userCloud.updateProfile(
-                                          displayName:
-                                              '${user.first_name} $lname');
-                                    }
-                                    if (fname.isNotEmpty) {
-                                      print('here at firstname $fname');
-                                      user.first_name = fname;
-                                      userCloud.updateProfile(
-                                          displayName:
-                                              '$fname ${user.last_name}');
-                                    }
-                                    if (phone.isNotEmpty) {
-                                      user.phone = phone;
-                                      _model.updateUser(user);
-                                    }
-                                    Navigator.pop(context);
-                                  } else {
-                                    Scaffold.of(context).showSnackBar(SnackBar(
-                                        content: Text('Input fields invalid')));
-                                  }
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: RaisedButton(
+                                child: Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.pop(context);
                                 },
-                                child: Text('Save',
-                                    style: TextStyle(color: Colors.white)),
                               ),
                             ),
-                          ),
-                        ],
+                            Container(
+                              child: Builder(
+                                builder: (context) => RaisedButton(
+                                  color: Colors.blue,
+                                  onPressed: () async {
+                                    // case 1: register success, proceed to Hoursing type preference
+                                    if (_formKey.currentState.validate()) {
+                                      print("First name: $fname is registered");
+                                      // usernameModel.setUsername(
+                                      //     fname); //save username to sqflite to be used by other parts
+                                      _formKey.currentState.save();
+                                      print('lname');
+                                      if (lname.isNotEmpty) {
+                                        print('here at lastname $lname');
+                                        user.last_name = lname;
+                                        userCloud.updateProfile(
+                                            displayName:
+                                                '${user.first_name} $lname');
+                                      }
+                                      if (fname.isNotEmpty) {
+                                        print('here at firstname $fname');
+                                        user.first_name = fname;
+                                        userCloud.updateProfile(
+                                            displayName:
+                                                '$fname ${user.last_name}');
+                                      }
+                                      if (phone.isNotEmpty) {
+                                        user.phone = phone;
+                                        _model.updateUser(user);
+                                      }
+                                      Navigator.pop(context);
+                                    } else {
+                                      Scaffold.of(context).showSnackBar(SnackBar(
+                                          content: Text('Input fields invalid')));
+                                    }
+                                  },
+                                  child: Text('Save',
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),
