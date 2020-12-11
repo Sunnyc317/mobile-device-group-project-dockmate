@@ -103,22 +103,11 @@ However, you can ask me how to register for an account, or you can ask me about 
         .snapshots();
   }
 
-  Future<String> getTitle(chatroomID) async {
-    await FirebaseFirestore.instance
-        .collection("chatroom")
-        .doc(chatroomID)
-        .get()
-        .then((value) {
-      print("valueee $value");
-      return "uwu";
-    });
-  }
-
   Stream getChatStream() {
     return FirebaseFirestore.instance.collection("chatroom").snapshots();
   }
 
-  Future<void> addMessage(roomID, msg) {
+  void addMessage(roomID, msg) {
     var chatroomRef = FirebaseFirestore.instance
         .collection("chatroom")
         .doc(roomID)
@@ -127,7 +116,7 @@ However, you can ask me how to register for an account, or you can ask me about 
     chatroomRef.set(msg);
   }
 
-  Future<void> addSpecificMessage(roomID, msgID, msg) {
+  void addSpecificMessage(roomID, msgID, msg) {
     var chatroomRef = FirebaseFirestore.instance
         .collection("chatroom")
         .doc(roomID)
@@ -136,9 +125,8 @@ However, you can ask me how to register for an account, or you can ask me about 
     chatroomRef.set(msg);
   }
 
-  Future<void> deleteChatroom(roomID) {
-    var chatroomRef =
-        FirebaseFirestore.instance.collection("chatroom").doc(roomID).delete();
+  void deleteChatroom(roomID) {
+    FirebaseFirestore.instance.collection("chatroom").doc(roomID).delete();
   }
 
   // Future<void> deleteMessage(
