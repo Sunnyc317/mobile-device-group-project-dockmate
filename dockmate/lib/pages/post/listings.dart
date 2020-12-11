@@ -4,18 +4,17 @@ import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/saved_listing.dart';
 import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
-import 'package:dockmate/pages/views/post/posting.dart';
-import 'package:dockmate/pages/views/post/posting_form.dart';
+import 'package:dockmate/pages/post/posting.dart';
+import 'package:dockmate/pages/post/posting_form.dart';
 import 'package:filter_list/filter_list.dart';
-//import 'package:dockmate/model/chat.dart';
-//import 'package:dockmate/pages/views/chat/message.dart';
 
 // Search functions referencing: https://github.com/ahmed-alzahrani/Flutter_Search_Example
 class Listings extends StatefulWidget {
-  final String title;
-  User user;
+  // final String title;
+  // User user;
+  final Function toggleView;
 
-  Listings({Key key, this.title, this.user}) : super(key: key);
+  Listings({Key key, this.toggleView}) : super(key: key);
 
   @override
   _ListingState createState() => _ListingState();
@@ -134,7 +133,8 @@ class _ListingState extends State<Listings> {
           ],
         ),
         body: _filteredList(),
-        bottomNavigationBar: BottomBar(bottomIndex: 0),
+        bottomNavigationBar:
+            BottomBar(bottomIndex: 0, toggleView: widget.toggleView),
         floatingActionButton: FloatingActionButton(
           onPressed: _openFilterDialog,
           tooltip: 'Filter',

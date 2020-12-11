@@ -102,6 +102,9 @@ class _PostingFormState extends State<PostingForm> {
                           }
                           return null;
                         })),
+                ListTile(
+                    title: Text("Upload picture is currently disabled",
+                        style: TextStyle(color: Colors.red))),
                 ListTile(title: buildFirstRow()),
                 ListTile(title: buildSecondRow()),
                 ListTile(

@@ -3,13 +3,13 @@ import 'package:dockmate/utils/bottombar.dart';
 import 'package:dockmate/utils/util.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/user.dart';
-import 'package:dockmate/pages/views/post/posting_form.dart';
-import 'package:dockmate/pages/views/post/posting.dart';
+import 'package:dockmate/pages/post/posting_form.dart';
+import 'package:dockmate/pages/post/posting.dart';
 
 class MyListing extends StatefulWidget {
-  final String title;
-
-  MyListing({this.title});
+  // final String title;
+  final Function toggleView;
+  MyListing({Key key, this.toggleView}) : super(key: key);
 
   @override
   _MyListingState createState() => _MyListingState();
@@ -100,7 +100,8 @@ class _MyListingState extends State<MyListing> {
           );
         },
       ),
-      bottomNavigationBar: BottomBar(bottomIndex: 3),
+      bottomNavigationBar:
+          BottomBar(bottomIndex: 3, toggleView: widget.toggleView),
     );
   }
 

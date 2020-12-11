@@ -12,7 +12,7 @@ The main entry points:
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:dockmate/pages/views/chat/message.dart';
+import 'package:dockmate/pages/chat/message.dart';
 import 'package:dockmate/model/chat.dart';
 import 'package:dockmate/utils/sampleData.dart';
 import 'package:dockmate/utils/bottombar.dart';
