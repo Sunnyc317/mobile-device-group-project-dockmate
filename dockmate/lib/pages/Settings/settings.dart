@@ -70,16 +70,23 @@ class _SettingsState extends State<Settings> {
                       )
                     ]),
                   ),
-                  ListTile(
-                    title: Text('Edit Profile'),
-                    leading: Icon(Icons.edit),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  EditProfile(user: locuser)));
-                    },
+                  Builder(
+                    builder: (context) => ListTile(
+                      title: Text('Edit Profile'),
+                      leading: Icon(Icons.edit),
+                      onTap: () {
+                        if (user.isAnonymous) {
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('can\'t edit profile as a guest')));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditProfile(user: locuser)));
+                        }
+                      },
+                    ),
                   ),
                   ListTile(
                     title: Text('Select Language'),
@@ -96,13 +103,18 @@ class _SettingsState extends State<Settings> {
                       title: Text('Change Password'),
                       leading: Icon(Icons.security),
                       onTap: () async {
-                        String resultMSG = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChangePassword()));
-
-                        Scaffold.of(context)
-                            .showSnackBar(SnackBar(content: Text(resultMSG)));
+                        if (user.isAnonymous) {
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('can\'t change password as a guest')));
+                        } else {
+                          await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChangePassword()));
+                          
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('password updated successfully')));
+                        }
                       },
                     ),
                   ),
