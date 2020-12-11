@@ -41,18 +41,18 @@ Inside `pages`, we organize them by page category:
 
 ## Functionalities
 
-1. [Registration](###registration)
-2. [Guest Login - Sign Out](###guest-login-and-sign-out)
-3. [Forgot Password](###forgot-password)
+1. [Registration](#registration)
+2. [Guest Login - Sign Out](#guest-login-and-sign-out)
+3. [Forgot Password](#forgot-password)
 4. [Login](###login)
-5. [Listings and My Listings](###listings-and-my-listings)
+5. [Listings and My Listings](#listings-and-my-listings)
 6. [Search and Filter Listings](#search-and-filter-listings)
-7. [Chat and Chatbot](###chat-and-chatbot)
-8. [Map](###map)
-9. [CRUD Listings](###crud-listings)
-10. [Edit Profile](###edit-profile)
-11. [Survey](###survey)
-12. [Change Language](###change-language)
+7. [Chat and Chatbot](#chat-and-chatbot)
+8. [Map](#map)
+9. [CRUD Listings](#crud-listings)
+10. [Edit Profile](#edit-profile)
+11. [Survey](#survey)
+12. [Change Language](#change-language)
 
 ### Registration
 <center><img src="images/registration.gif" alt="demo" width="500"/></center>
