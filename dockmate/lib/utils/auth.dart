@@ -18,15 +18,14 @@ class AuthService {
 
   usermodel.User _userFromFirebaseUser(User user) {
     usermodel.User muser;
-    if (user!= null) {
+    if (user != null) {
       muser = usermodel.User(id: user.uid);
       muser.first_name = user.displayName.split(' ')[0];
       muser.last_name = user.displayName.split(' ')[1];
       muser.email = user.email;
       muser.notifON = true;
       return muser;
-    }
-    else {
+    } else {
       return null;
     }
 
@@ -158,7 +157,6 @@ class AuthService {
     }
   }
 
-
   Future resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
@@ -172,6 +170,16 @@ class AuthService {
         'linksent': false,
         'msg': 'failed to send link to $email \nerror: ${e.toString()}'
       };
+    }
+  }
+
+  Future updatePassword(String password) async {
+    try {
+      print('auth: the password updated is $password');
+      await _auth.currentUser.updatePassword(password);
+      return {'updated': true, 'msg': 'password updated successfully'};
+    } catch (e) {
+      return {'updated': false, 'msg': 'fail to update password \nerror: ${e.toString()}'};
     }
   }
 }

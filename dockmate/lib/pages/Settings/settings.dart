@@ -1,4 +1,5 @@
 import 'package:dockmate/model/user.dart' as usermodel;
+import 'package:dockmate/pages/Settings/changePassword.dart';
 import 'package:dockmate/pages/Settings/editProfile.dart';
 import 'package:dockmate/pages/Settings/selectLanguage.dart';
 import 'package:dockmate/utils/auth.dart';
@@ -90,10 +91,20 @@ class _SettingsState extends State<Settings> {
                               builder: (context) => SelectLanguage()));
                     },
                   ),
-                  ListTile(
-                    title: Text('Change Password'),
-                    leading: Icon(Icons.security),
-                    onTap: () {},
+                  Builder(
+                    builder: (context) => ListTile(
+                      title: Text('Change Password'),
+                      leading: Icon(Icons.security),
+                      onTap: () async {
+                        String resultMSG = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChangePassword()));
+
+                        Scaffold.of(context)
+                            .showSnackBar(SnackBar(content: Text(resultMSG)));
+                      },
+                    ),
                   ),
                   ListTile(
                       title: Text('Log Out',
