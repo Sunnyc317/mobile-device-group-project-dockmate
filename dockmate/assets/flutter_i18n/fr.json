@@ -4,6 +4,7 @@
         "EditProfile": "Editer le profil", 
         "SelectLanguage": "Choisir la langue", 
         "ChangePassword": "Changer le mot de passe",
+        "Servey": "Servir",
         "Logout": "Déconnexion"
     }
 }
