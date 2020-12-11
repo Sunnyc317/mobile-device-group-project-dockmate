@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dockmate/utils/auth.dart';
 import 'package:provider/provider.dart';
+import 'package:dockmate/utils/notifications.dart';
 
 class Login extends StatefulWidget {
   final Function toggleView;
@@ -27,6 +28,8 @@ class _LoginState extends State<Login> {
     String email;
     String password;
     AuthService _auth = AuthService();
+    final _notifications = Notifications();
+    _notifications.init();
     // if (!changed) {
     //   user = widget.user;
     //   verified = widget.verified;
@@ -152,6 +155,10 @@ class _LoginState extends State<Login> {
                               print('created user ${result['user']}');
                             }
                             print(result['msg']);
+                            _notifications.sendNotificationNow(
+                                "Welcome Back to Dockmate!",
+                                "We now have survey, your opinion matters to us",
+                                "something");
                           }
                         }
                       },

@@ -166,7 +166,6 @@ class _MyListingState extends State<MyListing> {
 
   Future<void> _getUsername() async {
     Username name = await _usernameModel.getUsername();
-    print("my listing: ${name.username}");
     setState(() {
       username = name.username;
     });
