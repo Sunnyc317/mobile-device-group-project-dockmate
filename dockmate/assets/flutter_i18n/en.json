@@ -4,6 +4,7 @@
         "EditProfile": "Edit Profile", 
         "SelectLanguage": "Select Language", 
         "ChangePassword": "Change Password",
+        "Servey": "Take a Servey!",
         "Logout": "Log out"
     }
 }

@@ -60,7 +60,6 @@ class _SettingsState extends State<Settings> {
                 child: ListView(padding: EdgeInsets.all(8), children: [
                   ListTile(
                     title: Wrap(children: [
-                      
                       Text(
                         // "Signed in as: ",
                         FlutterI18n.translate(context, "Settings.Status"),
@@ -76,26 +75,35 @@ class _SettingsState extends State<Settings> {
                       )
                     ]),
                   ),
-                  Builder(
-                    builder: (context) => ListTile(
-                      title: Text(FlutterI18n.translate(context, "Settings.EditProfile"),),
-                      leading: Icon(Icons.edit),
-                      onTap: () {
-                        if (user.isAnonymous) {
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text('can\'t edit profile as a guest')));
-                        } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      EditProfile(user: locuser)));
-                        }
-                      },
-                    ),
-                  ),
+                  Builder(builder: (context) {
+                    if (!user.isAnonymous) {
+                      return ListTile(
+                        title: Text(
+                          FlutterI18n.translate(
+                              context, "Settings.EditProfile"),
+                        ),
+                        leading: Icon(Icons.edit),
+                        onTap: () {
+                          if (user.isAnonymous) {
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text('can\'t edit profile as a guest')));
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditProfile(user: locuser)));
+                          }
+                        },
+                      );
+                    }
+                    return SizedBox(height: 1,);
+                  }),
                   ListTile(
-                    title: Text(FlutterI18n.translate(context, "Settings.SelectLanguage"),),
+                    title: Text(
+                      FlutterI18n.translate(context, "Settings.SelectLanguage"),
+                    ),
                     leading: Icon(Icons.flag),
                     onTap: () async {
                       String lang = await Navigator.push(
@@ -107,30 +115,35 @@ class _SettingsState extends State<Settings> {
                       setState(() {});
                     },
                   ),
-                  Builder(
-                    builder: (context) => ListTile(
-                      title: Text(FlutterI18n.translate(context, "Settings.ChangePassword")),
-                      leading: Icon(Icons.security),
-                      onTap: () async {
-                        if (user.isAnonymous) {
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                              content:
-                                  Text('can\'t change password as a guest')));
-                        } else {
-                          await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChangePassword()));
+                  Builder(builder: (context) {
+                    if (!user.isAnonymous) {
+                      return ListTile(
+                        title: Text(FlutterI18n.translate(
+                            context, "Settings.ChangePassword")),
+                        leading: Icon(Icons.security),
+                        onTap: () async {
+                          if (user.isAnonymous) {
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text('can\'t change password as a guest')));
+                          } else {
+                            await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChangePassword()));
 
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text('password updated successfully')));
-                        }
-                      },
-                    ),
-                  ),
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text('password updated successfully')));
+                          }
+                        },
+                      );
+                    }
+                    return SizedBox(height: 1,);
+                  }),
                   ListTile(
                       title: Text(
-                        'Take a Survey!',
+                        FlutterI18n.translate(context, "Settings.Servey"),
                       ),
                       leading: Icon(Icons.lightbulb),
                       onTap: () async {
@@ -138,7 +151,8 @@ class _SettingsState extends State<Settings> {
                             MaterialPageRoute(builder: (context) => Survey()));
                       }),
                   ListTile(
-                      title: Text(FlutterI18n.translate(context, "Settings.Logout"),
+                      title: Text(
+                          FlutterI18n.translate(context, "Settings.Logout"),
                           style: TextStyle(
                               color: Color.fromRGBO(222, 115, 89, 1))),
                       leading: Icon(Icons.exit_to_app),
