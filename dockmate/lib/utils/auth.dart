@@ -18,15 +18,14 @@ class AuthService {
 
   usermodel.User _userFromFirebaseUser(User user) {
     usermodel.User muser;
-    if (user!= null) {
+    if (user != null) {
       muser = usermodel.User(id: user.uid);
       muser.first_name = user.displayName.split(' ')[0];
       muser.last_name = user.displayName.split(' ')[1];
       muser.email = user.email;
       muser.notifON = true;
       return muser;
-    }
-    else {
+    } else {
       return null;
     }
 
@@ -58,7 +57,7 @@ class AuthService {
       //adding random guest username
       final tempName = "Guest " + UniqueKey().toString();
       print("Guest $tempName is in");
-      // usernameModel.setUsername(tempName);
+      usernameModel.setUsername(tempName);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -157,7 +156,6 @@ class AuthService {
       };
     }
   }
-
 
   Future resetPassword(String email) async {
     try {

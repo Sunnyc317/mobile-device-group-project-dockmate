@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/utils/util.dart';
 import 'package:dockmate/model/chat.dart';
-import 'package:dockmate/pages/app_screens/message.dart';
+import 'package:dockmate/pages/app_screens/Chat/message.dart';
 import 'package:dockmate/model/username.dart';
 import 'package:dockmate/model/user.dart';
 import 'package:dockmate/pages/app_screens/posting_form.dart';
