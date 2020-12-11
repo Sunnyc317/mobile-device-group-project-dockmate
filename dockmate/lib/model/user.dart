@@ -3,72 +3,70 @@ import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dockmate/model/listing.dart';
 import 'package:dockmate/model/message.dart';
-import 'package:dockmate/model/db_model.dart';
 
 class User {
-  DocumentReference reference;
-  String id;
-  String first_name;
-  String last_name;
+  String id; 
+  int sqfid;
+  String first_name = 'nofirstname';
+  String last_name = 'nolastname';
   String email;
-  var profile_pic;
-  bool emailvarified = false;
+  bool notifON = true;
+  // bool emailvarified = false;
   List<String> wantHouseTypes;
   String phone;
-  // String address;
-  // String city;
-  // String postal_code;
-  // String province;
-  // String country;
+  String province;
+  String country;
   // bool landlord;
-  // Not sure about the following yet
-  List<Listing> my_listings;
-  List<Listing> saved_listings;
-  List<Message> messages; // Im not sure what the format on this yet....
-  // Something about preference
-  // Type of housing
-  // Postal code they're looking for?
-
+  // List<Listing> my_listings;
+  // List<Listing> saved_listings;
+  // List<Message> messages; // Im not sure what the format on this yet....
   //temporary for chat purposes
   User({this.id});
   User.chat({this.first_name, this.last_name});
 
   User.fromMap(Map<String, dynamic> map) {
-    this.id = map['id'];
+    this.sqfid = map['id'];
+    this.id = map['firebaseID'];
+    this.first_name = map['firstname'];
+    this.last_name = map['lastname'];
+    this.email = map['email'];
+    if(map['notifON']==1) {this.notifON=true;} else {this.notifON=false;}
+    this.notifON = map['notifON'];
+    this.phone = map['phone'];
+    this.wantHouseTypes = map['wantHouseType'].split(',');
+    this.country = map['country'];
+    this.province = map['province'];
   }
 
   Map<String, dynamic> toMap() {
-    return {'id': this.id};
+    Map<String, dynamic> map = {
+      'firstname': this.first_name,
+      'lastname': this.last_name,
+      'id': this.sqfid,
+      'firebaseID': this.id,
+      'email': this.email,
+      'notifON': this.notifON ? 1 : 0,
+      'phone': this.phone,
+      'wantHouseTypes': this.wantHouseTypes,
+      'province': this.province,
+      'country': this.country
+    };
+    return map;
   }
 
   List<User> result = [];
-  Future<List<User>> getAllUsers() async {
-    final database = await DBModel().init();
-
-    final List<Map<String, dynamic>> maps = await database.query('users');
-    if (maps.length > 0) {
-      for (int i = 0; i < maps.length; i++) {
-        result.add(User.fromMap(maps[i]));
-      }
-    }
-    return result;
-  }
-
 
   void setname(String username) {
     this.first_name = username.splitMapJoin(' ')[0];
     this.last_name = username.splitMapJoin(' ')[1];
   }
-  void setemailvarified(bool emailvarified) {this.emailvarified = emailvarified;}
-  void setprofilepic(var profile_pic) {this.profile_pic = profile_pic;}
   void setemail(String email) {this.email = email;}
   void setphone(String phone) {this.phone = phone;}
 
   String getUser() {
-    //getAllUsers();
-    //return result[0].id;
     return id;
   }
+
   @override
   String toString() {
     // TODO: implement toString

@@ -1,4 +1,4 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dockmate/model/user.dart' as usermodel;
@@ -17,6 +17,19 @@ class AuthService {
   // Create user obj based on firebaseUser
 
   usermodel.User _userFromFirebaseUser(User user) {
+    usermodel.User muser;
+    if (user!= null) {
+      muser = usermodel.User(id: user.uid);
+      muser.first_name = user.displayName.split(' ')[0];
+      muser.last_name = user.displayName.split(' ')[1];
+      muser.email = user.email;
+      muser.notifON = true;
+      return muser;
+    }
+    else {
+      return null;
+    }
+
     return user != null ? usermodel.User(id: user.uid) : null;
   }
 
@@ -45,7 +58,7 @@ class AuthService {
       //adding random guest username
       final tempName = "Guest " + UniqueKey().toString();
       print("Guest $tempName is in");
-      usernameModel.setUsername(tempName);
+      // usernameModel.setUsername(tempName);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -126,8 +139,8 @@ class AuthService {
       usermodel.User user = _userFromFirebaseUser(result.user);
       user.setname(result.user.displayName);
       user.setemail(result.user.email);
-      user.setprofilepic(result.user.photoURL);
-      user.setemailvarified(result.user.emailVerified);
+      // user.setprofilepic(result.user.photoURL);
+      // user.setemailvarified(result.user.emailVerified);
       user.setphone(result.user.phoneNumber);
 
       usernameModel.setUsername(result.user.displayName);
@@ -144,6 +157,7 @@ class AuthService {
       };
     }
   }
+
 
   Future resetPassword(String email) async {
     try {
